@@ -1,0 +1,1 @@
+robocopy C:\Users\nilss\IdeaProjects\MagnetBot D:\Documents\MagnetBot /mir /xf "update.bat" "LICENSE" ".gitignore" ".gitattributes" "Secret.java" "Procfile" /xd ".git" ".idea" "out" "target"
