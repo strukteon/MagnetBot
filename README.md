@@ -1,5 +1,6 @@
 [![MagnetBot](https://raw.githubusercontent.com/strukteon/MagnetBot/master/resources/images/magnetbot_logo_btn-01.png)](https://magnet.strukteon.me)
 
+[![Discord Bots](https://discordbots.org/api/widget/status/389016516261314570.svg)](https://discordbots.org/bot/389016516261314570)
 ![TravisCI Build](https://travis-ci.org/strukteon/MagnetBot.svg?branch=master)
 
 ## Commands
