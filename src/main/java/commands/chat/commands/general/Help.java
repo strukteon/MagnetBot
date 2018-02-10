@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Help implements ChatCommand{
+
     @Override
     public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
         return cmd.equals("help") || cmd.equals("?");
@@ -22,12 +23,22 @@ public class Help implements ChatCommand{
 
     @Override
     public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        EmbedBuilder builder = Message.INFO(event, "Look at my **[documentation](https://magnet.strukteon.me/documentation)**!");
+        EmbedBuilder builder = msg(Message.INFO(event, "Look at my **[documentation](https://magnet.strukteon.me/documentation)**!"));
 
-        builder .addField("FUN",
-                        commandDesc("poke", "poke a member to wake him up", 0) +
-                                commandDesc("tts", "let this bot send a tts message", 0)
-                        , false)
+        event.getTextChannel().sendMessage(builder.build()).queue();
+    }
+
+    @Override
+    public String premiumPermission() {
+        return null;
+    }
+
+    private static EmbedBuilder msg(EmbedBuilder builder){
+
+        return builder .addField("FUN",
+                commandDesc("poke", "send a pm to a member to wake him up", 0) +
+                        commandDesc("tts", "let this bot send a tts message", 0)
+                , false)
 
                 .addField("GENERAL",
                         commandDesc("about", "shows some infos about this bot", 0) +
@@ -63,15 +74,9 @@ public class Help implements ChatCommand{
 
         ;
 
-        event.getTextChannel().sendMessage(builder.build()).queue();
     }
 
-    @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    private String commandDesc(String command, String desc, int permissionLevel){
+    private static String commandDesc(String command, String desc, int permissionLevel){
         return "**" + command + "** - " + desc + " - *[" + Chat.permLevel(permissionLevel).toUpperCase() + "|Lv." + permissionLevel + "]*\n";
     }
 
@@ -79,4 +84,24 @@ public class Help implements ChatCommand{
     public int permissionLevel() {
         return 0;
     }
+
+    /**
+     * get the markdown of the message for github
+     * @param args
+     */
+
+    public static void main(String[] args){
+
+        MessageEmbed msg = msg(new EmbedBuilder()).build();
+
+        for (MessageEmbed.Field f : msg.getFields()){
+            System.out.println("\n#### " + f.getName());
+            System.out.println(
+                    "\nCommand | Description | Permission level" + "\n" +
+                    "---- | ---- | ----" + "\n" +
+                    f.getValue().replace("|", "/").replace("-", "|"));
+        }
+
+    }
+
 }
