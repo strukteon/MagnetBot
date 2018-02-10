@@ -9,6 +9,7 @@ import audio.AudioCore;
 import commands.console.core.EventUpdater;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -33,14 +34,8 @@ public class ReadyListener extends ListenerAdapter {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                long playercount = 0;
 
-                for (Guild g : event.getJDA().getGuilds()) {
-
-                    playercount += g.getMembers().size();
-                }
-
-                event.getJDA().getPresence().setGame(Game.listening(playercount + " Members | -m help"));
+                event.getJDA().getPresence().setPresence(Game.listening(event.getJDA().getUsers().size() + " Members | -m help"), true);
             }
         }, 0, 60000);
 
