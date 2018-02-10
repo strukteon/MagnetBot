@@ -30,7 +30,8 @@ public class Help implements ChatCommand{
                         , false)
 
                 .addField("GENERAL",
-                        commandDesc("bio", "set a bio that will be shown in your profile", 0) +
+                        commandDesc("about", "shows some infos about this bot", 0) +
+                                commandDesc("bio", "set a bio that will be shown in your profile", 0) +
                                 commandDesc("help", "shows this little helpy message", 0) +
                                 commandDesc("invite", "gives you the invite link for this bot", 0) +
                                 commandDesc("profile", "shows your/someones profile", 0) +

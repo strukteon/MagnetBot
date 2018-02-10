@@ -38,6 +38,7 @@ public class Importer {
                 .addCommand(new TTS())
 
             //General
+                .addCommand(new About())
                 .addCommand(new Bio())
                 .addCommand(new Help())
                 .addCommand(new Invite())
