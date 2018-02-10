@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.Static;
 
 public class About implements ChatCommand {
     @Override
@@ -30,6 +31,8 @@ public class About implements ChatCommand {
                 .addField("Created by", "<@262951897290244096> (strukteon#7237)", false)
                 .addField("Official repository", "[strukteon/MagnetBot](https://github.com/strukteon/MagnetBot)", false)
                 .addField("API Wrapper", "JDA [View on GitHub](https://github.com/DV8FromTheWorld/JDA)", false)
+                .addField("Java classes", Static.JAVA_CLASSES, true)
+                .addField("Lines of code", Static.CODE_LINES, true)
                 .addField("Servers", jda.getGuilds().size()+"", true)
                 .addField("Members", jda.getUsers().size()+"", true)
                 .addField("Voicechannels", jda.getVoiceChannels().size()+"", true)

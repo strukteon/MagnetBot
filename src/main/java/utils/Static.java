@@ -23,6 +23,11 @@ public class Static {
     public static final String BOT_OWNER_ID = "262951897290244096";
 
 
+    public static final String JAVA_CLASSES = "53";
+
+    public static final String CODE_LINES = "2927";
+
+
 
     public static void addListeners(JDABuilder builder){
         Importer.addListeners(builder);
