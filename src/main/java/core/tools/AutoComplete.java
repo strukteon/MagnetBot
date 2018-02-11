@@ -35,6 +35,8 @@ public class AutoComplete {
     }
 
     public static Member member(Member[] members, String s){
+        if (s.equals("") || s == null)
+            return null;
         for (Member m : members){
             if (m.getUser().getName().toLowerCase().contains(s.toLowerCase())){
                 return m;
