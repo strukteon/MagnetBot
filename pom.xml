@@ -14,6 +14,12 @@
             <name>jcenter-bintray</name>
             <url>http://jcenter.bintray.com</url>
         </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -76,6 +82,13 @@
             <artifactId>google-api-client-appengine</artifactId>
             <version>1.23.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.DiscordBotList</groupId>
+            <artifactId>Java-Wrapper</artifactId>
+            <version>5317089</version>
+        </dependency>
+
 
     </dependencies>
 
