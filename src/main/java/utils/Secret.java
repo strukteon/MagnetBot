@@ -9,6 +9,10 @@ public class Secret {
 
     public static final String TOKEN = "";
 
+    public static final String TESTING_TOKEN = "";
+	
+	public static final String DISCORDBOTLIST_TOKEN = "";
+
     public static final String YOUTUBE_APIKEY = "";
 
 
