@@ -16,6 +16,7 @@ import commands.chat.commands.testing.Error;
 import commands.chat.commands.testing.Ping;
 import commands.chat.core.ChatHandler;
 import listeners.ChatCommandListener;
+import listeners.OnGuildChangeListener;
 import listeners.ReadyListener;
 import net.dv8tion.jda.core.JDABuilder;
 
@@ -74,6 +75,7 @@ public class Importer {
 
         builder .addEventListener(new ReadyListener())
                 .addEventListener(new ChatCommandListener())
+                .addEventListener(new OnGuildChangeListener())
         .addEventListener(new AudioCore());
 
     }

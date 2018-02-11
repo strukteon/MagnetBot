@@ -35,7 +35,12 @@ public class Help implements ChatCommand{
 
     private static EmbedBuilder msg(EmbedBuilder builder){
 
-        return builder .addField("FUN",
+        return builder
+                .addField("ADMINISTRATION",
+                        commandDesc("clear", "clear a specific amount of messages in the current channel", 1)
+                , false)
+
+                .addField("FUN",
                 commandDesc("poke", "send a pm to a member to wake him up", 0) +
                         commandDesc("tts", "let this bot send a tts message", 0)
                 , false)
