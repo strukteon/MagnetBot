@@ -7,6 +7,8 @@ package commands.chat.commands.general;
 
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
+import commands.chat.utils.UserData;
+import core.Main;
 import core.tools.AutoComplete;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -23,12 +25,11 @@ public class Profile implements ChatCommand {
     }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
         Member m = AutoComplete.member(event.getGuild().getMembers(), args[0]);
         if (m == null)
             m = event.getMember();
-        if (!UserSQL.userExists(m.getUser().getId()))
-            UserSQL.createUser(m.getUser().getId());
+        Main.userData.getUserSQL().createUserIfNotExists("id", m.getUser().getId());
 
         event.getTextChannel().sendMessage(profile(event, args, m)).queue();
     }
@@ -38,14 +39,14 @@ public class Profile implements ChatCommand {
         return null;
     }
 
-    private MessageEmbed profile(MessageReceivedEvent event, String[] args, Member m){
+    private MessageEmbed profile(MessageReceivedEvent event, String[] args, Member m) throws Exception {
 
 
         EmbedBuilder builder = Message.INFO(event);
             builder.setAuthor(m.getEffectiveName() + (!m.getEffectiveName().endsWith("s") ? "'s " : "") + " profile", "https://magnet.strukteon.me/user?userid=" + m.getUser().getId(), m.getUser().getEffectiveAvatarUrl());
 
-            builder.addField(":label: Bio", "``" + UserSQL.getBio(m.getUser().getId()) + "``", false)
-                    .addField(":moneybag: Lodestones", "" + UserSQL.getMoney(m.getUser().getId()), true);
+            builder.addField(":label: Bio", "``" + UserData.getUser(m.getUser().getId()).get("bio") + "``", false)
+                    .addField(":moneybag: Money", "" + UserData.getUser(m.getUser().getId()).get("money") + " m$", true);
 
         return builder.build();
     }

@@ -7,6 +7,8 @@ package commands.chat.commands.general;
 
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
+import commands.chat.utils.UserData;
+import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import utils.UserSQL;
 
@@ -17,7 +19,7 @@ public class Bio implements ChatCommand {
     }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
             if (args.length == 0)
                 Message.delAfter(event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m bio <content>").build()), 5000);
             else {
@@ -28,7 +30,7 @@ public class Bio implements ChatCommand {
                     out.append(s);
                 }
 
-                UserSQL.setBio(event.getAuthor().getId(), out.toString());
+                UserData.updateUser(event.getAuthor().getId(), new UserSQL.Column.Change("bio", out.toString()));
 
                 event.getTextChannel().sendMessage(Message.INFO(event, "Your bio has been set to:\n``" + out.toString() + "``").build()).queue();
             }
