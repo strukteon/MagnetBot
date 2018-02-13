@@ -137,10 +137,9 @@ public class UserSQL {
 
             ResultSet set = c.createStatement().executeQuery("select " + key + " from " + table + " where " + key + "='" + value + "'");
 
-            while (set.next()){
-                if (set.getString(key).equals(value))
-                    return true;
-            }
+            set.first();
+            if (set.getString(key).equals(value))
+                return true;
         }
 
         return false;
