@@ -6,6 +6,7 @@ package commands.chat.core;
 */
 
 import commands.chat.tools.Message;
+import commands.chat.utils.UserData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
@@ -32,28 +33,34 @@ public class ChatHandler {
         for (ChatCommand command : chatCommands){
 
             if (command.execute(event, full, cmd, args)){
-                if (Chat.permissionLevel(event) >= command.permissionLevel())
-                    try {
-
-                        command.action(event, full, cmd, args);
-
-                    } catch (InsufficientPermissionException e){
-                        Permission missing = e.getPermission();
+                try {
+                    if (Chat.permissionLevel(event) >= command.permissionLevel() || UserData.hasPermission(event.getAuthor().getId(), command.premiumPermission()))
                         try {
-                            event.getTextChannel().sendMessage(
-                                    Message.ERROR(event, "Please give me the following Permission: ``" + missing.getName() + "``")
-                                            .build()).queue();
-                        } catch (InsufficientPermissionException error){ }
-                    } catch (Exception e){
-                        event.getTextChannel().sendMessage(Message.INTERNAL_ERROR(event, e).build()).queue();
-                        e.printStackTrace();
-                    }
-                else
-                    event.getTextChannel().sendMessage(
-                            Message.ERROR(event, "You do not have the required permissions to execute that command\n Needed Permission level: " +
-                                    Chat.permLevel(command.permissionLevel()) + "\n Your Permission level: " + Chat.permLevel(Chat.permissionLevel(event)))
-                                    .build()).queue();
-                break;
+
+                            command.action(event, full, cmd, args);
+
+                        } catch (InsufficientPermissionException e) {
+                            Permission missing = e.getPermission();
+                            try {
+                                event.getTextChannel().sendMessage(
+                                        Message.ERROR(event, "Please give me the following Permission: ``" + missing.getName() + "``")
+                                                .build()).queue();
+                            } catch (InsufficientPermissionException error) {
+                            }
+                        } catch (Exception e) {
+                            event.getTextChannel().sendMessage(Message.INTERNAL_ERROR(event, e).build()).queue();
+                            e.printStackTrace();
+                        }
+                    else
+                        event.getTextChannel().sendMessage(
+                                Message.ERROR(event, "You do not have the required permissions to execute that command\n Needed Permission level: " +
+                                        Chat.permLevel(command.permissionLevel()) + "\n Your Permission level: " + Chat.permLevel(Chat.permissionLevel(event)))
+                                        .build()).queue();
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    event.getTextChannel().sendMessage(Message.INTERNAL_ERROR(event, e).build()).queue();
+                }
             }
         }
     }

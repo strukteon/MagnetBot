@@ -59,6 +59,6 @@ public class Clear implements ChatCommand {
 
     @Override
     public int permissionLevel() {
-        return 0;
+        return 1;
     }
 }

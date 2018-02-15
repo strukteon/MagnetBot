@@ -7,6 +7,7 @@ package core;
 
 import audio.AudioCore;
 import commands.chat.commands.admin.Clear;
+import commands.chat.commands.admin.Permission;
 import commands.chat.commands.fun.TTS;
 import commands.chat.commands.fun.Poke;
 import commands.chat.commands.general.*;
@@ -34,6 +35,7 @@ public class Importer {
         new ChatHandler()
             //Admin
                 .addCommand(new Clear())
+                .addCommand(new Permission())
 
             //Fun
                 .addCommand(new Poke())
@@ -55,6 +57,7 @@ public class Importer {
 
             //Music
                 .addCommand(new Connect())
+                .addCommand(new Disconnect())
                 .addCommand(new Info())
                 .addCommand(new Pause())
                 .addCommand(new Play())

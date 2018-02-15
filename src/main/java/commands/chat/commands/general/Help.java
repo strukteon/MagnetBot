@@ -56,12 +56,14 @@ public class Help implements ChatCommand{
                                 commandDesc("whois", "gives you some informations about an user", 0)
                         , false)
 
-                /*.addField("MONEY",
-                        commandDesc("slots", "spin that machine and win money", 0)
-                        , false)*/
+                .addField("MONEY",
+                        commandDesc("slots", "spin that machine and win money", 0) +
+                                commandDesc("vote", "vote for the bot on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote) and get a reward", 0)
+                        , false)
 
                 .addField("MUSIC",
                         commandDesc("connect", "connects this bot to with a voicechannel", 3) +
+                                commandDesc("disconnect", "disconnects this bot from a voicechannel", 3) +
                                 commandDesc("info", "shows info about the playing track", 0) +
                                 commandDesc("pause", "pauses the media playback", 0) +
                                 commandDesc("play", "play a track from an URL or youtube", 0) +

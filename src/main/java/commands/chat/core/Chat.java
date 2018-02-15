@@ -5,14 +5,15 @@ package commands.chat.core;
     (c) nils 2017
 */
 
+import commands.chat.utils.UserData;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import utils.Static;
 
-import java.awt.*;
 import java.sql.Statement;
+import java.util.List;
 
 public class Chat {
 

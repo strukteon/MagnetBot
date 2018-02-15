@@ -67,6 +67,13 @@ public class AudioCore extends ListenerAdapter {
         return false;
     }
 
+    public boolean disconnectFromVoiceChannel(AudioManager audioManager) {
+        if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
+            audioManager.closeAudioConnection();
+        }
+        return false;
+    }
+
 
     public void load(MessageReceivedEvent event, String trackUrl) {
         GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());

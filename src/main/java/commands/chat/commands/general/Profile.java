@@ -17,6 +17,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import utils.UserSQL;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Profile implements ChatCommand {
     @Override
@@ -41,12 +42,21 @@ public class Profile implements ChatCommand {
 
     private MessageEmbed profile(MessageReceivedEvent event, String[] args, Member m) throws Exception {
 
+        List<String> userPerms = UserData.getPermissions(event.getAuthor().getId());
+        System.out.println(userPerms.size());
+        String perms = (userPerms.size() >= 1 && !userPerms.get(0).equals("") ? "" : "none");
+        for (String s : userPerms){
+            if (! (perms.equals("") || perms.equals("none")) )
+                perms += ", ";
+            perms += s;
+        }
 
         EmbedBuilder builder = Message.INFO(event);
             builder.setAuthor(m.getEffectiveName() + (!m.getEffectiveName().endsWith("s") ? "'s " : "") + " profile", "https://magnet.strukteon.me/user?userid=" + m.getUser().getId(), m.getUser().getEffectiveAvatarUrl());
 
             builder.addField(":label: Bio", "``" + UserData.getUser(m.getUser().getId()).get("bio") + "``", false)
-                    .addField(":moneybag: Money", "" + UserData.getUser(m.getUser().getId()).get("money") + " m$", true);
+                    .addField(":moneybag: Money", "" + UserData.getUser(m.getUser().getId()).get("money") + " m$", true)
+                    .addField(":wrench: Permissions", "``" + perms + "``", false);
 
         return builder.build();
     }

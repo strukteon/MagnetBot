@@ -28,11 +28,11 @@ public class Volume implements ChatCommand {
 
     @Override
     public String premiumPermission() {
-        return "music.volume";
+        return "premium.music.volume";
     }
 
     @Override
     public int permissionLevel() {
-        return 0;
+        return 1;
     }
 }

@@ -7,6 +7,8 @@ package commands.chat.utils;
 
 import utils.UserSQL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,8 +22,9 @@ public class UserData {
         userSQL.setData(
                 new UserSQL.Column("id", ""),
                 new UserSQL.Column("money", "0"),
-                new UserSQL.Column("bio", ""),
-                new UserSQL.Column("lastvote", "01.01.2000 00:00:00")
+                new UserSQL.Column("bio", "no bio set"),
+                new UserSQL.Column("lastvote", "01.01.2000 00:00:00"),
+                new UserSQL.Column("permissions", "")
         );
 
         userSQL.setTable("users");
@@ -69,13 +72,71 @@ public class UserData {
 
     // Permissions
 
-    public static List<String> getPermissions(String userid){
+    public static List<String> getPermissions(String userid) throws Exception {
+        HashMap<String, String> user = getUser(userid);
+        String[] arr = user.get("permissions").split(" ");
+
+        if (arr.length == 0)
+            return new ArrayList<>();
+        else
+            return new ArrayList<>(Arrays.asList(arr));
 
     }
 
-    public static boolean hasPermission(String userid, String permission){
+    public static boolean hasPermission(String userid, String permission) throws Exception {
+        List<String> perms = UserData.getPermissions(userid);
+
+        for (String s : perms){
+            if(s.endsWith("*")){
+                if (permission.startsWith(s.replace(".*", "")))
+                    return true;
+            } else if (s.equals(permission)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void addPermission(String userid, String permission) throws Exception {
+
+        if (!hasPermission(userid, permission)){
+
+            List<String> perms = getPermissions(userid);
+
+            String permsOut = "";
+            for (String s : perms){
+                if (perms.indexOf(s) != 0)
+                    permsOut += " ";
+                permsOut += s;
+            }
+
+            permsOut += " " + permission;
+
+            updateUser(userid, new UserSQL.Column.Change("permissions", permsOut));
+
+        }
 
 
+    }
+
+    public static void removePermission(String userid, String permission) throws Exception {
+
+        if (hasPermission(userid, permission)){
+
+            List<String> perms = getPermissions(userid);
+
+            String permsOut = "";
+            for (String s : perms){
+                if (!s.equals(permission)) {
+                    if (!permsOut.equals(""))
+                        permsOut += " ";
+                    permsOut += s;
+                }
+            }
+
+            updateUser(userid, new UserSQL.Column.Change("permissions", permsOut));
+
+        }
 
     }
 }
