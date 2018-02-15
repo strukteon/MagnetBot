@@ -7,7 +7,9 @@ package commands.chat.commands.money;
 
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
+import commands.chat.utils.UserData;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
 public class Slots implements ChatCommand {
 
@@ -19,16 +21,32 @@ public class Slots implements ChatCommand {
     }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        int[] result = new int[3];
+    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+        if (args.length == 1 && args[0].equals(""))
+            event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m slots <money>").build()).queue();
+        else {
+            try {
+                int money = Integer.parseInt(args[0]);
+                int currentMoney = UserData.getMoney(event.getAuthor().getId());
 
-        for (int i = 0; i < 3; i++){
-            result[i] = (int) Math.floor(Math.random() * slots.length);
+                if (currentMoney >= money) {
+                    int[] result = new int[3];
+
+                    for (int i = 0; i < 3; i++) {
+                        result[i] = (int) Math.floor(Math.random() * slots.length);
+                    }
+
+                    boolean win = (result[0] == result[1] && result[1] == result[2]);
+
+                    UserData.addMoney(event.getAuthor().getId(), (win ? money * 10 : 0) - money );
+
+                    event.getTextChannel().sendMessage(Message.INFO(event, genSlots(result) + "\n" + (win ? "Yay! You won! :grin:\nYou got " + ((win ? money * 10 : 0) - money) + " m$" : "Sorry, you didn't win :cry:\nYou lost " + money + " m$")).build()).queue();
+                } else
+                    event.getTextChannel().sendMessage(Message.ERROR(event, "You don't have enough money!").build()).queue();
+            } catch (NumberFormatException e) {
+                event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m slots <money>").build()).queue();
+            }
         }
-
-        boolean win = (result[0] == result[1] && result[1] == result[2]);
-
-        event.getTextChannel().sendMessage(Message.INFO(event, genSlots(result) + "\n" + (win ? "Yay! You won!" : "Sorry, you didn't win :cry:")).build()).queue();
 
     }
 
