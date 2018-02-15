@@ -7,23 +7,15 @@ package core;
 */
 
 import audio.AudioCore;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import commands.chat.utils.UserData;
-import commands.console.core.ConsoleHandler;
-import listeners.OnGuildChangeListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.discordbots.api.client.DiscordBotListAPI;
 import utils.Secret;
 import utils.Static;
 import utils.UserSQL;
-
-import javax.security.auth.login.LoginException;
-import java.sql.ResultSet;
-import java.util.Arrays;
 
 public class Main {
 

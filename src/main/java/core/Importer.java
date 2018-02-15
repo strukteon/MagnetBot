@@ -11,6 +11,7 @@ import commands.chat.commands.fun.TTS;
 import commands.chat.commands.fun.Poke;
 import commands.chat.commands.general.*;
 import commands.chat.commands.money.Slots;
+import commands.chat.commands.money.Vote;
 import commands.chat.commands.music.*;
 import commands.chat.commands.testing.Error;
 import commands.chat.commands.testing.Ping;
@@ -50,6 +51,7 @@ public class Importer {
 
             //Money
                 .addCommand(new Slots())
+                .addCommand(new Vote())
 
             //Music
                 .addCommand(new Connect())

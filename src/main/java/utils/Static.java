@@ -52,4 +52,11 @@ public class Static {
 
     }
 
+
+    public static class Money {
+
+        public static int VOTE_REWARD = 500;
+
+    }
+
 }

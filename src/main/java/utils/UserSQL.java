@@ -137,9 +137,9 @@ public class UserSQL {
 
             ResultSet set = c.createStatement().executeQuery("select " + key + " from " + table + " where " + key + "='" + value + "'");
 
-            set.first();
-            if (set.getString(key).equals(value))
-                return true;
+            while (set.next())
+                if (set.getString(key).equals(value))
+                    return true;
         }
 
         return false;
@@ -199,7 +199,8 @@ public class UserSQL {
                 ResultSet set = c.createStatement().executeQuery("select * from " + table + " where " + key + "='" + value + "'");
                 set.first();
                 for (Column column : rowData){
-                    map.put(column.variable, set.getString(column.variable));
+                    String val = (set.getString(column.variable) != null ? set.getString(column.variable) : rowData.get(rowData.indexOf(column)).defaultValue);
+                    map.put(column.variable, val);
                 }
                 return map;
             }

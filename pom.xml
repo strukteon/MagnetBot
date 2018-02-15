@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.github.DiscordBotList</groupId>
             <artifactId>Java-Wrapper</artifactId>
-            <version>5317089</version>
+            <version>f47c46b</version>
         </dependency>
 
 
