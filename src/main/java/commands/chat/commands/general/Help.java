@@ -7,7 +7,9 @@ package commands.chat.commands.general;
 
 import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
+import commands.chat.core.ChatHandler;
 import commands.chat.tools.Message;
+import core.Main;
 import net.dv8tion.jda.client.entities.Group;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -37,7 +39,8 @@ public class Help implements ChatCommand{
 
         return builder
                 .addField("ADMINISTRATION",
-                        commandDesc("clear", "clear a specific amount of messages in the current channel", 1)
+                        commandDesc("clear", "clear a specific amount of messages in the current channel", 1) +
+                                commandDesc("permission", "change permissions for a specefic user", 3)
                 , false)
 
                 .addField("FUN",
@@ -68,6 +71,7 @@ public class Help implements ChatCommand{
                                 commandDesc("pause", "pauses the media playback", 0) +
                                 commandDesc("play", "play a track from an URL or youtube", 0) +
                                 commandDesc("playlist", "play a playlist from an URL or youtube", 0) +
+                                commandDesc("repeat", "turn looping for the queue on/off", 0) +
                                 commandDesc("resume", "resumes the media playback", 0) +
                                 commandDesc("skip", "skips the current track", 0) +
                                 commandDesc("stop", "stops the media playback", 1) +
@@ -78,6 +82,7 @@ public class Help implements ChatCommand{
                         commandDesc("error", "shows a custom error message", 0) +
                                 commandDesc("ping", "gives you the connection ping from the bot to discord", 0)
                         , true)
+                .addField("", "Loaded a total of " + ChatHandler.chatCommands.size() + " commands.", false)
 
         ;
 

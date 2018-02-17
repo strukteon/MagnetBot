@@ -62,6 +62,7 @@ public class Importer {
                 .addCommand(new Pause())
                 .addCommand(new Play())
                 .addCommand(new Playlist())
+                .addCommand(new Repeat())
                 .addCommand(new Resume())
                 .addCommand(new Skip())
                 .addCommand(new Stop())
