@@ -12,6 +12,7 @@ import commands.chat.utils.UserData;
 import core.Main;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.http.client.utils.DateUtils;
 import org.discordbots.api.client.entity.SimpleUser;
 import utils.Static;
 import utils.UserSQL;
@@ -35,7 +36,7 @@ public class Vote implements ChatCommand {
         System.out.println(lastVote.toString());
         Date now = new Date();
 
-        if (lastVote.before(now)){
+        if (lastVote.before(new Date(now.getTime() + 24 * 60 * 60 * 1000))){
 
             List<String> voters = Main.discordBotListAPI.getVoterIds("389016516261314570", 1);
             System.out.println(voters);
@@ -48,10 +49,12 @@ public class Vote implements ChatCommand {
 
                 event.getTextChannel().sendMessage(Message.INFO(event, ":gem: You sucessfully voted and received your rewards!\n ```+500 m$```\nVote again tomorrow to get another reward!").build()).queue();
 
-            }
+            } else
+                event.getTextChannel().sendMessage(Message.ERROR(event, "You haven't voted today! You can vote now on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote)!").build()).queue();
 
 
-        }
+        } else
+            event.getTextChannel().sendMessage(Message.ERROR(event, "You already voted today! Vote again tomorrow!").build()).queue();
     }
 
     @Override
