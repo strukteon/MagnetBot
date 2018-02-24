@@ -6,14 +6,9 @@ package listeners;
 */
 
 import commands.chat.core.ChatHandler;
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.impl.UserImpl;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.requests.Route;
 import utils.Static;
 
 public class ChatCommandListener extends ListenerAdapter {
@@ -35,10 +30,4 @@ public class ChatCommandListener extends ListenerAdapter {
 
         }
     }
-
-    /*@Override
-    public void onGuildJoin(GuildJoinEvent event) {
-        new UserImpl()
-        event.getGuild().getInvites().complete()
-    }*/
 }

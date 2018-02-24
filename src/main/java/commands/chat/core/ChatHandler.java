@@ -7,10 +7,13 @@ package commands.chat.core;
 
 import commands.chat.tools.Message;
 import commands.chat.utils.UserData;
+import core.tools.Tools;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,16 @@ public class ChatHandler {
                     break;
                 } catch (Exception e) {
                     e.printStackTrace();
+                    EmbedBuilder error = Message.INFO(event);
+                        error.setTitle("**An internal error ocurred**")
+                                .setDescription("tt")
+                                .setColor(Color.RED)
+                                .addField("Guild", event.getGuild().getName(), true)
+                                .addField("Guild ID", event.getGuild().getId(), true)
+                                .addField("Error Message", e.toString(), false)
+                                .addField("Stacktrace", Tools.stacktraceToString(e.getStackTrace(), false), false);
+                    event.getGuild().getOwner().getUser().openPrivateChannel().complete()
+                            .sendMessage(error.build()).queue();
                     event.getTextChannel().sendMessage(Message.INTERNAL_ERROR(event, e).build()).queue();
                 }
             }

@@ -7,6 +7,7 @@ package core.tools;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public class AutoComplete {
         }
         return null;
     }
+
+
+    /*public static Role role(){
+        Role[] _members = new Member[members.size()];
+        _members = members.toArray(_members);
+        return member(_members, s);
+    }*/
 }

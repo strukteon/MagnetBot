@@ -7,7 +7,6 @@ package core;
 */
 
 import audio.AudioCore;
-import commands.chat.core.ChatHandler;
 import commands.chat.utils.UserData;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -22,7 +21,6 @@ public class Main {
 
     public static JDABuilder builder;
     public static JDA jda;
-
     public static AudioCore audioCore;
 
     public static DiscordBotListAPI discordBotListAPI;

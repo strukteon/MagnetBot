@@ -25,7 +25,7 @@ public class Static {
 
     public static final String JAVA_CLASSES = "53";
 
-    public static final String CODE_LINES = "2232";
+    public static final String CODE_LINES = "2695";
 
 
 

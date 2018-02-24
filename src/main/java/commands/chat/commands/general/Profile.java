@@ -43,7 +43,7 @@ public class Profile implements ChatCommand {
     private MessageEmbed profile(MessageReceivedEvent event, String[] args, Member m) throws Exception {
 
         List<String> userPerms = UserData.getPermissions(event.getAuthor().getId());
-        System.out.println(userPerms.size());
+
         String perms = (userPerms.size() >= 1 && !userPerms.get(0).equals("") ? "" : "none");
         for (String s : userPerms){
             if (! (perms.equals("") || perms.equals("none")) )

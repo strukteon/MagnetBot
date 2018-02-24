@@ -21,4 +21,15 @@ public class Tools {
         return url.startsWith("http://") || url.startsWith("https://");
     }
 
+    public static String stacktraceToString(StackTraceElement[] stackTrace, boolean indent){
+        String out = "";
+
+        for (StackTraceElement s : stackTrace){
+            if (!out.equals(""))
+                out += "\n";
+            out += (indent?"    ":"") + "at " + s.toString();
+        }
+        return out;
+    }
+
 }
