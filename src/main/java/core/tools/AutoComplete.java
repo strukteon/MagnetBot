@@ -51,9 +51,21 @@ public class AutoComplete {
     }
 
 
-    /*public static Role role(){
-        Role[] _members = new Member[members.size()];
-        _members = members.toArray(_members);
-        return member(_members, s);
-    }*/
+    public static Role role(List<Role> roles, String s){
+        Role[] _roles = new Role[roles.size()];
+        _roles = roles.toArray(_roles);
+        return role(_roles, s);
+    }
+
+    public static Role role(Role[] roles, String s){
+        if (s.equals("") || s == null)
+            return null;
+        for (Role r : roles){
+            if (r.getName().toLowerCase().contains(s) || r.getAsMention().equals(s) ){
+                return r;
+            }
+        }
+        return null;
+    }
+
 }

@@ -7,6 +7,7 @@ package core;
 */
 
 import audio.AudioCore;
+import commands.chat.utils.GuildData;
 import commands.chat.utils.UserData;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -50,16 +51,6 @@ public class Main {
 
 
             jda = builder.buildBlocking();
-
-            UserData.init(new UserSQL(UserSQL.login(Secret.SQL_USER, Secret.SQL_PASSWORD, Secret.SQL_DATABASE, Secret.SQL_SERVER)));
-
-            audioCore = new AudioCore();
-
-            discordBotListAPI = new DiscordBotListAPI.Builder().token(Secret.DISCORDBOTLIST_TOKEN).build();
-
-            discordBotListAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size());
-
-            System.out.println(jda.getSelfUser().getName());
 
 
 
