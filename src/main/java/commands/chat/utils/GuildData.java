@@ -6,6 +6,7 @@ package commands.chat.utils;
 */
 
 import net.dv8tion.jda.core.entities.Role;
+import utils.Static;
 import utils.UserSQL;
 
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class GuildData {
 
         userSQL.setData(
                 new UserSQL.Column("id", ""),
-                new UserSQL.Column("autorole", "")
+                new UserSQL.Column("autorole", ""),
+                new UserSQL.Column("prefix", "")
         );
 
         userSQL.setTable("guilds");
@@ -44,6 +46,7 @@ public class GuildData {
         return userSQL;
     }
 
+
     public static void setAutoRole(String id, String roleid) throws Exception {
         updateGuild(id, new UserSQL.Column.Change("autorole", roleid));
     }
@@ -56,5 +59,13 @@ public class GuildData {
     }
 
 
+    public static void setPrefix(String id, String prefix) throws Exception {
+        updateGuild(id, new UserSQL.Column.Change("prefix", prefix));
+    }
+
+    public static String getPrefix(String id) throws Exception {
+        HashMap<String, String> guild = getGuild(id);
+        return guild.get("prefix");
+    }
 
 }

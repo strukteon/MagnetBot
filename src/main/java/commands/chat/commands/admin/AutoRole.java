@@ -25,7 +25,6 @@ public class AutoRole implements ChatCommand {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m autorole <role>").build()).queue();
         else {
-            System.out.println(event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getRoles().get(0));
             Role r = AutoComplete.role(event.getGuild().getRoles(), args[0]);
             if (r == null)
                 event.getTextChannel().sendMessage(Message.ERROR(event, "Role ``" + args[0] + "`` couldn't be found").build()).queue();
