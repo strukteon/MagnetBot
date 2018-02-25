@@ -21,8 +21,19 @@ public class Volume implements ChatCommand {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m volume <percent>").build()).queue();
         else {
-            Main.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.setVolume(Integer.parseInt(args[0]));
-            event.getTextChannel().sendMessage(Message.INFO(event, "Volume set to " + Integer.parseInt(args[0]) + "%").build()).queue();
+            try {
+                int volume = Integer.parseInt(args[0]);
+                if (volume < 0)
+                    event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "Minimum volume: 0%").build()).queue();
+                else if (volume > 150)
+                    event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "Maximum volume: 150%").build()).queue();
+                else {
+                    Main.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.setVolume(volume);
+                    event.getTextChannel().sendMessage(Message.INFO(event, "Volume set to " + Integer.parseInt(args[0]) + "%").build()).queue();
+                }
+            } catch (NumberFormatException e){
+                event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m volume <percent>").build()).queue();
+            }
         }
     }
 
