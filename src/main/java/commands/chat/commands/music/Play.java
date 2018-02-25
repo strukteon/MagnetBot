@@ -30,12 +30,13 @@ public class Play implements ChatCommand {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, Static.PREFIX + "play <videourl>\n " + Static.PREFIX + "play <youtubequery>").build()).queue();
         else {
+            String url = event.getMessage().getContentRaw().substring(7).trim();
 
             if (event.getMember().getVoiceState().getChannel() == null)
                 event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
             else
                 if (args[0].startsWith("http://") || args[0].startsWith("https://"))
-                    Main.audioCore.load(event, args[0]);
+                    Main.audioCore.load(event, url);
                 else {
                     try {
                         SearchResult video = YouTubeAPI.searchVideo(Tools.argsToString(args, " "));
