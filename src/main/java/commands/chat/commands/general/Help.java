@@ -41,7 +41,8 @@ public class Help implements ChatCommand{
                 .addField("ADMINISTRATION",
                         commandDesc("autorole","set a role every member will get when joining this server", 1) +
                                 commandDesc("clear", "clear a specific amount of messages in the current channel", 1) +
-                                commandDesc("permission", "change permissions for a specefic user", 3)
+                                commandDesc("permission", "change permissions for a specefic user", 3) +
+                                commandDesc("prefix", "set a custom prefix for this server", 2)
                 , false)
 
                 .addField("FUN",

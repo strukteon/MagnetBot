@@ -9,6 +9,7 @@ import audio.AudioCore;
 import commands.chat.commands.admin.AutoRole;
 import commands.chat.commands.admin.Clear;
 import commands.chat.commands.admin.Permission;
+import commands.chat.commands.admin.Prefix;
 import commands.chat.commands.fun.TTS;
 import commands.chat.commands.fun.Poke;
 import commands.chat.commands.general.*;
@@ -38,6 +39,7 @@ public class Importer {
                 .addCommand(new AutoRole())
                 .addCommand(new Clear())
                 .addCommand(new Permission())
+                .addCommand(new Prefix())
 
             //Fun
                 .addCommand(new Poke())
