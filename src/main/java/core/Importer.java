@@ -6,6 +6,7 @@ package core;
 */
 
 import audio.AudioCore;
+import commands.chat.commands.admin.AutoRole;
 import commands.chat.commands.admin.Clear;
 import commands.chat.commands.admin.Permission;
 import commands.chat.commands.fun.TTS;
@@ -34,6 +35,7 @@ public class Importer {
     public static void importChatCommands(){
         new ChatHandler()
             //Admin
+                .addCommand(new AutoRole())
                 .addCommand(new Clear())
                 .addCommand(new Permission())
 
@@ -79,10 +81,17 @@ public class Importer {
 
     public static void addListeners(JDABuilder builder){
 
-        builder .addEventListener(new ReadyListener())
+        builder
+                // Core Listeners
+                .addEventListener(new ReadyListener())
                 .addEventListener(new ChatCommandListener())
                 .addEventListener(new OnGuildChangeListener())
-        .addEventListener(new AudioCore());
+                .addEventListener(new AudioCore())
+
+                // Command Specific Listeners
+                .addEventListener(new AutoRole.Listener())
+
+        ;
 
     }
 
