@@ -39,7 +39,8 @@ public class Help implements ChatCommand{
 
         return builder
                 .addField("ADMINISTRATION",
-                        commandDesc("clear", "clear a specific amount of messages in the current channel", 1) +
+                        commandDesc("autorole","set a role every member will get when joining this server", 1) +
+                                commandDesc("clear", "clear a specific amount of messages in the current channel", 1) +
                                 commandDesc("permission", "change permissions for a specefic user", 3)
                 , false)
 
