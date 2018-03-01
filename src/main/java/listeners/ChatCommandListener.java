@@ -40,8 +40,9 @@ public class ChatCommandListener extends ListenerAdapter {
         else
             try {
                 String prefix = GuildData.getPrefix(event.getGuild().getId());
-                if (msg.startsWith(prefix))
-                    return prefix;
+                if (prefix != null)
+                    if (msg.startsWith(prefix))
+                        return prefix;
             } catch (Exception e){
                 e.printStackTrace();
             }
