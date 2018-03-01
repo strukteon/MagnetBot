@@ -15,6 +15,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Message {
 
+    public static EmbedBuilder INFO(MessageReceivedEvent event,String title, String message){
+        EmbedBuilder builder = INFO(event, message);
+
+        builder.setTitle(title);
+
+        return builder;
+    }
+
     public static EmbedBuilder INFO(MessageReceivedEvent event, String message){
         EmbedBuilder builder = INFO(event);
 

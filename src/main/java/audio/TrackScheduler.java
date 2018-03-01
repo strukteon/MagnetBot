@@ -161,9 +161,10 @@ public class TrackScheduler extends AudioEventAdapter {
         if (endReason.mayStartNext) {
             Guild g = current.getEvent().getGuild();
 
-            if (queue.isEmpty())
+            if (queue.isEmpty()) {
                 new TrackEndThread(g).start();
-            else {
+                current = null;
+            } else {
                 current = queue.poll();
                 player.playTrack(current.getTrack());
                 if (repeat)
