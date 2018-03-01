@@ -7,6 +7,7 @@ package commands.chat.commands.general;
 
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
+import commands.chat.utils.GeneralData;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -27,7 +28,8 @@ public class About implements ChatCommand {
 
         builder .setTitle(":information_source: About " + jda.getSelfUser().getName() + "#" + jda.getSelfUser().getDiscriminator())
                 .setThumbnail(jda.getSelfUser().getEffectiveAvatarUrl())
-                .addField("Id", jda.getSelfUser().getId(), false)
+                .addField("Id", jda.getSelfUser().getId(), true)
+                .addField("Version", GeneralData.getVersion(), true)
                 .addField("Created by", "<@262951897290244096> (strukteon#7237)", false)
                 .addField("Official repository", "[strukteon/MagnetBot](https://github.com/strukteon/MagnetBot)", false)
                 .addField("API Wrapper", "JDA [View on GitHub](https://github.com/DV8FromTheWorld/JDA)", false)

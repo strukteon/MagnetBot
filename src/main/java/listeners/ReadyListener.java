@@ -6,6 +6,7 @@ package listeners;
 */
 
 import audio.AudioCore;
+import commands.chat.utils.GeneralData;
 import commands.chat.utils.GuildData;
 import commands.chat.utils.UserData;
 import core.Main;
@@ -36,8 +37,10 @@ public class ReadyListener extends ListenerAdapter {
 
             }
 
+
             UserData.init(new UserSQL(UserSQL.login(Secret.SQL_USER, Secret.SQL_PASSWORD, Secret.SQL_DATABASE, Secret.SQL_SERVER)));
             GuildData.init(new UserSQL(UserSQL.login(Secret.SQL_USER, Secret.SQL_PASSWORD, Secret.SQL_DATABASE, Secret.SQL_SERVER)));
+            GeneralData.init(new UserSQL(UserSQL.login(Secret.SQL_USER, Secret.SQL_PASSWORD, Secret.SQL_DATABASE, Secret.SQL_SERVER)));
 
             Main.audioCore = new AudioCore();
 
