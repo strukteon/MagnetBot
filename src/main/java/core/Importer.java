@@ -19,6 +19,7 @@ import commands.chat.commands.music.*;
 import commands.chat.commands.testing.Error;
 import commands.chat.commands.testing.Ping;
 import commands.chat.core.ChatHandler;
+import listeners.AudioReconnectListener;
 import listeners.ChatCommandListener;
 import listeners.OnGuildChangeListener;
 import listeners.ReadyListener;
@@ -90,6 +91,8 @@ public class Importer {
                 .addEventListener(new ChatCommandListener())
                 .addEventListener(new OnGuildChangeListener())
                 .addEventListener(new AudioCore())
+
+                .addEventListener(new AudioReconnectListener())
 
                 // Command Specific Listeners
                 .addEventListener(new AutoRole.Listener())

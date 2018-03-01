@@ -20,6 +20,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.AudioManager;
@@ -29,6 +30,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AudioCore extends ListenerAdapter {
 
@@ -155,7 +157,18 @@ public class AudioCore extends ListenerAdapter {
         }
     }
 
+    public void reconnectAll(Event event){
+        Set<Map.Entry<Long, GuildMusicManager>> entries = musicManagers.entrySet();
+        for (Map.Entry<Long, GuildMusicManager> entry : entries){
+            AudioManager manager = event.getJDA().getGuildById(entry.getKey()).getAudioManager();
+            if (manager.isConnected() && !manager.isAttemptingToConnect()){
+                VoiceChannel channel = manager.getConnectedChannel();
+                manager.closeAudioConnection();
+                manager.openAudioConnection(channel);
+            }
+        }
 
+    }
 
 
 }
