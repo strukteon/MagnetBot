@@ -32,4 +32,15 @@ public class Tools {
         return out;
     }
 
+    public static String coolify(String s){
+        String out = "";
+        for (String str : s.split("")){
+            if (str.equals(" "))
+                out += " :large_blue_diamond:";
+            else
+                out += " :regional_indicator_" + str.toLowerCase() + ":";
+        }
+        return out;
+    }
+
 }

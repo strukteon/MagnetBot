@@ -21,7 +21,7 @@ public class GuildData {
         userSQL.setData(
                 new UserSQL.Column("id", ""),
                 new UserSQL.Column("autorole", ""),
-                new UserSQL.Column("prefix", "")
+                new UserSQL.Column("prefix", null)
         );
 
         userSQL.setTable("guilds");

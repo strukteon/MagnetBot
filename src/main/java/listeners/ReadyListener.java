@@ -8,11 +8,9 @@ package listeners;
 import audio.AudioCore;
 import commands.chat.utils.GuildData;
 import commands.chat.utils.UserData;
-import commands.console.core.EventUpdater;
 import core.Main;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.discordbots.api.client.DiscordBotListAPI;
@@ -34,7 +32,7 @@ public class ReadyListener extends ListenerAdapter {
 
             for (Guild g : event.getJDA().getGuilds()) {
 
-                System.out.println(g.getName() + " [ " + g.getOwner().getUser().getName() + "#" + g.getOwner().getUser().getDiscriminator() + " ] (" + g.getId() + ")");
+                System.out.println(g.getName() + " [ " + g.getOwner().getUser().getName() + "#" + g.getOwner().getUser().getDiscriminator() + " ] { "  + g.getMembers().size() + " } (" + g.getId() + ")");
 
             }
 
