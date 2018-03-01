@@ -18,7 +18,8 @@ public class GeneralData {
 
         userSQL.setData(
                 new UserSQL.Column("bot", "magnet"),
-                new UserSQL.Column("build", "")
+                new UserSQL.Column("build", ""),
+                new UserSQL.Column("lastchanges", "")
         );
 
         userSQL.setTable("general");
