@@ -56,4 +56,9 @@ public class GeneralData {
         return version;
     }
 
+    public static String getLastCommit() throws Exception {
+        HashMap<String, String> settings = getSettings();
+        return settings.get("lastchanges");
+    }
+
 }

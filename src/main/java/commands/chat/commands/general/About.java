@@ -30,6 +30,7 @@ public class About implements ChatCommand {
                 .setThumbnail(jda.getSelfUser().getEffectiveAvatarUrl())
                 .addField("Id", jda.getSelfUser().getId(), true)
                 .addField("Version", GeneralData.getVersion(), true)
+                .addField("Last commit", "``" + GeneralData.getLastCommit() + "``", false)
                 .addField("Created by", "<@262951897290244096> (strukteon#7237)", false)
                 .addField("Official repository", "[strukteon/MagnetBot](https://github.com/strukteon/MagnetBot)", false)
                 .addField("API Wrapper", "JDA [View on GitHub](https://github.com/DV8FromTheWorld/JDA)", false)
