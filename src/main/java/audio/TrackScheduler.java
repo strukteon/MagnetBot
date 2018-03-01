@@ -33,7 +33,6 @@ public class TrackScheduler extends AudioEventAdapter {
     private AudioInfo current;
 
     public boolean repeat = false;
-    private boolean repeatCurrent = false;
 
     /**
      * @param player The audio player this scheduler uses
@@ -53,12 +52,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void repeatQueue(boolean repeat){
         this.repeat = repeat;
-        this.repeatCurrent = false;
-    }
-
-    public void repeatCurrentTrack(boolean repeat){
-        this.repeatCurrent = repeat;
-        this.repeat = false;
+        if (repeat)
+            queue.add(new AudioInfo(current.getTrack().makeClone(), current.getEvent()));
     }
 
     public void shuffleQueue(){

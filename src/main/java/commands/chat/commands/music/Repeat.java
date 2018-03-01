@@ -17,7 +17,7 @@ import java.util.concurrent.BlockingQueue;
 public class Repeat implements ChatCommand {
     @Override
     public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("repeat") || cmd.equals("Repeat");
+        return cmd.equals("repeat") || cmd.equals("loop");
     }
 
     @Override
