@@ -20,7 +20,7 @@ import java.util.List;
 public class SaveQueue implements ChatCommand {
     @Override
     public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return false;
+        return cmd.equals("savequeue") || cmd.equals("saveq") || cmd.equals("save");
     }
 
     @Override
