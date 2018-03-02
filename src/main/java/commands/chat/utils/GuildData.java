@@ -6,10 +6,14 @@ package commands.chat.utils;
 */
 
 import net.dv8tion.jda.core.entities.Role;
+import org.apache.commons.collections4.CollectionUtils;
 import utils.Static;
 import utils.UserSQL;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class GuildData {
 
@@ -21,7 +25,8 @@ public class GuildData {
         userSQL.setData(
                 new UserSQL.Column("id", ""),
                 new UserSQL.Column("autorole", ""),
-                new UserSQL.Column("prefix", null)
+                new UserSQL.Column("prefix", null),
+                new UserSQL.Column("savedqueue", "")
         );
 
         userSQL.setTable("guilds");
@@ -66,6 +71,35 @@ public class GuildData {
     public static String getPrefix(String id) throws Exception {
         HashMap<String, String> guild = getGuild(id);
         return guild.get("prefix");
+    }
+
+
+    public static List<String> getSavedQueue(String id) throws Exception {
+        HashMap<String, String> guild = getGuild(id);
+        String queue = guild.get("savedqueue").trim();
+        String[] queueArray = queue.split(" ");
+
+        List<String> queueList = new ArrayList<>();
+
+        if (queueArray.length == 0 && !queue.equals("")) {
+            queueArray = new String[1];
+            queueArray[0] = queue;
+        }
+        if (queueArray.length > 0)
+            CollectionUtils.addAll(queueList, queueArray);
+
+        return queueList;
+    }
+
+    public static void setSavedQueue(String id, List<String> queue) throws Exception {
+        String queueStr = "";
+        for (int i = 0; i < queue.size(); i++){
+            if (i != 0)
+                queueStr += " ";
+            queueStr += queue.get(0);
+        }
+
+        updateGuild(id, new UserSQL.Column.Change("savedqueue", queueStr));
     }
 
 }

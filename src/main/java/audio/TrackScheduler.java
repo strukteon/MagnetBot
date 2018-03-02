@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.Emoji;
 import utils.Static;
 
 import java.util.ArrayList;
@@ -96,6 +97,38 @@ public class TrackScheduler extends AudioEventAdapter {
 
     }
 
+    private boolean isQueueing = false;
+    private BlockingQueue<AudioInfo> queueQueue;
+
+    public void startQueueing(){
+        isQueueing = true;
+        this.queueQueue = new LinkedBlockingQueue<>();
+    }
+
+    public boolean isQueueing(){
+        return isQueueing;
+    }
+
+    public void queueQueue(AudioTrack track, MessageReceivedEvent event, boolean lastTrack){
+        if (isQueueing) {
+
+            AudioInfo info = new AudioInfo(track, event);
+            queueQueue.add(info);
+
+            if (lastTrack) {
+                queue.addAll(queueQueue);
+                isQueueing = false;
+
+                event.getTextChannel().sendMessage(Message.INFO(event, Emoji.MUSIC + " Loaded the queue", "The saved queue has been loaded").build()).queue();
+                if (player.getPlayingTrack() == null) {
+                    current = queue.poll();
+
+                    player.playTrack(current.getTrack());
+                }
+            }
+        }
+    }
+
     public boolean nextTrack(boolean keepInPlaylist){
         if (!queue.isEmpty()) {
             if (keepInPlaylist)
@@ -112,6 +145,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void stop(){
         player.stopTrack();
+        current = null;
     }
 
     public void purgeQueue(){

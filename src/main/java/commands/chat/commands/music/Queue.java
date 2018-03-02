@@ -11,6 +11,7 @@ import audio.TrackScheduler;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
+import commands.chat.utils.GuildData;
 import core.Main;
 import core.tools.Tools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -34,15 +35,14 @@ public class Queue implements ChatCommand {
     @Override
     public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
         GuildMusicManager manager = Main.audioCore.getGuildAudioPlayer(event.getGuild());
-        List queueArray = new ArrayList(manager.scheduler.getQueue());
-        List<AudioInfo> queue = new ArrayList<>(queueArray);
+        List<AudioInfo> queue = new ArrayList<>(manager.scheduler.getQueue());
 
         if (queue.size() < 1 && manager.scheduler.getCurrentTrack() == null){
             event.getTextChannel().sendMessage(Message.INFO(event, Emoji.MUSIC + " Infos about the queue", "The current queue is empty!").build()).queue();
         } else {
             EmbedBuilder builder = Message.INFO(event);
             builder
-                    .setTitle("Current queue")
+                    .setTitle(Emoji.MUSIC + " Current queue")
 
                     .addField("Now playing", audioInfo(manager.scheduler.getCurrentTrack()), false);
 
@@ -51,6 +51,7 @@ public class Queue implements ChatCommand {
             }
             event.getTextChannel().sendMessage(builder.build()).queue();
         }
+
     }
 
     private String audioInfo(AudioInfo audioInfo){

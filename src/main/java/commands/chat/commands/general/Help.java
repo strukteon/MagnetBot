@@ -70,12 +70,14 @@ public class Help implements ChatCommand{
                         commandDesc("connect", "connects this bot to with a voicechannel", 3) +
                                 commandDesc("disconnect", "disconnects this bot from a voicechannel", 3) +
                                 commandDesc("info", "shows info about the playing track", 0) +
+                                commandDesc("loadqueue", "load the saved queue from the server", 0) +
                                 commandDesc("pause", "pauses the media playback", 0) +
                                 commandDesc("play", "play a track from an URL or youtube", 0) +
                                 commandDesc("playlist", "play a playlist from an URL or youtube", 0) +
                                 commandDesc("queue", "show infos about the current queue", 0) +
                                 commandDesc("repeat", "turn looping for the queue on/off", 0) +
                                 commandDesc("resume", "resumes the media playback", 0) +
+                                commandDesc("savequeue", "save the current queue to the cloud", 1) +
                                 commandDesc("skip", "skips the current track", 0) +
                                 commandDesc("stop", "stops the media playback", 1) +
                                 commandDesc("volume", "changes the volume of the media playback", 0)

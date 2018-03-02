@@ -103,6 +103,64 @@ public class AudioCore extends ListenerAdapter {
         });
     }
 
+    public void loadQueue(MessageReceivedEvent event, List<String> trackUrls){
+        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+
+        if (event.getMember().getVoiceState().getChannel() == null) {
+            event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
+        } else {
+            musicManager.scheduler.startQueueing();
+
+            for (String trackUrl : trackUrls.subList(0, trackUrls.size() - 1))
+                playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+                    @Override
+                    public void trackLoaded(AudioTrack track) {
+                        musicManager.scheduler.queueQueue(track, event, false);
+                    }
+
+                    @Override
+                    public void playlistLoaded(AudioPlaylist playlist) {
+                    }
+
+                    @Override
+                    public void noMatches() {
+                        event.getTextChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
+                    }
+
+                    @Override
+                    public void loadFailed(FriendlyException exception) {
+                        event.getTextChannel().sendMessage(loadFailedMessage(event, trackUrl, exception)).queue();
+                    }
+                });
+            String trackUrl = trackUrls.get(trackUrls.size() - 1);
+            playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+                @Override
+                public void trackLoaded(AudioTrack track) {
+                    if (event.getMember().getVoiceState().getChannel() == null) {
+                        event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
+                    } else {
+                        if (connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel()) || event.getGuild().getAudioManager().isConnected())
+                            musicManager.scheduler.queueQueue(track, event, true);
+                    }
+                }
+
+                @Override
+                public void playlistLoaded(AudioPlaylist audioPlaylist) {
+                }
+
+                @Override
+                public void noMatches() {
+                    event.getTextChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
+                }
+
+                @Override
+                public void loadFailed(FriendlyException e) {
+                    event.getTextChannel().sendMessage(loadFailedMessage(event, trackUrl, e)).queue();
+                }
+            });
+        }
+    }
+
     private MessageEmbed noMatchesMessage(MessageReceivedEvent event, String trackUrl){
         return Message.ERROR(event, "No matches were found for: " + trackUrl).build();
     }
