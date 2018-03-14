@@ -50,6 +50,7 @@ Command | Information | Permission Level
 **whoami** | gives you some informations about you | *[MEMBER/Lv.0]*
 **whois** | gives you some informations about an user | *[MEMBER/Lv.0]*
 
+.
 
 #### ADMIN
 Command | Information | Permission Level
