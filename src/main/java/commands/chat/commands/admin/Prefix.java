@@ -5,6 +5,7 @@ package commands.chat.commands.admin;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.GuildData;
@@ -12,13 +13,9 @@ import core.tools.Tools;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Prefix implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("prefix");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (args.length == 1 && args[0].equals("")){
             String prefix = GuildData.getPrefix(event.getGuild().getId());
             if (prefix.equals(""))
@@ -34,12 +31,9 @@ public class Prefix implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("prefix", 1)
+                        .setHelp("set a custom prefix for this server");
     }
 }

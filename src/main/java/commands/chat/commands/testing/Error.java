@@ -5,19 +5,15 @@ package commands.chat.commands.testing;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Error implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("error");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < args.length; i++){
             if (i != 0)
@@ -28,12 +24,9 @@ public class Error implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("error", 0)
+                        .setHelp("shows a custom error message");
     }
 }

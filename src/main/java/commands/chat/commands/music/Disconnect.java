@@ -5,28 +5,22 @@ package commands.chat.commands.music;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Disconnect implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("disconnect");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         Main.audioCore.disconnectFromVoiceChannel(event.getGuild().getAudioManager());
     }
 
     @Override
-    public String premiumPermission() {
-        return "premium.music.disconnect";
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 3;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("disconnect", 3)
+                        .setHelp("disconnects this bot from a voicechannel");
     }
 }

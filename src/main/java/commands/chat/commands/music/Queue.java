@@ -9,6 +9,7 @@ import audio.AudioInfo;
 import audio.GuildMusicManager;
 import audio.TrackScheduler;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.GuildData;
@@ -28,12 +29,7 @@ import java.util.concurrent.BlockingQueue;
 public class Queue implements ChatCommand {
 
     @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("queue");
-    }
-
-    @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         GuildMusicManager manager = Main.audioCore.getGuildAudioPlayer(event.getGuild());
         List<AudioInfo> queue = new ArrayList<>(manager.scheduler.getQueue());
 
@@ -54,19 +50,16 @@ public class Queue implements ChatCommand {
 
     }
 
+    @Override
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("queue", 0)
+                        .setHelp("show infos about the current queue");
+    }
+
     private String audioInfo(AudioInfo audioInfo){
         String trackUrl = (Tools.isUrl(audioInfo.getTrack().getIdentifier()) ? audioInfo.getTrack().getIdentifier() : "https://youtube.com/watch?v=" + audioInfo.getTrack().getIdentifier() );
         AudioTrackInfo info = audioInfo.getTrack().getInfo();
         return "**[" + info.title + "](" + trackUrl + ")** by *" + info.author + "* **[" + TrackScheduler.getTimestamp(info.length) + "]**";
-    }
-
-    @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
     }
 }

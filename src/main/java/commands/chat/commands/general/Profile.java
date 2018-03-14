@@ -5,6 +5,7 @@ package commands.chat.commands.general;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.UserData;
@@ -20,13 +21,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Profile implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("profile");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         Member m = AutoComplete.member(event.getGuild().getMembers(), args[0]);
         if (m == null)
             m = event.getMember();
@@ -36,20 +33,23 @@ public class Profile implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("profile", 0)
+                        .setHelp("shows your/someones profile");
     }
 
     private MessageEmbed profile(MessageReceivedEvent event, String[] args, Member m) throws Exception {
 
         List<String> userPerms = UserData.getPermissions(event.getAuthor().getId());
 
-        String perms = (userPerms.size() >= 1 && !userPerms.get(0).equals("") ? "" : "none");
+        String perms = "";
         for (String s : userPerms){
-            if (! (perms.equals("") || perms.equals("none")) )
+            if (! perms.equals("") )
                 perms += ", ";
             perms += s;
         }
+        perms = perms.equals("") ? "none" : perms;
 
         EmbedBuilder builder = Message.INFO(event);
             builder.setAuthor(m.getEffectiveName() + (!m.getEffectiveName().endsWith("s") ? "'s " : "") + " profile", "https://magnet.strukteon.me/user?userid=" + m.getUser().getId(), m.getUser().getEffectiveAvatarUrl());
@@ -59,10 +59,5 @@ public class Profile implements ChatCommand {
                     .addField(":wrench: Permissions", "``" + perms + "``", false);
 
         return builder.build();
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
     }
 }

@@ -6,18 +6,18 @@ package core;
 */
 
 import audio.AudioCore;
-import commands.chat.commands.admin.AutoRole;
-import commands.chat.commands.admin.Clear;
-import commands.chat.commands.admin.Permission;
-import commands.chat.commands.admin.Prefix;
+import commands.chat.commands.admin.*;
+import commands.chat.commands.fun.Achievement;
 import commands.chat.commands.fun.TTS;
 import commands.chat.commands.fun.Poke;
+import commands.chat.commands.fun.Troll;
 import commands.chat.commands.general.*;
 import commands.chat.commands.money.Slots;
 import commands.chat.commands.money.Vote;
 import commands.chat.commands.music.*;
 import commands.chat.commands.testing.Error;
 import commands.chat.commands.testing.Ping;
+import commands.chat.commands.testing.Test;
 import commands.chat.core.ChatHandler;
 import listeners.AudioReconnectListener;
 import listeners.ChatCommandListener;
@@ -36,49 +36,56 @@ public class Importer {
 
     public static void importChatCommands(){
         new ChatHandler()
-            //Admin
-                .addCommand(new AutoRole())
-                .addCommand(new Clear())
-                .addCommand(new Permission())
-                .addCommand(new Prefix())
 
-            //Fun
-                .addCommand(new Poke())
-                .addCommand(new TTS())
+                .addSection("Admin",
+                        new AutoRole(),
+                        new Clear(),
+                        new Permission(),
+                        new Prefix(),
+                        new Welcome())
 
-            //General
-                .addCommand(new About())
-                .addCommand(new Bio())
-                .addCommand(new Help())
-                .addCommand(new Invite())
-                .addCommand(new Profile())
-                .addCommand(new Server())
-                .addCommand(new WhoAmI())
-                .addCommand(new WhoIs())
+                .addSection("Fun",
+                        new Achievement(),
+                        new Poke(),
+                        new TTS())
 
-            //Money
-                .addCommand(new Slots())
-                .addCommand(new Vote())
+                .addSection("General",
+                        new About(),
+                        new Bio(),
+                        new DecToHex(),
+                        new Help(),
+                        new HexToDec(),
+                        new Invite(),
+                        new Profile(),
+                        new Server(),
+                        new Shorten(),
+                        new WhoAmI(),
+                        new WhoIs())
 
-            //Music
-                .addCommand(new Connect())
-                .addCommand(new Disconnect())
-                .addCommand(new Info())
-                .addCommand(new LoadQueue())
-                .addCommand(new Pause())
-                .addCommand(new Play())
-                .addCommand(new Playlist())
-                .addCommand(new Queue())
-                .addCommand(new Repeat())
-                .addCommand(new Resume())
-                .addCommand(new SaveQueue())
-                .addCommand(new Skip())
-                .addCommand(new Stop())
-                .addCommand(new Volume())
+                .addSection("Money",
+                        new Slots(),
+                        new Vote())
 
-            //Testing
-                .addCommand(new Error())
-                .addCommand(new Ping())
+                .addSection("Music",
+                        new Connect(),
+                        new Disconnect(),
+                        new Info(),
+                        new LoadQueue(),
+                        new Pause(),
+                        new Play(),
+                        new Playlist(),
+                        new Queue(),
+                        new Repeat(),
+                        new Resume(),
+                        new SaveQueue(),
+                        new Skip(),
+                        new Stop(),
+                        new Volume())
+
+                .addSection("Testing",
+                        new Error(),
+                        new Ping(),
+                        new Test())
 
 
         ;
@@ -98,6 +105,7 @@ public class Importer {
 
                 // Command Specific Listeners
                 .addEventListener(new AutoRole.Listener())
+                .addEventListener(new Welcome())
 
         ;
 

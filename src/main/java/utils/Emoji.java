@@ -8,5 +8,5 @@ package utils;
 public class Emoji {
 
     public static final String MUSIC = ":musical_note:";
-
+    public static final String INFO = ":information_source:";
 }

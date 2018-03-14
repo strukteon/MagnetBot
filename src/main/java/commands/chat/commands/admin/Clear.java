@@ -5,6 +5,7 @@ package commands.chat.commands.admin;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -13,13 +14,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 public class Clear implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("clear");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
 
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(commands.chat.tools.Message.WRONG_SYNTAX(event, "-m clear <msg-amount>").build()).queue();
@@ -53,12 +50,9 @@ public class Clear implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 1;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("clear", 1)
+                        .setHelp("clear a specific amount of messages in the current channel");
     }
 }

@@ -21,16 +21,16 @@ public class ChatCommandListener extends ListenerAdapter {
 
         String prefix = getPrefix(event, msg);
         if (!event.getAuthor().isBot() && !event.getAuthor().isFake() && prefix != null) {
-            String trimmed = msg.toLowerCase().replaceFirst(prefix, "").trim();
+            String trimmed = msg.replaceFirst(prefix, "").trim();
             ChatHandler.handleInput(event, trimmed);
 
-        } else if (!event.getAuthor().isBot() && (msg.equals("@"+event.getJDA().getSelfUser().getName()) || msg.equals("@"+event.getGuild().getMember(event.getJDA().getSelfUser()).getNickname())) ){
+        } /*else if (!event.getAuthor().isBot() && !event.getAuthor().isFake()){
 
             PrivateChannel channel = event.getAuthor().openPrivateChannel().complete();
 
             channel.sendMessage("My Prefix is ``" + prefix + "``, please use that for commands").queue();
 
-        }
+        }*/
     }
 
     private String getPrefix(MessageReceivedEvent event, String msg){
@@ -40,10 +40,11 @@ public class ChatCommandListener extends ListenerAdapter {
         else
             try {
                 String prefix = GuildData.getPrefix(event.getGuild().getId());
-                if (prefix != null)
+                if (prefix != null && !prefix.equals(""))
                     if (msg.startsWith(prefix))
                         return prefix;
-            } catch (Exception e){
+            } catch (NullPointerException e) { } // when message is sent in private channel
+            catch (Exception e){
                 e.printStackTrace();
             }
 

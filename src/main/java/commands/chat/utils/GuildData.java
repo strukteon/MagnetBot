@@ -23,10 +23,11 @@ public class GuildData {
         userSQL = usersql;
 
         userSQL.setData(
-                new UserSQL.Column("id", ""),
-                new UserSQL.Column("autorole", ""),
+                new UserSQL.Column("id"),
+                new UserSQL.Column("autorole"),
                 new UserSQL.Column("prefix", null),
-                new UserSQL.Column("savedqueue", "")
+                new UserSQL.Column("savedqueue"),
+                new UserSQL.Column("welcomechannel")
         );
 
         userSQL.setTable("guilds");
@@ -102,4 +103,12 @@ public class GuildData {
         updateGuild(id, new UserSQL.Column.Change("savedqueue", queueStr));
     }
 
+    public static String getWelcomeChannel(String id) throws Exception {
+        HashMap<String, String> guild = getGuild(id);
+        return guild.get("welcomechannel");
+    }
+
+    public static void setWelcomeChannel(String id, String channelId) throws Exception {
+        updateGuild(id, new UserSQL.Column.Change("welcomechannel", channelId));
+    }
 }

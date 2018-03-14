@@ -18,51 +18,15 @@ import java.util.*;
 public class UserSQL {
 
     public List<Column> rowData;
-
-    private static MysqlDataSource source;
-
-    private static Connection c;
+    
+    private UserSqlConnection connection;
 
     private String table;
 
-    public UserSQL(MysqlDataSource source){
-        this.source = source;
+    public UserSQL(UserSqlConnection connection){
+        this.connection = connection;
     }
-
-    public static MysqlDataSource login(String sqluser, String password, String database, String server) throws Exception{
-        return login(sqluser, password, database, server, 3306);
-    }
-
-    public static MysqlDataSource login(String sqluser, String password, String database, String server, int port) throws Exception{
-        MysqlDataSource source = new MysqlDataSource();
-
-        source.setUser(sqluser);
-        source.setPassword(password);
-
-        source.setServerName(server);
-        source.setPort(port);
-        source.setDatabaseName(database);
-
-        c = source.getConnection();
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Connection ctemp = source.getConnection();
-                    c.close();
-                    c = ctemp;
-                } catch (SQLException e){
-                    e.printStackTrace();
-                }
-
-            }
-        }, 0, 20000*1000);
-
-        return source;
-    }
-
-
+    
 
     public void setData(Column... columns){
         this.rowData = new ArrayList<>(Arrays.asList(columns));
@@ -79,7 +43,7 @@ public class UserSQL {
 
 
     public boolean tableExists(String table) throws Exception {
-        ResultSet set = c.createStatement().executeQuery("select * from " + table);
+        ResultSet set = connection.c.createStatement().executeQuery("select * from " + table);
         return true;
     }
 
@@ -92,7 +56,7 @@ public class UserSQL {
                 columnsSql += rowData.get(i).variable + " " + rowData.get(i).datatype;
             }
 
-            c.createStatement().executeUpdate("create table " + table + " ( " + columnsSql + " )");
+            connection.c.createStatement().executeUpdate("create table " + table + " ( " + columnsSql + " )");
             return true;
         }
         return false;
@@ -103,7 +67,7 @@ public class UserSQL {
 
         boolean altered = false;
 
-        ResultSet set = c.createStatement().executeQuery("select column_name, data_type from information_schema.columns where table_name='" + table + "';");
+        ResultSet set = connection.c.createStatement().executeQuery("select column_name, data_type from information_schema.columns where table_name='" + table + "';");
         HashMap<String, String> columnsOnline = new HashMap<>();
         while (set.next()){
             columnsOnline.put(set.getString("column_name"), set.getString("data_type"));
@@ -127,11 +91,11 @@ public class UserSQL {
         // remove remaining columns from columnsonline
         if (deleteMissing)
             for (String s : columnsOnline.keySet()){
-                c.createStatement().executeUpdate("alter table " + table + " drop column " + s);}
+                connection.c.createStatement().executeUpdate("alter table " + table + " drop column " + s);}
 
         //add remaining columns from rowdatatemp
         for (Column col : rowDataTemp)
-            c.createStatement().executeUpdate("alter table " + table + " add column " + col.variable + " " + col.datatype);
+            connection.c.createStatement().executeUpdate("alter table " + table + " add column " + col.variable + " " + col.datatype);
 
         return altered;
 
@@ -140,7 +104,7 @@ public class UserSQL {
 
     public boolean userExists(String key, String value) throws Exception {
 
-        ResultSet set = c.createStatement().executeQuery("select " + key + " from " + table + " where " + key + "='" + value + "'");
+        ResultSet set = connection.c.createStatement().executeQuery("select " + key + " from " + table + " where " + key + "='" + value + "'");
 
         while (set.next())
             if (set.getString(key).equals(value))
@@ -170,7 +134,7 @@ public class UserSQL {
                     values += "'" + column.defaultValue + "'";
             }
 
-            c.createStatement().executeUpdate("insert into " + table + " ( " + variables + " ) values ( " + values + " )");
+            connection.c.createStatement().executeUpdate("insert into " + table + " ( " + variables + " ) values ( " + values + " )");
             return true;
         }
 
@@ -186,7 +150,7 @@ public class UserSQL {
                 changes += column.variable + "='" + column.newValue + "'";
             }
 
-            c.createStatement().executeUpdate("update " + table + " set " + changes + " where " + key + "='" + value + "'");
+            connection.c.createStatement().executeUpdate("update " + table + " set " + changes + " where " + key + "='" + value + "'");
         }
     }
 
@@ -195,7 +159,7 @@ public class UserSQL {
             return null;
         else {
             HashMap<String, String> map = new HashMap<>();
-            ResultSet set = c.createStatement().executeQuery("select * from " + table + " where " + key + "='" + value + "'");
+            ResultSet set = connection.c.createStatement().executeQuery("select * from " + table + " where " + key + "='" + value + "'");
             set.first();
             for (Column column : rowData) {
                 String val = (set.getString(column.variable) != null ? set.getString(column.variable) : rowData.get(rowData.indexOf(column)).defaultValue);
@@ -205,7 +169,19 @@ public class UserSQL {
         }
     }
 
-
+    public Thread disconnectThread(){
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    connection.c.close();
+                    System.out.println("Disconnected.");
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public static class Column {
         String variable;

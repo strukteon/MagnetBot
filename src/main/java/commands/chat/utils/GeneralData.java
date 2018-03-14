@@ -19,7 +19,8 @@ public class GeneralData {
         userSQL.setData(
                 new UserSQL.Column("bot", "magnet"),
                 new UserSQL.Column("build", ""),
-                new UserSQL.Column("lastchanges", "")
+                new UserSQL.Column("lastchanges", ""),
+                new UserSQL.Column("commandshandled", "0")
         );
 
         userSQL.setTable("general");
@@ -59,6 +60,16 @@ public class GeneralData {
     public static String getLastCommit() throws Exception {
         HashMap<String, String> settings = getSettings();
         return settings.get("lastchanges");
+    }
+
+    public static int getCommandsHandled() throws Exception {
+        HashMap<String, String> settings = getSettings();
+        return Integer.parseInt(settings.get("commandshandled"));
+    }
+
+    public static void addCommandsHandled(int count) throws Exception {
+        int all = getCommandsHandled() + count;
+        updateSettings(new UserSQL.Column.Change("commandshandled", ""+all));
     }
 
 }

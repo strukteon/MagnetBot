@@ -5,19 +5,16 @@ package commands.chat.commands.music;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Pause implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("pause");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (Main.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.pause()){
             event.getTextChannel().sendMessage(Message.INFO(event, "Paused the queue").build()).queue();
         } else {
@@ -26,12 +23,9 @@ public class Pause implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("pause", 0)
+                        .setHelp("pauses the media playback");
     }
 }

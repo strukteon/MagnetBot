@@ -13,6 +13,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import utils.Static;
 
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Chat {
@@ -45,6 +47,59 @@ public class Chat {
             default:
                 return "Invalid Permission level";
         }
+    }
+
+    public static class CommandInfo {
+
+        public final String command;
+        public List<String> cmdAlias = new ArrayList<>();
+
+        public String help;
+        public String syntax;
+
+        public final int permissionLevel;
+
+        public boolean isPremium = false;
+        public String premiumPermission = "*";
+        public String premiumPermissionName = "[none]";
+
+        public CommandInfo(String command, int permissionLevel){
+            this(command, permissionLevel, "");
+        }
+
+        public CommandInfo(String command, int permissionLevel, String help){
+            this.help = help;
+            this.command = command;
+            this.permissionLevel = permissionLevel;
+            this.syntax = Static.PREFIX + command;
+        }
+
+        public CommandInfo setHelp(String message){
+            this.help = message;
+            return this;
+        }
+
+        public CommandInfo setAlias(String... alias){
+            cmdAlias = Arrays.asList(alias);
+            return this;
+        }
+
+        public CommandInfo setAlias(List<String> alias){
+            this.cmdAlias = alias;
+            return this;
+        }
+
+        public CommandInfo setPremium(String premiumPermission, String premiumPermissionName){
+            this.isPremium = true;
+            this.premiumPermission = premiumPermission;
+            this.premiumPermissionName = premiumPermissionName;
+            return this;
+        }
+
+        public CommandInfo setPremium(String premiumPermission){
+            return setPremium(premiumPermission, premiumPermission);
+        }
+
     }
 
 }

@@ -10,6 +10,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
+import java.awt.*;
+
 public class Static {
 
     public static final String VERSION = "beta";
@@ -21,6 +23,9 @@ public class Static {
     public static final OnlineStatus STATUS = OnlineStatus.ONLINE;
 
     public static final String BOT_OWNER_ID = "262951897290244096";
+
+
+    public static final String API_BASEURL = "api.magnetbot.tk";
 
 
     public static final String JAVA_CLASSES = "53";
@@ -57,6 +62,11 @@ public class Static {
 
         public static int VOTE_REWARD = 500;
 
+    }
+
+
+    public static class Color {
+        public static final java.awt.Color DISCORD_COLOR = java.awt.Color.decode("#7289DA");
     }
 
 }

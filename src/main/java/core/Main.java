@@ -20,6 +20,8 @@ import utils.UserSQL;
 
 public class Main {
 
+    public static int commandsHandled = 0;
+
     public static JDABuilder builder;
     public static JDA jda;
     public static AudioCore audioCore;

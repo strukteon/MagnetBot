@@ -5,19 +5,16 @@ package commands.chat.commands.music;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Volume implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("volume");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m volume <percent>").build()).queue();
         else {
@@ -38,12 +35,10 @@ public class Volume implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return "premium.music.volume";
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 1;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("volume", 1)
+                     //   .setPremium("premium.music.volume")
+                        .setHelp("changes the volume of the media playback");
     }
 }

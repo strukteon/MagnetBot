@@ -5,30 +5,24 @@ package commands.chat.commands.general;
     (c) nils 2017
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.utils.PlayerInfo;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class WhoAmI implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("whoami");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         event.getTextChannel().sendMessage(PlayerInfo.getBuilder(event.getMember()).build()).queue();
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("whoami", 0)
+                        .setHelp("gives you some informations about you");
     }
 
     private String getGame(Member author){

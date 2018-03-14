@@ -7,6 +7,7 @@ package commands.chat.commands.music;
 
 import audio.AudioInfo;
 import audio.TrackScheduler;
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import core.Main;
@@ -15,13 +16,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.concurrent.BlockingQueue;
 
 public class Repeat implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("repeat") || cmd.equals("loop");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         TrackScheduler scheduler = Main.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
 
         if (scheduler.getQueue().size() == 0 && scheduler.getCurrentTrack() == null){
@@ -41,12 +38,11 @@ public class Repeat implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("loop", 0)
+                        .setAlias("repeat")
+                        .setPremium("premium.music.loop")
+                        .setHelp("turn looping for the queue on/off");
     }
 }

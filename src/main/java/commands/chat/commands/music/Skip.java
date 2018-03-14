@@ -5,28 +5,22 @@ package commands.chat.commands.music;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Skip implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("skip");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         Main.audioCore.skipTrack(event);
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("skip", 0)
+                        .setHelp("skips the current track");
     }
 }

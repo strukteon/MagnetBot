@@ -5,6 +5,7 @@ package commands.chat.commands.music;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.GuildData;
@@ -14,13 +15,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.List;
 
 public class LoadQueue implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("loadqueue") || cmd.equals("loadq") || cmd.equals("load");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         List<String> queueList = GuildData.getSavedQueue(event.getGuild().getId());
         if (queueList.size() < 1)
             event.getTextChannel().sendMessage(Message.ERROR(event, "The saved queue is empty.").build()).queue();
@@ -30,12 +27,10 @@ public class LoadQueue implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("loadqueue", 0)
+                        .setAlias("loadq", "load")
+                        .setHelp("load the saved queue from the server");
     }
 }

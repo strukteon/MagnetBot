@@ -5,6 +5,7 @@ package commands.chat.commands.fun;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import core.tools.Tools;
@@ -13,13 +14,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class TTS implements ChatCommand{
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("tts");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         MessageBuilder builder = new MessageBuilder();
         builder .append(Tools.argsToString(args, " "))
                 .setTTS(true);
@@ -28,12 +25,9 @@ public class TTS implements ChatCommand{
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("tts", 0)
+                        .setHelp("let this bot send a tts message");
     }
 }

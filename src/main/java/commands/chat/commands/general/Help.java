@@ -5,101 +5,109 @@ package commands.chat.commands.general;
     (c) nils 2018
 */
 
+import com.google.api.services.youtube.model.LiveChatPollItem;
 import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.core.ChatHandler;
 import commands.chat.tools.Message;
+import core.Importer;
 import core.Main;
 import net.dv8tion.jda.client.entities.Group;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.Emoji;
 
 public class Help implements ChatCommand{
 
     @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("help") || cmd.equals("?");
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
+        if (args.length == 1 && args[0].equals("")) {
+            EmbedBuilder builder = msg(Message.INFO(event, Emoji.INFO + " Help", "Look at my **[documentation](https://magnet.strukteon.me/documentation)**!\nFor a more detailed description about a command, type ``-m help <command>``"));
+
+            event.getTextChannel().sendMessage(builder.build()).queue();
+        } else {
+            boolean exists = false;
+            for (String section : ChatHandler.chatCommands.keySet()) {
+                for (ChatCommand c : ChatHandler.chatCommands.get(section)) {
+                    Chat.CommandInfo cmdInfo = c.commandInfo();
+
+                    if (cmdInfo.command.equals(args[0])){
+                        exists = true;
+                        EmbedBuilder builder = Message.INFO(event, Emoji.INFO + " Help", "Detailed informations about the command ``" + args[0] + "``");
+
+                        StringBuilder alias = new StringBuilder();
+                        for (String s : cmdInfo.cmdAlias){
+                            if (alias.length() != 0)
+                                alias.append("\n ");
+                            alias.append(s);
+                        }
+
+                        builder.addField("Information", "``" + cmdInfo.help + "``", false);
+
+                        if (!alias.toString().equals(""))
+                            builder.addField("Alias", "``" + alias.toString() + "``", false);
+                        builder
+                                .addField("Syntax", "``" + cmdInfo.syntax + "``", false)
+                                .addField("Permission Level", Chat.permLevel(cmdInfo.permissionLevel), false)
+                                .addField("Premium Only", ""+cmdInfo.isPremium, true);
+                        if (cmdInfo.isPremium)
+                            builder.addField("Premium Permission", cmdInfo.premiumPermissionName, true);
+                        event.getTextChannel().sendMessage(builder.build()).queue();
+                    }
+                }
+            }
+            if (!exists)
+                event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m help\n -m help <command>").build()).queue();
+        }
     }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        EmbedBuilder builder = msg(Message.INFO(event, "Look at my **[documentation](https://magnet.strukteon.me/documentation)**!"));
-
-        event.getTextChannel().sendMessage(builder.build()).queue();
-    }
-
-    @Override
-    public String premiumPermission() {
-        return null;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("help", 0)
+                        .setAlias("?")
+                        .setHelp("shows this little helpy message");
     }
 
     private static EmbedBuilder msg(EmbedBuilder builder){
+        for (String s : ChatHandler.chatCommands.keySet()) {
+            String out = "";
+            for (ChatCommand c : ChatHandler.chatCommands.get(s)) {
+                Chat.CommandInfo cmdInfo = c.commandInfo();
 
-        return builder
-                .addField("ADMINISTRATION",
-                        commandDesc("autorole","set a role every member will get when joining this server", 1) +
-                                commandDesc("clear", "clear a specific amount of messages in the current channel", 1) +
-                                commandDesc("permission", "change permissions for a specefic user", 3) +
-                                commandDesc("prefix", "set a custom prefix for this server", 2)
-                , false)
-
-                .addField("FUN",
-                commandDesc("poke", "send a pm to a member to wake him up", 0) +
-                        commandDesc("tts", "let this bot send a tts message", 0)
-                , false)
-
-                .addField("GENERAL",
-                        commandDesc("about", "shows some infos about this bot", 0) +
-                                commandDesc("bio", "set a bio that will be shown in your profile", 0) +
-                                commandDesc("help", "shows this little helpy message", 0) +
-                                commandDesc("invite", "gives you the invite link for this bot", 0) +
-                                commandDesc("profile", "shows your/someones profile", 0) +
-                                commandDesc("server", "gives you some informations about this server", 0) +
-                                commandDesc("whoami", "gives you some informations about you", 0) +
-                                commandDesc("whois", "gives you some informations about an user", 0)
-                        , false)
-
-                .addField("MONEY",
-                        commandDesc("slots", "spin that machine and win money", 0) +
-                                commandDesc("vote", "vote for the bot on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote) and get a reward", 0)
-                        , false)
-
-                .addField("MUSIC",
-                        commandDesc("connect", "connects this bot to with a voicechannel", 3) +
-                                commandDesc("disconnect", "disconnects this bot from a voicechannel", 3) +
-                                commandDesc("info", "shows info about the playing track", 0) +
-                                commandDesc("loadqueue", "load the saved queue from the server", 0) +
-                                commandDesc("pause", "pauses the media playback", 0) +
-                                commandDesc("play", "play a track from an URL or youtube", 0) +
-                                commandDesc("playlist", "play a playlist from an URL or youtube", 0) +
-                                commandDesc("queue", "show infos about the current queue", 0) +
-                                commandDesc("repeat", "turn looping for the queue on/off", 0) +
-                                commandDesc("resume", "resumes the media playback", 0) +
-                                commandDesc("savequeue", "save the current queue to the cloud", 1) +
-                                commandDesc("skip", "skips the current track", 0) +
-                                commandDesc("stop", "stops the media playback", 1) +
-                                commandDesc("volume", "changes the volume of the media playback", 0)
-                        , true)
-
-                .addField("TESTING",
-                        commandDesc("error", "shows a custom error message", 0) +
-                                commandDesc("ping", "gives you the connection ping from the bot to discord", 0)
-                        , true)
-                .addField("", "Loaded a total of " + ChatHandler.chatCommands.size() + " commands.", false)
-
-        ;
-
+                out += "**" + cmdInfo.command + "** - " + cmdInfo.help + " - *[" + Chat.permLevel(cmdInfo.permissionLevel).toUpperCase() + "|Lv." + cmdInfo.permissionLevel + "]*\n";
+            }
+            builder.addField(s.toUpperCase(), out, false);
+        }
+                builder.addField("", "Loaded a total of " + ChatHandler.size() + " commands.", false);
+        return builder;
     }
 
-    private static String commandDesc(String command, String desc, int permissionLevel){
-        return "**" + command + "** - " + desc + " - *[" + Chat.permLevel(permissionLevel).toUpperCase() + "|Lv." + permissionLevel + "]*\n";
-    }
+    private static String msgToXml(){
+        StringBuilder out = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<commands>\n");
+        for (String s : ChatHandler.chatCommands.keySet()) {
+            out.append("\t<section name=\"" + s + "\">\n\n");
+            for (ChatCommand c : ChatHandler.chatCommands.get(s)) {
+                Chat.CommandInfo cmdInfo = c.commandInfo();
+                out .append("\t\t<command>\n")
+                    .append("\t\t\t<name>" + cmdInfo.command + "</name>\n")
+                    .append("\t\t\t<syntax>" + cmdInfo.syntax + "</syntax>\n")
+                    .append("\t\t\t<info>" + cmdInfo.help + "</info>\n")
+                    .append("\t\t\t<premium>\n")
+                    .append("\t\t\t\t<isPremium>" + cmdInfo.isPremium  +"</isPremium>\n")
+                    .append("\t\t\t\t<permission>" + cmdInfo.premiumPermission + "</permission>\n")
+                    .append("\t\t\t\t<name>" + cmdInfo.premiumPermissionName + "</name>\n")
+                    .append("\t\t\t</premium>\n")
+                    .append("\t\t\t<permissionLevel>" + cmdInfo.permissionLevel + "</permissionLevel>\n")
+                    .append("\t\t</command>\n\n");
+            }
+            out.append("\t</section>\n\n");
+        }
+        out.append("</commands>");
 
-    @Override
-    public int permissionLevel() {
-        return 0;
+        return out.toString();
     }
 
     /**
@@ -108,17 +116,17 @@ public class Help implements ChatCommand{
      */
 
     public static void main(String[] args){
+        Importer.importChatCommands();
+        //System.out.println(msgToXml());
 
-        MessageEmbed msg = msg(new EmbedBuilder()).build();
-
+        EmbedBuilder msg = msg(new EmbedBuilder());
+        String out = "";
         for (MessageEmbed.Field f : msg.getFields()){
-            System.out.println("\n#### " + f.getName());
-            System.out.println(
-                    "\nCommand | Description | Permission level" + "\n" +
-                    "---- | ---- | ----" + "\n" +
-                    f.getValue().replace("|", "/").replace("-", "|"));
+            out += "#### " + f.getName() + "\n";
+            out +="Command | Information | Permission Level\n---- | ---- | ----\n";
+            out += f.getValue().replace("|", "/").replace("-", "|") + "\n\n";
         }
-
+        System.out.println(out);
     }
 
 }

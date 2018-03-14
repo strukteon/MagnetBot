@@ -7,6 +7,7 @@ package commands.chat.commands.music;
 
 import audio.AudioInfo;
 import audio.GuildMusicManager;
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.GuildData;
@@ -18,13 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaveQueue implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("savequeue") || cmd.equals("saveq") || cmd.equals("save");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         GuildMusicManager manager = Main.audioCore.getGuildAudioPlayer(event.getGuild());
         List<AudioInfo> queue = new ArrayList<>(manager.scheduler.getQueue());
 
@@ -49,12 +46,10 @@ public class SaveQueue implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 1;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("savequeue", 1)
+                        .setAlias("saveq", "save")
+                        .setHelp("save the current queue to the cloud");
     }
 }

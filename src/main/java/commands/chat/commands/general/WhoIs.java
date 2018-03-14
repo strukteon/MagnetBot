@@ -14,13 +14,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class WhoIs implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("whois");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (args.length != 0) {
             if (AutoComplete.member(event.getGuild().getMembers(), args[0]) != null) {
 
@@ -37,13 +33,10 @@ public class WhoIs implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("whois", 0)
+                        .setHelp("gives you some informations about an user");
     }
 
     private String getGame(Member member){

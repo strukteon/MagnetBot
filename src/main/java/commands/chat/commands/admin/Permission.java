@@ -5,6 +5,7 @@ package commands.chat.commands.admin;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.UserData;
@@ -14,13 +15,9 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Permission implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("permission");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event,"-m permission add <permission> [user]\n -m permission remove <permission> [user]").build()).queue();
         else {
@@ -75,12 +72,9 @@ public class Permission implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 3;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("permission", 3)
+                        .setHelp("change permissions for a specefic user");
     }
 }

@@ -218,12 +218,15 @@ public class AudioCore extends ListenerAdapter {
     public void reconnectAll(Event event){
         Set<Map.Entry<Long, GuildMusicManager>> entries = musicManagers.entrySet();
         for (Map.Entry<Long, GuildMusicManager> entry : entries){
-            AudioManager manager = event.getJDA().getGuildById(entry.getKey()).getAudioManager();
+            Guild g = event.getJDA().getGuildById(entry.getKey());
+            AudioManager manager = g.getAudioManager();
             if (manager.isConnected() && !manager.isAttemptingToConnect()){
                 VoiceChannel channel = manager.getConnectedChannel();
                 manager.closeAudioConnection();
                 manager.openAudioConnection(channel);
-            }
+                System.out.println("Reconnected to " + g.getName());
+            } else
+                System.out.println("Is already connected to " + g.getName());
         }
 
     }

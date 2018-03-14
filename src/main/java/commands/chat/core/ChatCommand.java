@@ -9,11 +9,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public interface ChatCommand {
 
-    boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args);
+    void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception;
 
-    void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception;
-
-    String premiumPermission();
-
-    int permissionLevel(); // banned = -10, guest = -1, member = 0, admin = 1, owner = 2, bot_owner = 3
+    Chat.CommandInfo commandInfo(); // banned = -10, guest = -1, member = 0, admin = 1, owner = 2, bot_owner = 3
 }

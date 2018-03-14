@@ -5,6 +5,7 @@ package commands.chat.commands.general;
     (c) nils 2017
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -16,13 +17,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Server implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("server");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
 
         OffsetDateTime _time = event.getGuild().getCreationTime();
         String crtime = _time.getDayOfMonth() + ". " + _time.getMonth().getValue() + ". " + _time.getYear() + " " + _time.getHour() + ":" + _time.getMinute();
@@ -50,12 +47,9 @@ public class Server implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("server", 0)
+                        .setHelp("gives you some informations about this server");
     }
 }

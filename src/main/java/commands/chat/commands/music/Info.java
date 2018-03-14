@@ -7,19 +7,16 @@ package commands.chat.commands.music;
 
 import audio.TrackScheduler;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import core.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Info implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("info");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         TrackScheduler scheduler = Main.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
         if (scheduler.isPlaying(true)){
             AudioTrack track = scheduler.getCurrentTrack().getTrack();
@@ -33,12 +30,9 @@ public class Info implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("info", 0)
+                        .setHelp("shows info about the playing track");
     }
 }

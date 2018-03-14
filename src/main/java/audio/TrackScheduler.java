@@ -133,8 +133,10 @@ public class TrackScheduler extends AudioEventAdapter {
         if (!queue.isEmpty()) {
             if (keepInPlaylist)
                 queue.add(current);
-
-            current = queue.poll();
+            if (current.getTrack().equals(queue.peek()))
+                current = new AudioInfo(current.getTrack().makeClone(), queue.poll().getEvent());
+            else
+                current = queue.poll();
             player.startTrack(current.getTrack(), false);
             return true;
         } else {

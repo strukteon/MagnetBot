@@ -5,6 +5,7 @@ package commands.chat.commands.money;
     (c) nils 2018
 */
 
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.UserData;
@@ -16,12 +17,7 @@ public class Slots implements ChatCommand {
     private String[] slots = {":grapes:", ":watermelon:", ":cherries:", ":crown:", ":100:", ":four_leaf_clover:", ":bell:", ":strawberry:", ":gem:" };
 
     @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("slots");
-    }
-
-    @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         if (args.length == 1 && args[0].equals(""))
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "-m slots <money>").build()).queue();
         else {
@@ -51,8 +47,10 @@ public class Slots implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("slots", 0)
+                        .setHelp("spin that machine and win money");
     }
 
     private String genSlots(int[] result){
@@ -76,10 +74,5 @@ public class Slots implements ChatCommand {
             s += (result[i] +1 > slots.length-1 ? slots[0] : slots[result[i]+1]);
         }
         return s;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
     }
 }

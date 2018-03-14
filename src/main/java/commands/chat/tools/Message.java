@@ -67,11 +67,15 @@ public class Message {
     }
 
     public static EmbedBuilder ERROR(MessageReceivedEvent event, String errorMsg){
+        return ERROR(event, errorMsg, true);
+    }
+
+    public static EmbedBuilder ERROR(MessageReceivedEvent event, String errorMsg, boolean asCode){
         EmbedBuilder builder = INFO(event.getMember());
 
         builder.setColor(Color.RED)
-                .setTitle("**Error**")
-                .setDescription("``" + errorMsg + "``");
+                .setTitle(":no_entry: **Error**")
+                .setDescription((asCode?"``":"") + errorMsg + (asCode?"``":""));
 
         return builder;
     }

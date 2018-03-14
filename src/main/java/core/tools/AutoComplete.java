@@ -5,10 +5,10 @@ package core.tools;
     (c) nils 2017
 */
 
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AutoComplete {
@@ -65,6 +65,29 @@ public class AutoComplete {
                 return r;
             }
         }
+        return null;
+    }
+    public static TextChannel textChannel(TextChannel[] channels, String s){
+        return textChannel(new ArrayList<>(Arrays.asList(channels)), s);
+    }
+    public static TextChannel textChannel(List<TextChannel> channels, String s){
+        if (s.equals("") || s == null)
+            return null;
+        for (TextChannel c : channels)
+            if (c.getName().toLowerCase().contains(s) || c.getAsMention().equals(s))
+                return c;
+        return null;
+    }
+
+    public static VoiceChannel voiceChannel(VoiceChannel[] channels, String s){
+        return voiceChannel(new ArrayList<>(Arrays.asList(channels)), s);
+    }
+    public static VoiceChannel voiceChannel(List<VoiceChannel> channels, String s){
+        if (s.equals("") || s == null)
+            return null;
+        for (VoiceChannel c : channels)
+            if (c.getName().toLowerCase().contains(s) || c.getId().equals(s))
+                return c;
         return null;
     }
 

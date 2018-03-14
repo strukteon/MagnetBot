@@ -6,6 +6,7 @@ package commands.chat.commands.money;
 */
 
 import com.google.api.client.util.DateTime;
+import commands.chat.core.Chat;
 import commands.chat.core.ChatCommand;
 import commands.chat.tools.Message;
 import commands.chat.utils.UserData;
@@ -23,13 +24,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Vote implements ChatCommand {
-    @Override
-    public boolean execute(MessageReceivedEvent event, String full, String cmd, String[] args) {
-        return cmd.equals("vote");
-    }
 
     @Override
-    public void action(MessageReceivedEvent event, String full, String cmd, String[] args) throws Exception {
+    public void action(MessageReceivedEvent event, String cmd, String[] args, String[] rawArgs) throws Exception {
         User u = event.getAuthor();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         Date lastVote = dateFormat.parse(UserData.getUser(u.getId()).get("lastvote"));
@@ -50,7 +47,7 @@ public class Vote implements ChatCommand {
                 event.getTextChannel().sendMessage(Message.INFO(event, ":gem: You sucessfully voted and received your rewards!\n ```+500 m$```\nVote again tomorrow to get another reward!").build()).queue();
 
             } else
-                event.getTextChannel().sendMessage(Message.ERROR(event, "You haven't voted today! You can vote now on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote)!").build()).queue();
+                event.getTextChannel().sendMessage(Message.ERROR(event, "You haven't voted today! You can vote now on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote)!", false).build()).queue();
 
 
         } else
@@ -58,12 +55,9 @@ public class Vote implements ChatCommand {
     }
 
     @Override
-    public String premiumPermission() {
-        return null;
-    }
-
-    @Override
-    public int permissionLevel() {
-        return 0;
+    public Chat.CommandInfo commandInfo() {
+        return
+                new Chat.CommandInfo("vote", 0)
+                        .setHelp("vote for the bot on [discordbotlist.org](https://discordbots.org/bot/389016516261314570/vote) and get a reward");
     }
 }
