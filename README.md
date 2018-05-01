@@ -1,11 +1,12 @@
 [![MagnetBot](https://raw.githubusercontent.com/strukteon/MagnetBot/master/resources/images/magnetbot_logo_btn-01.png)](https://magnet.strukteon.me)
 
-[![Discord Bots](https://discordbots.org/api/widget/status/389016516261314570.svg)](https://discordbots.org/bot/389016516261314570)
+[![Online Status](https://discordbots.org/api/widget/status/389016516261314570.svg)](https://discordbots.org/bot/389016516261314570)
+[![Server Count](https://discordbots.org/api/widget/servers/389016516261314570.svg?noavatar=true)](https://discordbots.org/bot/389016516261314570)
 [![TravisCI Build](https://travis-ci.org/strukteon/MagnetBot.svg?branch=master)](https://travis-ci.org/strukteon/MagnetBot)
 
 ## Commands
 
-A brief documentation about the commands can be found [here](https://magnet.strukteon.me/documentation), or by typing the command ``-m help``.
+A brief documentation about the commands can be found [here](https://magnetbot.net/documentation), or by typing the command ``-m help``.
 
 ### Generic commands
 
