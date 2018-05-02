@@ -125,14 +125,14 @@ public class Poll extends ListenerAdapter implements Command {
                 if (digits.contains(event.getReactionEmote().getName()) && !pollSQL.hasVoted(event.getUser().getId())) {
                     pollSQL.addVote(digits.indexOf(event.getReactionEmote().getName()), event.getUser().getId());
                     HashMap<Integer, List<String>> votes = pollSQL.getVotes();
-                    votes.entrySet().forEach(integerListEntry -> System.out.println(integerListEntry.getKey()+": " + integerListEntry.getValue().size()));
+                    
                     StringBuilder optionsStr = new StringBuilder();
                     for (int i = 0; i < options.size(); i++){
                         if (optionsStr.length() != 0)
                             optionsStr.append("\n");
                         optionsStr.append(":"+Poll.digits[i]+": - "+options.get(i)+" **Votes: ``"+(votes.get(i) != null ? votes.get(i).size() : 0)+"``**");
                     }
-                    System.out.println(optionsStr.toString());
+
                     EmbedBuilder builder = new EmbedBuilder();
                     builder
                             .setAuthor(author.getName() + "'s Poll", "https://magnetbot.net", author.getEffectiveAvatarUrl())
