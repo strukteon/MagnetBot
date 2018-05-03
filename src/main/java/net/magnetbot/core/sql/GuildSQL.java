@@ -53,7 +53,7 @@ public class GuildSQL {
     }
 
     public void create(){
-        mySQL.INSERT(table, "`id`, `prefix`, `autorole`, `savedqueue`, `welcomechannel`", String.format("'%s', '-m ', '', '', ''", guildid));
+        mySQL.INSERT(table, "`id`, `prefix`, `autorole`, `savedqueue`, `welcomechannel`", String.format("'%s', '%s', '', '', ''", guildid, Static.PREFIX));
     }
 
 
