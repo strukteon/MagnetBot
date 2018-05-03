@@ -15,5 +15,5 @@ public class PermissionLevel {
 
     BOT_SUPPORTER = 10,
     BOT_ADMIN = 11,
-    BOT_OWNER = 3;
+    BOT_OWNER = 100;
 }
