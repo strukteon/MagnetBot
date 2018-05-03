@@ -17,7 +17,7 @@ public class Static {
 
     public static final String VERSION = "beta";
 
-    public static final String PREFIX = "-m ";
+    public static final String PREFIX = "m.";
 
     public static final Game GAME = Game.watching( VERSION + " | " + PREFIX + " help");
 
