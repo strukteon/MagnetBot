@@ -28,7 +28,8 @@ public class MusicLeaveListener extends ListenerAdapter {
         for (Member m : event.getChannelLeft().getMembers())
             if ( !m.getUser().isBot() && !m.getUser().isFake() && m.getUser().getId().equals(event.getJDA().getSelfUser().getId()))
                 users++;
-        if (MagnetBot.audioCore.hasGuildAudioPlayer(event.getGuild()) && users == 0 && MagnetBot.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.isPlaying(false)) {
+        if (MagnetBot.audioCore.hasGuildAudioPlayer(event.getGuild()) && users == 0 && MagnetBot.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.isPlaying(false)
+                && event.getGuild().getAudioManager().getConnectedChannel().getId().equals(event.getChannelLeft().getId())) {
             Timer leaveTimer = new Timer();
             leaveTimer.schedule(new TimerTask() {
                 @Override
