@@ -51,7 +51,8 @@ public class PollSQL {
     }
 
     public static PollSQL createNew(String userid, String msgid, String question, List<String> options){
-        mySQL.INSERT(table, "`id`, `msgid`, `question`, `options`, `votes`", String.format("'%s', '%s', '%s', '%s', ''", userid, msgid, question, Tools.listToString(options, "|")));
+        System.out.println(question.replace('\'', '´') + ",  " + Tools.listToString(options, "|").replace('\'', '´'));
+        mySQL.INSERT(table, "`id`, `msgid`, `question`, `options`, `votes`", String.format("'%s', '%s', '%s', '%s', ''", userid, msgid, question.replace('\'', '´'), Tools.listToString(options, "|").replace('\'', '´')));
         return fromUserId(userid);
     }
 
