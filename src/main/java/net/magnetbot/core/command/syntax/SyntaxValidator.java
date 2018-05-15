@@ -23,6 +23,8 @@ public class SyntaxValidator {
                 return validateInt(toValidate);
             case STRING:
                 return validateString(toValidate);
+            case LONG:
+                return validateLong(toValidate);
             case ID:
                 return validateId(toValidate);
             case USER:
@@ -47,6 +49,14 @@ public class SyntaxValidator {
     public int validateInt(String toValidate) throws SyntaxValidateException {
         try {
             return Integer.parseInt(toValidate);
+        } catch (Exception e){
+            throw new SyntaxValidateException(SyntaxValidateException.Cause.INVALID);
+        }
+    }
+
+    public long validateLong(String toValidate) throws SyntaxValidateException {
+        try {
+            return Long.parseLong(toValidate);
         } catch (Exception e){
             throw new SyntaxValidateException(SyntaxValidateException.Cause.INVALID);
         }
