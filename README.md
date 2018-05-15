@@ -6,7 +6,7 @@
 
 ## Commands
 
-A brief documentation about the commands can be found [here](https://magnetbot.net/documentation), or by typing the command ``-m help``.
+A brief documentation about the commands can be found [here](https://magnetbot.net/documentation), or by typing the command ``m.help``.
 
 ### Generic commands
 
