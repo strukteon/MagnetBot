@@ -9,12 +9,14 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.exceptions.ErrorResponseException;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.audio.TrackScheduler;
@@ -144,58 +146,63 @@ public class ControlPanel extends ListenerAdapter implements Command {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        if (activePanels.contains(event.getChannel().getMessageById(event.getMessageId()).complete()) && !event.getUser().getId().equals(event.getJDA().getSelfUser().getId())){
-            event.getReaction().removeReaction(event.getUser()).queue();
-                        TrackScheduler scheduler = AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
+        try {
+            if (activePanels.contains(event.getChannel().getMessageById(event.getMessageId()).complete()) && !event.getUser().getId().equals(event.getJDA().getSelfUser().getId())) {
+                event.getReaction().removeReaction(event.getUser()).queue();
+                TrackScheduler scheduler = AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
 
-            if (event.getMember().getVoiceState().getChannel() == event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().getChannel())
-            switch (actions.indexOf(event.getReactionEmote().getName())){
+                if (event.getMember().getVoiceState().getChannel() == event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().getChannel())
+                    switch (actions.indexOf(event.getReactionEmote().getName())) {
 
-                case 0:
-                    scheduler.setModeRepeatOne();
-                    break;
+                        case 0:
+                            scheduler.setModeRepeatOne();
+                            break;
 
-                case 1:
-                    scheduler.setModeRepeatAll();
-                    break;
+                        case 1:
+                            scheduler.setModeRepeatAll();
+                            break;
 
-                case 2:
-                    scheduler.seek(-5000);
-                    break;
+                        case 2:
+                            scheduler.seek(-5000);
+                            break;
 
-                case 3:
-                    if (scheduler.isPaused())
-                        scheduler.resume();
-                    else
-                        scheduler.pause();
-                    break;
+                        case 3:
+                            if (scheduler.isPaused())
+                                scheduler.resume();
+                            else
+                                scheduler.pause();
+                            break;
 
-                case 4:
-                    scheduler.seek(5000);
-                    break;
+                        case 4:
+                            scheduler.seek(5000);
+                            break;
 
-                case 5:
-                    scheduler.skip();
-                    break;
+                        case 5:
+                            scheduler.skip();
+                            break;
 
-                case 6:
-                    scheduler.shuffleQueue(false);
-                    break;
+                        case 6:
+                            scheduler.shuffleQueue(false);
+                            break;
 
-                case 7:
-                    scheduler.setModeAutoplay();
-                    break;
+                        case 7:
+                            scheduler.setModeAutoplay();
+                            break;
 
-                case 8:
-                    scheduler.setModeNormal();
-                    break;
+                        case 8:
+                            scheduler.setModeNormal();
+                            break;
 
-                case 9:
-                    event.getChannel().sendMessage(helpMsg(event.getMember())).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
-                    break;
+                        case 9:
+                            event.getChannel().sendMessage(helpMsg(event.getMember())).queue(message -> message.delete().queueAfter(5, TimeUnit.SECONDS));
+                            break;
+
+                    }
 
             }
-
+        } catch (InsufficientPermissionException e){
+            if (e.getPermission() != Permission.MESSAGE_HISTORY)
+                CLI.error(e);
         }
     }
 }
