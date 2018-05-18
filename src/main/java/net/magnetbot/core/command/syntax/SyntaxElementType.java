@@ -9,6 +9,7 @@ public enum SyntaxElementType {
 
     INT,
     STRING,
+    LONG,
     USER,
     MEMBER,
     ID,
