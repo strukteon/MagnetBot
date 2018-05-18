@@ -202,23 +202,24 @@ public class TrackScheduler extends AudioEventAdapter {
         previousTrack = track;
         CLI.debug("onTrackEnd()");
         CLI.debug("Queue size: " + queue.size());
-        if (queue.size() <= 0 && mode == MODE_AUTOPLAY){
-            try {
-                CLI.debug(lastEvent);
-                CLI.debug(previousTrack);
-                com.google.api.services.youtube.model.SearchResult result = YouTubeAPI.relatedVideo(previousTrack.getIdentifier());
-                CLI.debug(result);
-                AudioCore.load(lastEvent, result.getId().getVideoId(), null, false);
-                CLI.debug("mode == AUTOPLAY");
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (endReason.mayStartNext)
+            if (queue.size() <= 0 && mode == MODE_AUTOPLAY){
+                try {
+                    CLI.debug(lastEvent);
+                    CLI.debug(previousTrack);
+                    com.google.api.services.youtube.model.SearchResult result = YouTubeAPI.relatedVideo(previousTrack.getIdentifier());
+                    CLI.debug(result);
+                    AudioCore.load(lastEvent, result.getId().getVideoId(), null, false);
+                    CLI.debug("mode == AUTOPLAY");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                CLI.debug("May start next track");
+                if (queue.size() > 0){
+                    player.startTrack(queue.poll().getTrack(), false);
+                    CLI.debug("Next track started");
+                }
             }
-        } else {
-            CLI.debug("May start next track");
-            if (queue.size() > 0){
-                player.startTrack(queue.poll().getTrack(), false);
-                CLI.debug("Next track started");
-            }
-        }
     }
 }
