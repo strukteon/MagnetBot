@@ -120,7 +120,7 @@ public class ControlPanel extends ListenerAdapter implements Command {
 
 
     private static String progressBar(long position, long duration){
-        StringBuilder builder = new StringBuilder("▬▬▬▬▬▬▬▬▬");
+        StringBuilder builder = new StringBuilder("\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC");
         builder.insert((int)(10 * position / duration), ":radio_button:");
         return builder.toString();
     }
