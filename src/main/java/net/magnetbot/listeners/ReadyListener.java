@@ -42,16 +42,8 @@ public class ReadyListener extends ListenerAdapter {
         int users = 0;
         for (Guild g : jda.getGuilds())
             users += g.getMembers().size();
-        long start = System.currentTimeMillis();
-        List<String> user_s = new ArrayList<>();
-        for (Guild g : jda.getGuilds())
-            g.getMembers().forEach(member -> {
-                if (!user_s.contains(member.getUser().getId()) && !member.getUser().isBot())
-                    user_s.add(member.getUser().getId());
-            });
-        System.out.println("wow it only took " + (System.currentTimeMillis()-start) + "ms");
 
-        CLI.info("("+users+") "+user_s.size() + " Users, " + jda.getUsers().size() + " Online (" + Math.round(jda.getUsers().size()/(float)users*100) + "%)");
+        CLI.info(+users+ " Users, " + jda.getUsers().size() + " Online (" + Math.round(jda.getUsers().size()/(float)users*100) + "%)");
 
         new CoolStatus(jda).start();
         CoolStatus.OnlineState onlineState = new CoolStatus.OnlineState();
