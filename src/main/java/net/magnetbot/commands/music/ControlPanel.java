@@ -41,14 +41,14 @@ public class ControlPanel extends ListenerAdapter implements Command {
     static {
         actions.add("\uD83D\uDD02");
         actions.add("\uD83D\uDD01");
-        actions.add("⏪");
-        actions.add("⏯");
-        actions.add("⏩");
-        actions.add("⏭");
+        actions.add("\u23EA");
+        actions.add("\u23EF");
+        actions.add("\u23E9");
+        actions.add("\u23ED");
         actions.add("\uD83D\uDD00");
-        actions.add("*⃣");
+        actions.add("\u002A\u20E3");
         actions.add("\uD83D\uDD04");
-        actions.add("ℹ");
+        actions.add("\u2139");
     }
 
     public static void startTiming(){
