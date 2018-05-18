@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.magnetbot.audio.AudioCore;
+import net.magnetbot.commands.music.ControlPanel;
 import net.magnetbot.core.CLI;
 import net.magnetbot.core.Importer;
 import net.magnetbot.core.SettingsLoader;
@@ -52,7 +53,7 @@ public class MagnetBot {
         Importer.addListeners(builder);
         Importer.importCommands();
 
-
+        AudioCore.initialize();
 
         try {
             jda = builder.buildAsync();

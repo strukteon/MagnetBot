@@ -6,6 +6,7 @@ package net.magnetbot.commands.music;
 */
 
 import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.AudioCore;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
@@ -21,11 +22,14 @@ public class LoadQueue implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        List<String> queueList = GuildSQL.fromGuild(event.getGuild()).getSavedQueue();
-        if (queueList.size() < 1)
-            event.getTextChannel().sendMessage(Message.ERROR(event, "The saved queue is empty.").build()).queue();
+        if (event.getMember().getVoiceState().getChannel() == null)
+            event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
         else {
-            MagnetBot.audioCore.loadQueue(event, queueList);
+            List<String> queueList = GuildSQL.fromGuild(event.getGuild()).getSavedQueue();
+            if (queueList.size() < 1)
+                event.getTextChannel().sendMessage(Message.ERROR(event, "The saved queue is empty.").build()).queue();
+            else
+                AudioCore.loadMultiple(event, queueList, event.getMember().getVoiceState().getChannel());
         }
     }
 

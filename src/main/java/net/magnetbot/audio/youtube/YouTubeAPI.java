@@ -64,6 +64,23 @@ public class YouTubeAPI {
         return searchResponse.getItems().get(0);
     }
 
+    public static SearchResult relatedVideo(String videoId) throws Exception {
+
+        YouTube.Search.List search = getYouTube().search().list("id,snippet");
+        search.setKey(Secret.YOUTUBE_APIKEY);
+        search.setRelatedToVideoId(videoId);
+
+        search.setType("video");
+
+        search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+        search.setMaxResults(1L);
+
+        SearchListResponse searchResponse = search.execute();
+        if (searchResponse.getItems().size() == 0)
+            throw new YouTubeAPI.NoResultException();
+        return searchResponse.getItems().get(0);
+    }
+
     public static SearchResult searchPlaylist(String queryTerm) throws Exception {
         YouTube.Search.List search = getYouTube().search().list("id,snippet");
         search.setKey(Secret.YOUTUBE_APIKEY);

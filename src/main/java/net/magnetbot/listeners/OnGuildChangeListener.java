@@ -22,7 +22,7 @@ public class OnGuildChangeListener extends ListenerAdapter {
 
         EmbedBuilder builder =
                 new EmbedBuilder()
-                        .setDescription("***Thank you** for adding me to your server!* You can begin to  ``-m play`` some *music*, or type ``-m help`` to get a *list of every command* available with the bot. You can join our **[Support Server](https://discord.gg/uAT7uUb)** if you have any *questions*. \n" +
+                        .setDescription("***Thank you** for adding me to your server!* You can begin to  ``"+Static.PREFIX+"play`` some *music*, or type ``"+Static.PREFIX+"help`` to get a *list of every command* available with the bot. You can join our **[Support Server](https://discord.gg/uAT7uUb)** if you have any *questions*. \n" +
                                 "If you enjoy my features, check our __**[patreon](https://www.patreon.com/strukteon)**__ out!\nAnyways, have fun using this bot!")
                         .setColor(Static.Color.BLUE);
 

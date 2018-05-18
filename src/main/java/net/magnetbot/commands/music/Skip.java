@@ -6,7 +6,7 @@ package net.magnetbot.commands.music;
 */
 
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.AudioCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import net.magnetbot.core.command.syntax.*;
@@ -17,7 +17,7 @@ public class Skip implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        MagnetBot.audioCore.skipTrack(event);
+        AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler.skip();
     }
 
     @Override

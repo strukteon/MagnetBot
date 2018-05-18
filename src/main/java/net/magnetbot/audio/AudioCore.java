@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.AudioManager;
+import net.magnetbot.core.CLI;
 import net.magnetbot.core.command.Message;
 
 import java.util.HashMap;
@@ -23,18 +24,15 @@ import java.util.Set;
 
 public class AudioCore extends ListenerAdapter {
 
-    private final AudioPlayerManager playerManager;
-    private final Map<Long, GuildMusicManager> musicManagers;
+    private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+    private static final Map<Long, GuildMusicManager> musicManagers = new HashMap<>();
 
-    public AudioCore() {
-        this.musicManagers = new HashMap<>();
-
-        this.playerManager = new DefaultAudioPlayerManager();
+    public static void initialize() {
         AudioSourceManagers.registerRemoteSources(playerManager);
         AudioSourceManagers.registerLocalSource(playerManager);
     }
 
-    public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+    public static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
         long guildId = guild.getIdLong();
         GuildMusicManager musicManager = musicManagers.get(guildId);
 
@@ -48,184 +46,89 @@ public class AudioCore extends ListenerAdapter {
         return musicManager;
     }
 
-    public boolean hasGuildAudioPlayer(Guild guild){
+    public static boolean hasGuildAudioPlayer(Guild guild){
         long guildId = guild.getIdLong();
         GuildMusicManager musicManager = musicManagers.get(guildId);
 
         return musicManager != null;
     }
 
-    public boolean connectToVoiceChannel(AudioManager audioManager, VoiceChannel voiceChannel) {
-        if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
-            if (audioManager.getGuild().getVoiceChannels().contains(voiceChannel)){
+    public static void connectToVoiceChannel(AudioManager audioManager, VoiceChannel voiceChannel) {
+        if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect())
+            if (audioManager.getGuild().getVoiceChannels().contains(voiceChannel))
                 audioManager.openAudioConnection(voiceChannel);
-                return true;
-            }
-        }
-        return false;
     }
 
-    public boolean disconnectFromVoiceChannel(AudioManager audioManager) {
+    public static void disconnectFromVoiceChannel(AudioManager audioManager) {
         if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
             audioManager.closeAudioConnection();
         }
-        return false;
     }
 
+    public static void stop(Guild g){
+        if (hasGuildAudioPlayer(g)){
+            getGuildAudioPlayer(g).scheduler.stop();
+            disconnectFromVoiceChannel(g.getAudioManager());
+        }
+    }
 
-    public void load(MessageReceivedEvent event, String trackUrl) {
+    public static void load(MessageReceivedEvent event, String trackUrl){
+        load(event, trackUrl, null);
+    }
+
+    public static void load(MessageReceivedEvent event, String trackUrl, VoiceChannel channel){
+        load(event, trackUrl, channel, true);
+    }
+
+    public static void load(MessageReceivedEvent event, String trackUrl, VoiceChannel channel, boolean announce){
         GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
 
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
-            public void trackLoaded(AudioTrack track) {
-                play(event, musicManager, track);
+            public void trackLoaded(AudioTrack audioTrack) {
+                CLI.debug("AudioTrack loaded");
+                if (!event.getGuild().getAudioManager().isConnected() && channel != null)
+                    connectToVoiceChannel(event.getGuild().getAudioManager(), channel);
+                musicManager.scheduler.addToQueue(new AudioInfo(audioTrack, event), announce);
             }
 
             @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                playPlaylist(event, musicManager, playlist);
+            public void playlistLoaded(AudioPlaylist audioPlaylist) {
+                if (!event.getGuild().getAudioManager().isConnected() && channel != null)
+                    connectToVoiceChannel(event.getGuild().getAudioManager(), channel);
+                musicManager.scheduler.addToQueue(event, audioPlaylist, announce);
             }
 
             @Override
             public void noMatches() {
-                event.getTextChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
+                event.getChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
             }
 
             @Override
-            public void loadFailed(FriendlyException exception) {
-                event.getTextChannel().sendMessage(exception.severity.toString() + "; ").queue();
+            public void loadFailed(FriendlyException e) {
+                event.getChannel().sendMessage(loadFailedMessage(event, trackUrl, e)).queue();
             }
         });
     }
 
-    public void loadQueue(MessageReceivedEvent event, List<String> trackUrls){
-        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
-
-        if (event.getMember().getVoiceState().getChannel() == null) {
-            event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
-        } else {
-            musicManager.scheduler.startQueueing();
-
-            for (String trackUrl : trackUrls.subList(0, trackUrls.size() - 1))
-                playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
-                    @Override
-                    public void trackLoaded(AudioTrack track) {
-                        musicManager.scheduler.queueQueue(track, event, false);
-                    }
-
-                    @Override
-                    public void playlistLoaded(AudioPlaylist playlist) {
-                    }
-
-                    @Override
-                    public void noMatches() {
-                        event.getTextChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
-                    }
-
-                    @Override
-                    public void loadFailed(FriendlyException exception) {
-                        event.getTextChannel().sendMessage(loadFailedMessage(event, trackUrl, exception)).queue();
-                    }
-                });
-            String trackUrl = trackUrls.get(trackUrls.size() - 1);
-            playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
-                @Override
-                public void trackLoaded(AudioTrack track) {
-                    if (event.getMember().getVoiceState().getChannel() == null) {
-                        event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
-                    } else {
-                        if (connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel()) || event.getGuild().getAudioManager().isConnected())
-                            musicManager.scheduler.queueQueue(track, event, true);
-                    }
-                }
-
-                @Override
-                public void playlistLoaded(AudioPlaylist audioPlaylist) {
-                }
-
-                @Override
-                public void noMatches() {
-                    event.getTextChannel().sendMessage(noMatchesMessage(event, trackUrl)).queue();
-                }
-
-                @Override
-                public void loadFailed(FriendlyException e) {
-                    event.getTextChannel().sendMessage(loadFailedMessage(event, trackUrl, e)).queue();
-                }
-            });
+    public static void loadMultiple(MessageReceivedEvent event, List<String> trackUrls, VoiceChannel channel){
+        for (int i = 0; i < trackUrls.size(); i++) {
+            load(event, trackUrls.get(i), channel, i == trackUrls.size() - 1);
         }
     }
 
-    private MessageEmbed noMatchesMessage(MessageReceivedEvent event, String trackUrl){
+
+
+    private static MessageEmbed noMatchesMessage(MessageReceivedEvent event, String trackUrl){
         return Message.ERROR(event, "No matches were found for: " + trackUrl).build();
     }
 
-    private MessageEmbed loadFailedMessage(MessageReceivedEvent event, String trackUrl, FriendlyException exception){
+    private static MessageEmbed loadFailedMessage(MessageReceivedEvent event, String trackUrl, FriendlyException exception){
         return Message.ERROR(event, "Could not play: " + exception.getMessage()).build();
     }
 
-    private MessageEmbed skipTrackMessage(MessageReceivedEvent event){
+    private static MessageEmbed skipTrackMessage(MessageReceivedEvent event){
         return Message.INFO(event, "Skipped to next track.").build();
     }
-
-
-    public void play(MessageReceivedEvent event, GuildMusicManager musicManager, AudioTrack track) {
-        if (event.getMember().getVoiceState().getChannel() == null)
-            event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
-        else {
-            if(connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel()) || event.getGuild().getAudioManager().isConnected())
-                musicManager.scheduler.queue(track, event);
-        }
-    }
-
-    public void playPlaylist(MessageReceivedEvent event, GuildMusicManager musicManager, AudioPlaylist playlist) {
-        if (event.getMember().getVoiceState().getChannel() == null)
-            event.getTextChannel().sendMessage(Message.ERROR(event, "You have to be connected to a VoiceChannel!").build()).queue();
-        else {
-            if(connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel()) || event.getGuild().getAudioManager().isConnected())
-                musicManager.scheduler.queuePlaylist(playlist, event);
-        }
-    }
-
-    public void skipTrack(MessageReceivedEvent event) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
-        event.getTextChannel().sendMessage(skipTrackMessage(event)).queue();
-
-        if (!musicManager.scheduler.nextTrack(false))
-            if (event.getGuild().getAudioManager().isConnected())
-                event.getGuild().getAudioManager().closeAudioConnection();
-    }
-
-
-    public boolean stopPlaying(Guild guild){
-        if (guild.getAudioManager().isConnected()){
-            GuildMusicManager manager = getGuildAudioPlayer(guild);
-
-            manager.scheduler.stop();
-            manager.scheduler.purgeQueue();
-            guild.getAudioManager().closeAudioConnection();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void reconnectAll(Event event){
-        Set<Map.Entry<Long, GuildMusicManager>> entries = musicManagers.entrySet();
-        for (Map.Entry<Long, GuildMusicManager> entry : entries){
-            Guild g = event.getJDA().getGuildById(entry.getKey());
-            AudioManager manager = g.getAudioManager();
-            if (manager.isConnected() && !manager.isAttemptingToConnect()){
-                VoiceChannel channel = manager.getConnectedChannel();
-                manager.closeAudioConnection();
-                manager.openAudioConnection(channel);
-                System.out.println("Reconnected to " + g.getName());
-            } else
-                System.out.println("Is already connected to " + g.getName());
-        }
-
-    }
-
 
 }

@@ -10,7 +10,7 @@ import net.magnetbot.audio.GuildMusicManager;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.AudioCore;
 import net.magnetbot.core.sql.GuildSQL;
 import net.magnetbot.core.tools.Tools;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -25,7 +25,7 @@ public class SaveQueue implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        GuildMusicManager manager = MagnetBot.audioCore.getGuildAudioPlayer(event.getGuild());
+        GuildMusicManager manager = AudioCore.getGuildAudioPlayer(event.getGuild());
         List<AudioInfo> queue = new ArrayList<>(manager.scheduler.getQueue());
 
         if (queue.size() < 1 && manager.scheduler.getCurrentTrack() == null) {

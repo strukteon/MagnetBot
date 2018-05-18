@@ -9,11 +9,16 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.youtube.YouTubeAPI;
+import net.magnetbot.core.CLI;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.tools.Tools;
 import net.magnetbot.utils.Static;
 
+import javax.naming.directory.SearchResult;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -22,19 +27,23 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * This class schedules tracks for the net.magnetbot.audio player. It contains the queue of tracks.
  */
-public class TrackScheduler extends AudioEventAdapter { 
+public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioInfo> queue;
 
-    private net.dv8tion.jda.core.entities.Message lastMessage = null;
+    private MessageReceivedEvent lastEvent = null;
+    private AudioTrack previousTrack = null;
 
-    private AudioInfo current;
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_REPEAT_ALL = 1;
+    public static final int MODE_REPEAT_ONE = 2;
+    public static final int MODE_AUTOPLAY = 3;
 
-    public boolean repeat = false;
+    // SETTINGS
+    private int mode = MODE_NORMAL;
 
-    /**
-     * @param player The net.magnetbot.audio player this scheduler uses
-     */
+
+
     public TrackScheduler(AudioPlayer player) {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
@@ -48,174 +57,109 @@ public class TrackScheduler extends AudioEventAdapter {
         return player;
     }
 
-    public void repeatQueue(boolean repeat){
-        this.repeat = repeat;
-        if (repeat)
-            queue.add(new AudioInfo(current.getTrack().makeClone(), current.getEvent()));
+    public MessageReceivedEvent getLastEvent() {
+        return lastEvent;
     }
 
-    public void shuffleQueue(){
-        List<AudioInfo> _queue = new ArrayList<>(getQueue());
-        AudioInfo current = _queue.get(0);
-        _queue.remove(current);
-        Collections.shuffle(_queue);
-        _queue.add(0, current);
-        purgeQueue();
-        queue.addAll(_queue);
+    public AudioInfo getCurrentTrack() {
+        return new AudioInfo(player.getPlayingTrack(), lastEvent);
     }
 
-    public void queue(AudioTrack track, MessageReceivedEvent event){
-        AudioInfo info = new AudioInfo(track, event);
-        lastMessage = event.getMessage();
-        queue.add(info);
+    public AudioTrack getPlayingTrack(){
+        return player.getPlayingTrack();
+    }
 
-        event.getTextChannel().sendMessage(queuedMessage(track, event)).queue();
-
-        if (player.getPlayingTrack() == null) {
-            current = queue.poll();
-            player.playTrack(current.getTrack());
+    public TrackScheduler addToQueue(AudioInfo audioInfo, boolean announce){
+        queue.add(audioInfo);
+        CLI.debug("Track added to queue");
+        lastEvent = audioInfo.getEvent();
+        CLI.debug(getCurrentTrack());
+        CLI.debug(isPlaying(true));
+        if (announce)
+            audioInfo.getEvent().getChannel().sendMessage(queuedMessage(audioInfo.getTrack(), audioInfo.getEvent())).queue();
+        if (!isPlaying(true)) {
+            player.startTrack(queue.poll().getTrack(), false);
+            CLI.debug("Track starting...");
         }
+        return this;
     }
 
-    public void queuePlaylist(AudioPlaylist playlist, MessageReceivedEvent event){
-        lastMessage = event.getMessage();
-        List<AudioTrack> tracks = playlist.getTracks();
-        int tracksLength = (tracks.size() <= Static.Audio.PLAYLIST_LIMIT ? tracks.size() : Static.Audio.PLAYLIST_LIMIT);
-        for (int i = 0; i < tracksLength; i++){
-            AudioInfo info = new AudioInfo(tracks.get(i), event);
-            queue.add(info);
-        }
-
-        event.getTextChannel().sendMessage(queuedPlaylistMessage(tracksLength, playlist, event)).queue();
-
-        if (player.getPlayingTrack() == null) {
-            current = queue.poll();
-
-            player.playTrack(current.getTrack());
-        }
-
+    public TrackScheduler addToQueue(MessageReceivedEvent event, AudioPlaylist playlist, boolean announce){
+        playlist.getTracks().forEach(audioTrack -> queue.add(new AudioInfo(audioTrack, event)));
+        if (announce)
+            event.getChannel().sendMessage(queuedPlaylistMessage(playlist.getTracks().size(), playlist, event)).queue();
+        return this;
     }
 
-    private boolean isQueueing = false;
-    private BlockingQueue<AudioInfo> queueQueue;
-
-    public void startQueueing(){
-        isQueueing = true;
-        this.queueQueue = new LinkedBlockingQueue<>();
+    public boolean isPaused(){
+        return player.isPaused();
     }
 
-    public boolean isQueueing(){
-        return isQueueing;
+    public void pause(){
+        player.setPaused(true);
     }
 
-    public void queueQueue(AudioTrack track, MessageReceivedEvent event, boolean lastTrack){
-        if (isQueueing) {
-
-            AudioInfo info = new AudioInfo(track, event);
-            queueQueue.add(info);
-
-            if (lastTrack) {
-                queue.addAll(queueQueue);
-                isQueueing = false;
-
-                event.getTextChannel().sendMessage(Message.INFO(event, ":musical_note: Loaded the queue", "The saved queue has been loaded").build()).queue();
-                if (player.getPlayingTrack() == null) {
-                    current = queue.poll();
-
-                    player.playTrack(current.getTrack());
-                }
-            }
-        }
-    }
-
-    public boolean nextTrack(boolean keepInPlaylist){
-        if (!queue.isEmpty()) {
-            if (keepInPlaylist)
-                queue.add(current);
-            if (current.getTrack().equals(queue.peek()))
-                current = new AudioInfo(current.getTrack().makeClone(), queue.poll().getEvent());
-            else
-                current = queue.poll();
-            player.startTrack(current.getTrack(), false);
-            return true;
-        } else {
-            stop();
-            return false;
-        }
+    public void resume(){
+        player.setPaused(false);
     }
 
     public void stop(){
-        player.stopTrack();
-        current = null;
-    }
-
-    public void purgeQueue(){
         queue.clear();
+        player.destroy();
+
+        CLI.debug("Stopped the queue");
     }
 
-    public boolean pause(){
-        if (!player.isPaused()) {
-            player.setPaused(true);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean resume(){
-        if (player.isPaused()) {
-            player.setPaused(false);
-            return true;
-        }
-        return false;
-    }
-
-    public void setVolume(int volume){
-        player.setVolume(volume);
+    public void skip(){
+        player.stopTrack();
+        CLI.debug("Skipping...");
     }
 
     public boolean isPlaying(boolean ignorePause){
         return player.getPlayingTrack() != null && (!player.isPaused() || ignorePause);
     }
 
-    public AudioInfo getCurrentTrack() {
-        return current;
+
+    public void seek(long time){
+        if (getPlayingTrack().isSeekable())
+            getPlayingTrack().setPosition(getPlayingTrack().getPosition() + Math.max(0, Math.min(time, getPlayingTrack().getDuration() - getPlayingTrack().getPosition())));
     }
 
-    @Override
-    public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        current.getEvent().getTextChannel().sendMessage(onTrackStartMessage()).queue();
+    public void setVolume(int volume){
+        player.setVolume(volume);
+        CLI.debug("Volume set to");
     }
 
-    @Override
-    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        if (endReason.mayStartNext) {
-            Guild g = current.getEvent().getGuild();
-
-            if (queue.isEmpty()) {
-                new TrackEndThread(g).start();
-                current = null;
-            } else {
-                current = queue.poll();
-                player.playTrack(current.getTrack().makeClone());
-                if (repeat)
-                    queue.add(current);
-            }
-        }
+    public void shuffleQueue(boolean keepCurrent){
+        List<AudioInfo> queueTemp = new ArrayList<>(queue);
+        if (keepCurrent)
+            queueTemp.add(getCurrentTrack());
+        Collections.shuffle(queueTemp);
+        queue.clear();
+        queue.addAll(queueTemp);
+        CLI.debug("Shuffled the queue");
     }
 
-    @Override
-    public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
-
-        System.out.println("Track stuck, restarting");
-
-        player.stopTrack();
-        player.startTrack(track, false);
-
+    public int getMode() {
+        return mode;
     }
 
-    public net.dv8tion.jda.core.entities.Message getLastMessage() {
-        return lastMessage;
+    public void setModeNormal(){
+        mode = MODE_NORMAL;
     }
+
+    public void setModeRepeatAll(){
+        mode = MODE_REPEAT_ALL;
+    }
+
+    public void setModeRepeatOne(){
+        mode = MODE_REPEAT_ONE;
+    }
+
+    public void setModeAutoplay(){
+        mode = MODE_AUTOPLAY;
+    }
+
 
     private MessageEmbed queuedMessage(AudioTrack track, MessageReceivedEvent event){
         return Message.INFO(event, "**Queued:** ***" + track.getInfo().title + "*** in Position **#" + (queue.size() + ( player.getPlayingTrack() != null ?  1 : 0)) + "**").build();
@@ -226,8 +170,8 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     private MessageEmbed onTrackStartMessage(){
-        AudioTrack track = current.getTrack();
-        MessageReceivedEvent event = current.getEvent();
+        AudioTrack track = getPlayingTrack();
+        MessageReceivedEvent event = lastEvent;
 
         String trackUrl = (Tools.isUrl(track.getIdentifier()) ? track.getIdentifier() : "https://youtube.com/watch?v=" + track.getIdentifier() );
 
@@ -247,16 +191,34 @@ public class TrackScheduler extends AudioEventAdapter {
         return (hours > 0 ? hours + ":" + (minutes < 10 ? "0" : "") : "") + minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
     }
 
+    @Override
+    public void onTrackStart(AudioPlayer player, AudioTrack track) {
+        lastEvent.getTextChannel().sendMessage(onTrackStartMessage()).queue();
+        CLI.debug("onTrackStart()");
+    }
 
-    private class TrackEndThread extends Thread {
-        private final Guild guild;
-        public TrackEndThread(Guild guild){
-            this.guild = guild;
-        }
-        @Override
-        public void run() {
-            guild.getAudioManager().closeAudioConnection();
-            repeat = false;
+    @Override
+    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+        previousTrack = track;
+        CLI.debug("onTrackEnd()");
+        CLI.debug("Queue size: " + queue.size());
+        if (queue.size() <= 0 && mode == MODE_AUTOPLAY){
+            try {
+                CLI.debug(lastEvent);
+                CLI.debug(previousTrack);
+                com.google.api.services.youtube.model.SearchResult result = YouTubeAPI.relatedVideo(previousTrack.getIdentifier());
+                CLI.debug(result);
+                AudioCore.load(lastEvent, result.getId().getVideoId(), null, false);
+                CLI.debug("mode == AUTOPLAY");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            CLI.debug("May start next track");
+            if (queue.size() > 0){
+                player.startTrack(queue.poll().getTrack(), false);
+                CLI.debug("Next track started");
+            }
         }
     }
 }

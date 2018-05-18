@@ -5,6 +5,7 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
+import net.magnetbot.audio.AudioCore;
 import net.magnetbot.audio.TrackScheduler;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
@@ -19,18 +20,34 @@ public class Repeat implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        TrackScheduler scheduler = MagnetBot.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
+        TrackScheduler scheduler = AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
 
         if (scheduler.getQueue().size() == 0 && scheduler.getCurrentTrack() == null){
             event.getTextChannel().sendMessage(Message.ERROR(event, "Queue is empty!").build()).queue();
         } else {
 
-            if (scheduler.repeat){
-                scheduler.repeatQueue(false);
-                event.getTextChannel().sendMessage(Message.INFO(event, "The current queue is no longer repeating!").build()).queue();
-            } else {
-                scheduler.repeatQueue(true);
-                event.getTextChannel().sendMessage(Message.INFO(event, "The current queue is now repeating!").build()).queue();
+            if (scheduler.getMode() == syntax.getAsSubCommand("which").getSelection()) {
+                event.getChannel().sendMessage(Message.INFO(event, "The queue is already doing that!").build()).queue();
+                return;
+            }
+
+            switch (syntax.getAsSubCommand("which").getSelection()){
+                case 0:
+                    scheduler.setModeNormal();
+                    event.getChannel().sendMessage(Message.INFO(event, "Queue is now playing normally!").build()).queue();
+                    break;
+                case 1:
+                    scheduler.setModeRepeatAll();
+                    event.getChannel().sendMessage(Message.INFO(event, "Queue is now repeating!").build()).queue();
+                    break;
+                case 2:
+                    scheduler.setModeRepeatOne();
+                    event.getChannel().sendMessage(Message.INFO(event, "The current track is now repeating!").build()).queue();
+                    break;
+                case 3:
+                    scheduler.setModeAutoplay();
+                    event.getChannel().sendMessage(Message.INFO(event, "The queue is now on autoplay!").build()).queue();
+                    break;
             }
 
         }
@@ -40,8 +57,12 @@ public class Repeat implements Command {
     @Override
     public Chat.CommandInfo commandInfo() {
         return
-                new Chat.CommandInfo("loop", PermissionLevel.MEMBER)
-                        .setAlias("repeat")
+                new Chat.CommandInfo("mode", PermissionLevel.MEMBER)
+                        .setSyntax(
+                                new SyntaxBuilder()
+                                        .addSubcommand("which", "none", "repeatall", "repeatthis", "autoplay")
+
+                        )
                 //        .setPremium("premium.music.loop")
                         .setHelp("turn looping for the queue on/off");
     }

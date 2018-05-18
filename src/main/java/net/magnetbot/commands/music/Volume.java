@@ -8,7 +8,7 @@ package net.magnetbot.commands.music;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.AudioCore;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import net.magnetbot.core.command.syntax.*;
@@ -24,7 +24,7 @@ public class Volume implements Command {
         else if (volume > 150)
             event.getTextChannel().sendMessage(Message.WRONG_SYNTAX(event, "Maximum volume: 150%").build()).queue();
         else {
-            MagnetBot.audioCore.getGuildAudioPlayer(event.getGuild()).scheduler.setVolume(volume);
+            AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler.setVolume(volume);
             event.getTextChannel().sendMessage(Message.INFO(event, "Volume set to " + volume + "%").build()).queue();
         }
     }

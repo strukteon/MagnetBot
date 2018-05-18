@@ -6,6 +6,7 @@ package net.magnetbot.commands.music;
 */
 
 import net.magnetbot.MagnetBot;
+import net.magnetbot.audio.AudioCore;
 import net.magnetbot.core.command.PermissionLevel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -17,7 +18,7 @@ public class Join implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        MagnetBot.audioCore.connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+        AudioCore.connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
     }
 
     @Override

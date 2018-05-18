@@ -50,6 +50,10 @@ public class CLI {
         System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
     }
 
+    public static void debug(Object text){
+        System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
+    }
+
     public static void shutdown(int status){
         info("Shutting down");
         System.exit(status);
