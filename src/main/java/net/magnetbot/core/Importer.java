@@ -10,6 +10,7 @@ import net.magnetbot.commands.admin.*;
 import net.magnetbot.commands.fun.*;
 import net.magnetbot.commands.general.*;
 import net.magnetbot.commands.money.*;
+//import net.magnetbot.commands.steam.SteamUser;
 import net.magnetbot.commands.testing.Error;
 import net.magnetbot.commands.tools.*;
 import net.magnetbot.commands.music.*;
@@ -56,6 +57,7 @@ public class Importer {
                         new Invite(),
                         new Profile(),
                         new Server(),
+                        new Stats(),
                      //   new Shorten(),
                         new WhoAmI(),
                         new WhoIs())
@@ -70,6 +72,8 @@ public class Importer {
                         new Poll())
 
                 .addSection("Music",
+                        new ControlPanel(),
+                        new Forward(),
                         new Join(),
                         new Leave(),
                         new Track(),
@@ -80,7 +84,9 @@ public class Importer {
                         new Queue(),
                         new Repeat(),
                         new Resume(),
+                        new Rewind(),
                         new SaveQueue(),
+                        new Shuffle(),
                         new Skip(),
                         new Stop(),
                         new Volume())
@@ -98,6 +104,9 @@ public class Importer {
                         new Test(),
                         new TestException(),
                         new Uptime())
+/*
+                .addSection("Steam",
+                        new SteamUser())*/
 
 
         ;
@@ -116,6 +125,8 @@ public class Importer {
 
                 .addEventListener(new MusicLeaveListener())
 
+                .addEventListener(new ControlPanel())
+
                 // Command Specific Listeners
                 .addEventListener(new Poll())
                 .addEventListener(new AutoRole.Listener())
@@ -131,6 +142,7 @@ public class Importer {
         Chat.names.put(PermissionLevel.SUPPORTER, "Admin");
         Chat.names.put(PermissionLevel.ADMIN, "Admin");
         Chat.names.put(PermissionLevel.OWNER, "Owner");
+        Chat.names.put(PermissionLevel.BOT_ADMIN, "Bot Admin");
         Chat.names.put(PermissionLevel.BOT_OWNER, "Bot Owner");
     }
 
