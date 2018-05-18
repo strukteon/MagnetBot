@@ -5,6 +5,8 @@ package net.magnetbot.core;
     (c) nils 2018
 */
 
+import net.magnetbot.MagnetBot;
+
 public class CLI {
 
     public static final String RESET = "\u001B[0m";
@@ -47,11 +49,13 @@ public class CLI {
     }
 
     public static void debug(String text){
-        System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
+        if (MagnetBot.isTestBot)
+            System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
     }
 
     public static void debug(Object text){
-        System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
+        if (MagnetBot.isTestBot)
+            System.out.println(WHITE + BLUE_BACKGROUND + "[DEBUG] " + text + RESET);
     }
 
     public static void shutdown(int status){
