@@ -51,6 +51,7 @@ public class Importer {
                 .addSection("General",
                         new About(),
                         new Bio(),
+                        new Credits(),
                         new DecToHex(),
                         new Help(),
                         new HexToDec(),
