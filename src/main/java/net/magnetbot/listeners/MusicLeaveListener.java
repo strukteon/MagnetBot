@@ -27,7 +27,7 @@ public class MusicLeaveListener extends ListenerAdapter {
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
         int users = 0;
         for (Member m : event.getChannelLeft().getMembers())
-            if ( !m.getUser().isBot() && !m.getUser().isFake() && m.getUser().getId().equals(event.getJDA().getSelfUser().getId()))
+            if ( !m.getUser().isBot() && !m.getUser().isFake() && !m.getUser().getId().equals(event.getJDA().getSelfUser().getId()))
                 users++;
         if ( !event.getMember().getUser().getId().equals(event.getJDA().getSelfUser().getId()) && AudioCore.hasGuildAudioPlayer(event.getGuild()) && users == 0 && AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler.isPlaying(false)
                 && event.getGuild().getAudioManager().getConnectedChannel().getId().equals(event.getChannelLeft().getId())) {
