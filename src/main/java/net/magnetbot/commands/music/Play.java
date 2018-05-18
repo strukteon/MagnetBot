@@ -33,7 +33,6 @@ public class Play implements Command {
         else {
             try {
                 SearchResult video = YouTubeAPI.searchVideo(Tools.listToString(arg, " "));
-                System.out.println(video.getEtag());
                 AudioCore.load(event, video.getId().getVideoId(), event.getMember().getVoiceState().getChannel());
             } catch (YouTubeAPI.NoResultException e){
                 event.getTextChannel().sendMessage(Message.ERROR(event, "No results found for: " + Tools.listToString(arg, " ")).build()).queue();

@@ -52,7 +52,6 @@ public class Slots implements Command {
     }
 
     private String genSlots(int[] result){
-        System.out.println(slots.length);
         String s = "";
         for (int i = 0; i < 3; i++){
             if (i != 0)

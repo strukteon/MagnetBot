@@ -146,8 +146,7 @@ public class ControlPanel extends ListenerAdapter implements Command {
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
         if (activePanels.contains(event.getChannel().getMessageById(event.getMessageId()).complete()) && !event.getUser().getId().equals(event.getJDA().getSelfUser().getId())){
             event.getReaction().removeReaction(event.getUser()).queue();
-            System.out.println(event.getReactionEmote().getName());
-            TrackScheduler scheduler = AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
+                        TrackScheduler scheduler = AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler;
 
             if (event.getMember().getVoiceState().getChannel() == event.getGuild().getMember(event.getJDA().getSelfUser()).getVoiceState().getChannel())
             switch (actions.indexOf(event.getReactionEmote().getName())){

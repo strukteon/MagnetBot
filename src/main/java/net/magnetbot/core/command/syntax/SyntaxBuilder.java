@@ -81,7 +81,6 @@ public class SyntaxBuilder {
                         curElem++;
                     }
                 } catch (SyntaxValidateException exception){
-                    System.out.println(e.isOptional);
                     if (e.isOptional){
 
                         syntax.put(e.element.getName(), null);

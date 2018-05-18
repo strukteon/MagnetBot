@@ -38,7 +38,6 @@ public class Chat {
     public static Map<Integer, String> names;
 
     public static String getName(int pLvl){
-        names.entrySet().forEach(integerStringEntry -> System.out.println(integerStringEntry.getKey() + ": " + integerStringEntry.getValue()));
         return names.get(pLvl);
     }
 

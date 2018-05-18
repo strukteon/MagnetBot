@@ -92,7 +92,6 @@ public class SyntaxValidator {
                 throw new SyntaxValidateException(SyntaxValidateException.Cause.NOT_FOUND);
             else {
                 List<Member> possibles = guild.getMembersByName(toValidate, true);
-                System.out.println(possibles.size());
                 if (possibles.size() == 0) {
                     for (Member m : guild.getMembers())
                         if (m.getEffectiveName().toLowerCase().contains(toValidate.toLowerCase()))
@@ -121,9 +120,7 @@ public class SyntaxValidator {
             if (Tools.isMention(toValidate) || Tools.isId(toValidate))
                 throw new SyntaxValidateException(SyntaxValidateException.Cause.NOT_FOUND);
             else {
-                System.out.println(Tools.isChannelMention(toValidate));
                 List<TextChannel> possibles = guild.getTextChannelsByName(toValidate, true);
-                System.out.println(possibles.toString());
                 if (possibles.size() == 0) {
                     for (TextChannel c : guild.getTextChannels())
                         if (c.getName().toLowerCase().contains(toValidate.toLowerCase()))
