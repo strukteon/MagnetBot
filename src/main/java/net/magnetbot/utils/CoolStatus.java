@@ -24,7 +24,9 @@ public class CoolStatus extends Thread {
             "magnetbot.net",
             "{%GUILDS%} servers!",
             "{%USERS%} users!",
-            "patreon.com/strukteon"
+            "patreon.com/strukteon",
+            "Much wow",
+            "Fun included!"
     };
 
     public CoolStatus(JDA jda){
