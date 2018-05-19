@@ -1,4 +1,4 @@
-package net.magnetbot.commands.general;
+package net.magnetbot.commands.tools;
 /*
     Created by nils on 04.03.2018 at 19:28.
     
