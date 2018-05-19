@@ -16,6 +16,7 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.core.sql.GuildSQL;
+import net.magnetbot.utils.WelcomeImageUtil;
 import org.apache.commons.io.IOUtils;
 import net.magnetbot.utils.Static;
 
@@ -57,17 +58,7 @@ public class Welcome extends ListenerAdapter implements Command {
 
             if (channel != null){
                 User user = event.getMember().getUser();
-                File temp = File.createTempFile("welcome-", ".png");
-                URL url = new URL("http://" + Static.API_BASEURL + "/images/welcome/?user="+user.getName()+
-                        "&discrim="+user.getDiscriminator()+
-                        "&member="+event.getGuild().getMembers().size()+"&url=" + URLEncoder.encode(user.getEffectiveAvatarUrl(), "UTF-8"));
-                URLConnection connection = url.openConnection();
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                connection.connect();
-
-                OutputStream outputStream = new FileOutputStream(temp);
-                IOUtils.copy(connection.getInputStream(), outputStream);
-                outputStream.close();
+                File temp = new WelcomeImageUtil(user.getEffectiveAvatarUrl(), user.getName(), user.getDiscriminator()).getFile();
 
                 channel.sendFile(temp).queue();
                 temp.delete();
