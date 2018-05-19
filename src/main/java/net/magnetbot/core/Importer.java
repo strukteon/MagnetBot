@@ -55,16 +55,13 @@ public class Importer {
                         new About(),
                         new Bio(),
                         new Credits(),
-                        new DecToHex(),
                         new Help(),
-                        new HexToDec(),
                         new Invite(),
                         new Profile(),
                         new Server(),
-                        new Stats(),
+                        new Stats()
                      //   new Shorten(),
-                        new WhoAmI(),
-                        new WhoIs())
+                                )
 
                 .addSection("Money",
                         new DailyReward(),
@@ -73,7 +70,11 @@ public class Importer {
 
                 .addSection("Tools",
                         new AddEmote(),
-                        new Poll())
+                        new DecToHex(),
+                        new HexToDec(),
+                        new Poll(),
+                        new WhoAmI(),
+                        new WhoIs())
 
                 .addSection("Music",
                         new ControlPanel(),
