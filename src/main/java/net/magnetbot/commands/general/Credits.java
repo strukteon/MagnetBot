@@ -19,7 +19,7 @@ public class Credits implements Command {
         EmbedBuilder b = Message.INFO(event, "");
         b.setDescription("This is a list of projects and users who inspired or helped me")
                 .addField("Inspirations:",
-                        "[Rxsto](https://rxsto.github.com) - *the idea of the **control panel** is from him*"
+                        "[Rxsto](https://rxsto.github.io) - *the idea of the **control panel** is from him*"
                 , false);
 
         event.getChannel().sendMessage(b.build()).queue();
