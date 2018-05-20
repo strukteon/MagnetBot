@@ -4,12 +4,6 @@ package net.magnetbot.utils;
     
     (c) nils 2018
 */
-
-import ij.ImageJ;
-import ij.ImageJApplet;
-import net.magnetbot.core.command.ParsedCommandEvent;
-import org.apache.poi.util.TempFile;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.TextLayout;
