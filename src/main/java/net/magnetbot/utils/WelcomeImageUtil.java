@@ -26,7 +26,7 @@ public class WelcomeImageUtil {
     public WelcomeImageUtil(String avatarUrl, String username, String discriminator){
 
         try {
-            background = ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
+            background = ImageIO.read(new File("/root/cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
             avatarCircle = /*ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));*/new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
             avatar = ImageIO.read(new URL(avatarUrl));//ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\magnet-logo.png"));
         } catch (IOException e) {
