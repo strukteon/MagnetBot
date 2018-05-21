@@ -5,20 +5,19 @@ package net.magnetbot.core.sql;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
+import net.magnetbot.MagnetBot;
 import net.magnetbot.utils.Static;
 
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class UserSQL {
     private static MySQL mySQL;
     private static String table = "users";
-    private static String[] columns = {"id", "bio", "money", "permissions", "lastdaily"};
+    private static String[] columns = {"id", "bio", "money", "permissions", "lastdaily", "badges", "command_count"};
 
     private String userid;
 
@@ -59,7 +58,7 @@ public class UserSQL {
     }
 
     public void create(){
-        mySQL.INSERT(table, "`id`, `bio`, `money`, `permissions`, `lastdaily`", String.format("'%s', 'no bio set', 0, '', '%s'", userid, Static.DATE_FORMAT.format(new Date(0))));
+        mySQL.INSERT(table, "`id`, `bio`, `money`, `permissions`, `lastdaily`, `badges`, `command_count`", String.format("'%s', 'no bio set', 0, '', '%s', '', 0", userid, Static.DATE_FORMAT.format(new Date(0))));
     }
 
 
@@ -88,6 +87,21 @@ public class UserSQL {
         return Arrays.asList(perms.split(" "));
     }
 
+    public List<Badge> getBadges(){
+        List<Badge> badges = new ArrayList<>();
+        Arrays.asList(mySQL.SELECT("*", table, "id='"+userid+"'").get("badges").split(" "))
+            .forEach(s -> badges.add(Badge.valueOf(s)));
+        return badges;
+    }
+
+    public long getCommandCount(){
+        return Long.parseLong(mySQL.SELECT("*", table, "id='"+userid+"'").get("command_count"));
+    }
+
+
+    public void increaseCommandCount(){
+        mySQL.UPDATE(table, "command_count=command_count+1", "id='"+userid+"'");
+    }
 
     public void setBio(String bio){
         mySQL.UPDATE(table, "bio='"+bio.replace("'", "\\'")+"'", "id='"+userid+"'");
@@ -99,6 +113,13 @@ public class UserSQL {
 
     public void setLastDaily(Date date){
         mySQL.UPDATE(table, "lastdaily='"+Static.DATE_FORMAT.format(date)+"'", "id='"+userid+"'");
+    }
+
+    public void setBadges(List<Badge> badges){
+        StringBuilder b = new StringBuilder();
+        badges.forEach(badge -> b.append(badge.name()).append(" "));
+        b.deleteCharAt(b.length()-1);
+        mySQL.UPDATE(table, "badges='"+b.toString()+"'", "id='"+userid+"'");
     }
 
     public void setPermissions(List<String> permissions){
@@ -126,4 +147,33 @@ public class UserSQL {
             setPermissions(permissions);
         }
     }
+
+    public enum Badge {
+        DEVELOPER("Developer", "One of the core developers of the bot", Static.Emotes.BADGE_DEVELOPER),
+        STAFF("Staff", "Staff member of the bot", Static.Emotes.BADGE_STAFF),
+        BETA_USER("Beta user", "Used this bot before june 2018", Static.Emotes.BADGE_BETA);
+
+        private String title;
+        private String description;
+        private String emoteId;
+
+        Badge(String title, String description, String emoteId){
+            this.title = title;
+            this.description = description;
+            this.emoteId = emoteId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Emote getEmote(){
+            return MagnetBot.getJDA().getEmoteById(emoteId);
+        }
+    }
+
 }

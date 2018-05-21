@@ -5,13 +5,17 @@ package net.magnetbot.utils;
     (c) nils 2017
 */
 
+import net.dv8tion.jda.core.entities.Emote;
+import net.magnetbot.MagnetBot;
 import net.magnetbot.core.Importer;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Static {
 
@@ -24,6 +28,7 @@ public class Static {
     public static final OnlineStatus STATUS = OnlineStatus.ONLINE;
 
     public static final String BOT_OWNER_ID = "262951897290244096";
+    public static final List<String> DEVELOPERS = Arrays.asList(new String[]{"262951897290244096"});
 
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -63,6 +68,13 @@ public class Static {
 
         public static final java.awt.Color ORANGE = java.awt.Color.decode("#F0B958");
 
+    }
+
+    public static class Emotes {
+        public static final String BADGE_PATREON = "447692031343460363";
+        public static final String BADGE_DEVELOPER = "447703680205062156";
+        public static final String BADGE_STAFF = "447874296862474241";
+        public static final String BADGE_BETA = "447876850174132235";
     }
 
 }

@@ -35,6 +35,10 @@ public class Syntax extends HashMap<String, Object> {
         return (int) this.get(name);
     }
 
+    public long getAsLong(String name){
+        return (long) this.get(name);
+    }
+
     public String getAsString(String name){
         return (String) this.get(name);
     }

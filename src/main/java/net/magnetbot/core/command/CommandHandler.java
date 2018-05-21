@@ -12,6 +12,7 @@ import net.magnetbot.core.command.syntax.SyntaxBuilder;
 import net.magnetbot.core.command.syntax.SyntaxHandler;
 import net.magnetbot.core.command.syntax.SyntaxValidateException;
 import net.magnetbot.core.sql.PremiumSQL;
+import net.magnetbot.core.sql.UserSQL;
 import net.magnetbot.core.tools.Tools;
 import net.magnetbot.utils.Static;
 
@@ -41,6 +42,13 @@ public class CommandHandler {
                     Chat.CommandInfo cmdInfo = command.commandInfo();
 
                     if (cmdInfo.command.equals(cmd) || cmdInfo.cmdAlias.contains(cmd)) {
+
+                        try {
+                            UserSQL userSQL = UserSQL.fromUser(event.getAuthor());
+                            userSQL.increaseCommandCount();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
 
                         boolean premiumOk = !cmdInfo.isPremium || PremiumSQL.fromUser(event.getAuthor()).isPremium();
                         boolean permsOk = Chat.permissionLevel(event) >= cmdInfo.permissionLevel;
