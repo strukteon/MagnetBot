@@ -26,7 +26,7 @@ public class WelcomeImageUtil {
     public WelcomeImageUtil(String avatarUrl, String username, String discriminator){
 
         try {
-            background = ImageIO.read(new File("/root/cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
+            background = ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
             avatarCircle = /*ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));*/new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
             URLConnection connection = new URL(avatarUrl).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -37,7 +37,7 @@ public class WelcomeImageUtil {
         }
         String text = "Welcome, "+username+"#"+discriminator;
         Graphics2D g = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
-        g.setFont(new Font("TimesRoman", Font.BOLD, 72));
+        g.setFont(new Font("Arial", Font.BOLD, 72));
         int width = g.getFontMetrics().stringWidth(text);
 
         background = scale(background, Math.max(1024, width+128), 1024);
@@ -62,7 +62,7 @@ public class WelcomeImageUtil {
         txtfield.setPaint(new Color(0));
         txtfield.fillRect(0, 0, background.getWidth(), 1024/4);
         txtfield.setPaint(new Color(255, 255, 255));
-        txtfield.setFont(new Font("TimesRoman", Font.BOLD, 72));
+        txtfield.setFont(new Font("Arial", Font.BOLD, 72));
 
 
         txtfield.drawString(text, 64, 1024/7);
