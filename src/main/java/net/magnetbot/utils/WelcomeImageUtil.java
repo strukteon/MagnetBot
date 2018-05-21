@@ -26,7 +26,7 @@ public class WelcomeImageUtil {
     public WelcomeImageUtil(String avatarUrl, String username, String discriminator){
 
         try {
-            background = ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
+            background = ImageIO.read(new File("/root/cool-bg.jpg"));//new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
             avatarCircle = /*ImageIO.read(new File("C:\\Users\\nilss\\Desktop\\cool-bg.jpg"));*/new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
             URLConnection connection = new URL(avatarUrl).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
