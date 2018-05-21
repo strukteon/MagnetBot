@@ -66,11 +66,12 @@ public class Profile implements Command {
         perms = perms.equals("") ? "none" : perms;
 
         EmbedBuilder builder = Message.INFO(event);
-            builder.setAuthor(PlayerUtil.getUserAndDiscrim(u) + " profile", "https://magnetbot.net/stats/user?userid=" + u.getId(), u.getEffectiveAvatarUrl());
+            builder.setAuthor(u.getName() + (u.getName().endsWith("s") ? "'" : "'s") + " profile", "https://magnetbot.net/stats/user?userid=" + u.getId(), u.getEffectiveAvatarUrl());
 
             builder.addField(":label: Bio", "``" + userSQL.getBio() + "``", false)
                     .addField(":military_medal: Badges: " + badges.toString(), badgeTitles.toString(), false)
                     .addField(":moneybag: Money", "" + userSQL.getMoney() + " m$", true)
+                    .addField(":keyboard: Commands", "" + userSQL.getCommandCount(), true)
                     .addField(":wrench: Permissions", "``" + perms + "``", false);
 
 
