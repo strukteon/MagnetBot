@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.magnetbot.MagnetBot;
+import net.magnetbot.commands.settings.AutoRole;
 import net.magnetbot.utils.Static;
 
 import java.text.ParseException;
@@ -89,8 +90,10 @@ public class UserSQL {
 
     public List<Badge> getBadges(){
         List<Badge> badges = new ArrayList<>();
-        Arrays.asList(mySQL.SELECT("*", table, "id='"+userid+"'").get("badges").split(" "))
-            .forEach(s -> badges.add(Badge.valueOf(s)));
+        String content = mySQL.SELECT("*", table, "id='"+userid+"'").get("badges");
+        if (!content.equals(""))
+            Arrays.asList(mySQL.SELECT("*", table, "id='"+userid+"'").get("badges").split(" "))
+                    .forEach(s -> badges.add(Badge.valueOf(s)));
         return badges;
     }
 
