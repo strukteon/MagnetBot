@@ -219,6 +219,8 @@ public class TrackScheduler extends AudioEventAdapter {
                 if (queue.size() > 0){
                     player.startTrack(queue.poll().getTrack(), false);
                     CLI.debug("Next track started");
+                } else {
+                    AudioCore.disconnectFromVoiceChannel(lastEvent.getGuild().getAudioManager());
                 }
             }
     }
