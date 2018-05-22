@@ -202,8 +202,8 @@ public class TrackScheduler extends AudioEventAdapter {
         previousTrack = track;
         CLI.debug("onTrackEnd()");
         CLI.debug("Queue size: " + queue.size());
-        if (endReason.mayStartNext)
-            if (queue.size() <= 0 && mode == MODE_AUTOPLAY){
+        if (endReason.mayStartNext) {
+            if (queue.size() <= 0 && mode == MODE_AUTOPLAY) {
                 try {
                     CLI.debug(lastEvent);
                     CLI.debug(previousTrack);
@@ -216,12 +216,14 @@ public class TrackScheduler extends AudioEventAdapter {
                 }
             } else {
                 CLI.debug("May start next track");
-                if (queue.size() > 0){
+                if (queue.size() > 0) {
                     player.startTrack(queue.poll().getTrack(), false);
                     CLI.debug("Next track started");
-                } else {
-                    AudioCore.disconnectFromVoiceChannel(lastEvent.getGuild().getAudioManager());
                 }
             }
+        } else {
+            CLI.debug("AudioManager#closeConnection");
+            AudioCore.disconnectFromVoiceChannel(lastEvent.getGuild().getAudioManager());
+        }
     }
 }
