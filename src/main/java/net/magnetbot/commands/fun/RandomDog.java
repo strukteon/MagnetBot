@@ -18,14 +18,18 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class RandomDog implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         String apiUrl = "https://dog.ceo/api/breeds/image/random";
-        URL url = new URL(apiUrl);
 
-        JsonElement element = new JsonParser().parse(new InputStreamReader(url.openStream()));
+        URLConnection connection = new URL(apiUrl).openConnection();
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+        connection.connect();
+
+        JsonElement element = new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
 
         JsonObject dog = element.getAsJsonObject();
 
