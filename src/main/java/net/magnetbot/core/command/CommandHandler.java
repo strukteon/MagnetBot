@@ -72,7 +72,9 @@ public class CommandHandler {
                                 public void onFinish(Syntax syntax) {
                                     try {
                                         command.action(event, syntax);
-                                        event.getMessage().delete().queue();
+                                        try {
+                                            event.getMessage().delete().queue();
+                                        } catch (Exception ignored){ }
                                     } catch (Exception e) {
                                         submitError(event, cmd, e);
                                         e.printStackTrace();
