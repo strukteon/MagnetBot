@@ -4,6 +4,10 @@
 [![Server Count](https://discordbots.org/api/widget/servers/389016516261314570.svg?noavatar=true)](https://discordbots.org/bot/389016516261314570)
 [![TravisCI Build](https://travis-ci.org/strukteon/MagnetBot.svg?branch=master)](https://travis-ci.org/strukteon/MagnetBot)
 
+
+© Strukteon 2018
+If you want to use parts of the Program, [contact me](mailto:mail@strukteon.me) first! Unauthorized use prohibited!
+
 ## Commands
 
 A brief documentation about the commands can be found [here](https://magnetbot.net/documentation), or by typing the command ``m.help``.
