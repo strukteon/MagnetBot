@@ -5,8 +5,10 @@
 [![TravisCI Build](https://travis-ci.org/strukteon/MagnetBot.svg?branch=master)](https://travis-ci.org/strukteon/MagnetBot)
 
 
-© Strukteon 2018
+© [Strukteon](https://strukteon.me) 2018
+
 If you want to use parts of the Program, [contact me](mailto:mail@strukteon.me) first! Unauthorized use prohibited!
+
 
 ## Commands
 
