@@ -19,14 +19,17 @@ import net.magnetbot.core.command.syntax.SyntaxElementType;
 
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class Pat implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         String apiUrl = "https://nekos.life/api/v2/img/pat";
-        URL url = new URL(apiUrl);
+        URLConnection connection = new URL(apiUrl).openConnection();
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+        connection.connect();
 
-        JsonElement element = new JsonParser().parse(new InputStreamReader(url.openStream()));
+        JsonElement element = new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
 
         EmbedBuilder builder = Message.INFO(event);
 
