@@ -5,9 +5,13 @@ package net.magnetbot;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.bot.sharding.DefaultShardManager;
+import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.commands.music.ControlPanel;
 import net.magnetbot.core.CLI;
@@ -40,6 +44,17 @@ public class MagnetBot {
         Runtime.getRuntime().addShutdownHook(new ShutdownThread());
         startTime = System.currentTimeMillis();
 
+        System.out.println(CLI.BLUE +
+                " __    __     ______     ______     __   __     ______     ______  \n" +
+                "/\\ \"-./  \\   /\\  __ \\   /\\  ___\\   /\\ \"-.\\ \\   /\\  ___\\   /\\__  _\\ \n" +
+                "\\ \\ \\-./\\ \\  \\ \\  __ \\  \\ \\ \\__ \\  \\ \\ \\-.  \\  \\ \\  __\\   \\/_/\\ \\/ \n" +
+                " \\ \\_\\ \\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\    \\ \\_\\ \n" +
+                "  \\/_/  \\/_/   \\/_/\\/_/   \\/_____/   \\/_/ \\/_/   \\/_____/     \\/_/ \n" +
+                "                                                                  ");
+
+        System.err.close();
+        System.setErr(System.out);
+
         if (args.length>0)
             if (args[0].equals("testing"))
                 isTestBot = true;
@@ -47,6 +62,7 @@ public class MagnetBot {
         SettingsLoader.init(new File((isTestBot?"C:\\Users\\nilss\\IdeaProjects\\MagnetBotV2\\testing.props":"/home/magnetbot.properties")));
 
         JDABuilder builder = new JDABuilder(AccountType.BOT);
+        builder.setGame(Game.listening("booting sound"));
         builder.setToken(Secret.TOKEN);
 
         Importer.init();
