@@ -23,7 +23,7 @@ import java.net.URL;
 public class Kiss implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        String apiUrl = "https://nekos.life/api/kiss";
+        String apiUrl = "https://nekos.life/api/v2/img/kiss";
         URL url = new URL(apiUrl);
 
         JsonElement element = new JsonParser().parse(new InputStreamReader(url.openStream()));

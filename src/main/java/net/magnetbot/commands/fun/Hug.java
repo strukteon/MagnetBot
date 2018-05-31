@@ -24,7 +24,7 @@ import java.net.URL;
 public class Hug implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        String apiUrl = "https://nekos.life/api/hug";
+        String apiUrl = "https://nekos.life/api/v2/img/hug";
         URL url = new URL(apiUrl);
 
         JsonElement element = new JsonParser().parse(new InputStreamReader(url.openStream()));
