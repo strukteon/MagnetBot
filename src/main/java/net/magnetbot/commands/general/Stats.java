@@ -26,16 +26,6 @@ public class Stats implements Command {
         Message deleteAfter = event.getChannel().sendMessage("This could take some time, please wait until I finished the calculations").complete();
         event.getChannel().sendTyping().queue();
 
-        List<String> users = new ArrayList<>();
-        List<String> bots = new ArrayList<>();
-        for (Guild g : event.getJDA().getGuilds())
-            g.getMembers().forEach(member -> {
-                if (!users.contains(member.getUser().getId()) && !member.getUser().isBot())
-                    users.add(member.getUser().getId());
-                else if (member.getUser().isBot())
-                    bots.add(member.getUser().getId());
-            });
-
         int guilds = event.getJDA().getGuilds().size();
         int textChannels = event.getJDA().getTextChannels().size();
         int voiceChannels = event.getJDA().getVoiceChannels().size();
@@ -55,7 +45,7 @@ public class Stats implements Command {
 
         EmbedBuilder builder = net.magnetbot.core.command.Message.INFO(event);
 
-        builder.addField("Generic Stats", "Users: ``" + users.size() + "``\nUsers + Bots: ``" + (users.size()+bots.size()) + "``\n" + "Guilds: ``" + guilds + "``", true)
+        builder.addField("Generic Stats", "Users: ``" + event.getJDA().getUsers().size() + "``\n" + "Guilds: ``" + guilds + "``", true)
                 .addField("Channel Stats", "TextChannels: ``" + textChannels + "``\n" + "VoiceChannels: ``" + voiceChannels + "``\n" + "PrivateChannels: ``" + privateChannels + "``", true)
                 .addBlankField(false)
                 .addField("Music Stats", "Guilds playing: ``" + playing + "``\n" + "Listeners: ``" + listeners + "``", true)
