@@ -10,6 +10,7 @@ import net.magnetbot.core.command.syntax.*;
 import net.magnetbot.core.Importer;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.utils.Static;
 
 public class Help implements Command {
 
@@ -17,7 +18,7 @@ public class Help implements Command {
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         String cmd = syntax.getAsString("command");
         if (cmd == null) {
-            EmbedBuilder builder = shortMsg(Message.INFO(event, ":information_source: Help", "Look at my **[documentation](https://magnetbot.net/documentation)**!\nFor a more detailed description about a command, type ``-m help <command>``"));
+            EmbedBuilder builder = shortMsg(Message.INFO(event, ":information_source: Help", "Look at my **[documentation](https://magnetbot.net/documentation)**!\nFor a more detailed description about a command, type ``"+ Static.PREFIX+"help <command>``"));
             event.getTextChannel().sendMessage(builder.build()).queue();
         } else {
             boolean exists = false;
@@ -109,15 +110,19 @@ public class Help implements Command {
             out.append("\t<section name=\"" + s + "\">\n\n");
             for (Command c : CommandHandler.commands.get(s)) {
                 Chat.CommandInfo cmdInfo = c.commandInfo();
-                out .append("\t\t<command>\n")
-                    .append("\t\t\t<name>" + cmdInfo.command + "</name>\n")
-                    .append("\t\t\t<syntax>" + cmdInfo.command + " " + cmdInfo.syntaxBuilder.toString() + "</syntax>\n")
-                    .append("\t\t\t<info>" + cmdInfo.help + "</info>\n")
-                    .append("\t\t\t<premium>\n")
-                    .append("\t\t\t\t<isPremium>" + cmdInfo.isPremium  +"</isPremium>\n")
-                    .append("\t\t\t</premium>\n")
-                    .append("\t\t\t<permissionLevel>" + cmdInfo.permissionLevel + "</permissionLevel>\n")
-                    .append("\t\t</command>\n\n");
+                try {
+                    out.append("\t\t<command>\n")
+                            .append("\t\t\t<name>" + cmdInfo.command + "</name>\n")
+                            .append("\t\t\t<syntax>" + cmdInfo.command + " " + cmdInfo.syntaxBuilder.toString() + "</syntax>\n")
+                            .append("\t\t\t<info>" + cmdInfo.help + "</info>\n")
+                            .append("\t\t\t<premium>\n")
+                            .append("\t\t\t\t<isPremium>" + cmdInfo.isPremium + "</isPremium>\n")
+                            .append("\t\t\t</premium>\n")
+                            .append("\t\t\t<permissionLevel>" + cmdInfo.permissionLevel + "</permissionLevel>\n")
+                            .append("\t\t</command>\n\n");
+                } catch (Exception e){
+                    e.printStackTrace();
+            }
             }
             out.append("\t</section>\n\n");
         }
