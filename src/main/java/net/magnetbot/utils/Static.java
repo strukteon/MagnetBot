@@ -23,9 +23,10 @@ public class Static {
 
     public static final String PREFIX = "m.";
 
-    public static final Game GAME = Game.watching( VERSION + " | " + PREFIX + " help");
+    public static int SHARD_ID = 0;
+    public static int SHARD_COUNT = 1;
 
-    public static final OnlineStatus STATUS = OnlineStatus.ONLINE;
+
 
     public static final String BOT_OWNER_ID = "262951897290244096";
     public static final List<String> DEVELOPERS = Arrays.asList(new String[]{"262951897290244096"});

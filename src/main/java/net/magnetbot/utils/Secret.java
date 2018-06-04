@@ -14,6 +14,8 @@ public class Secret {
 
     public static String YOUTUBE_APIKEY = "no access 4 you";
 
+    public static String PASTEBIN_APIKEY = "87eae51b4b0615af5b88f62e6647784c";
+
 
     public static String SQL_USER = "magnetbot?";
 

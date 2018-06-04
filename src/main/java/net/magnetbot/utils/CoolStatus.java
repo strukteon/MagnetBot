@@ -5,11 +5,14 @@ package net.magnetbot.utils;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.magnetbot.utils.Static;
 
+import javax.security.auth.login.LoginException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,14 +32,23 @@ public class CoolStatus extends Thread {
             "Fun included!"
     };
 
-    public CoolStatus(JDA jda){
-        this(jda, 30000);
+    public CoolStatus(){
+        this(30000);
     }
 
-    public CoolStatus(JDA jda, long period){
+    public CoolStatus(long period){
         this.timer = new Timer();
         this.period = period;
-        this.jda = jda;
+
+        JDABuilder builder = new JDABuilder(AccountType.BOT);
+        builder.setToken(Secret.TOKEN);
+        try {
+            this.jda = builder.buildBlocking();
+        } catch (LoginException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start(){

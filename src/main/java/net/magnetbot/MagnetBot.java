@@ -4,27 +4,18 @@ package net.magnetbot;
     
     (c) nils 2018
 */
-
-import net.dv8tion.jda.bot.sharding.DefaultShardManager;
-import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.magnetbot.audio.AudioCore;
-import net.magnetbot.commands.music.ControlPanel;
 import net.magnetbot.core.CLI;
 import net.magnetbot.core.Importer;
 import net.magnetbot.core.SettingsLoader;
-import net.magnetbot.core.command.syntax.Syntax;
-import net.magnetbot.core.sql.GuildSQL;
 import net.magnetbot.core.sql.MySQL;
-import net.magnetbot.listeners.CommandListener;
 import net.magnetbot.utils.Secret;
+import net.magnetbot.utils.Static;
 import org.discordbots.api.client.DiscordBotListAPI;
-
-import javax.security.auth.login.LoginException;
 import java.io.File;
 
 public class MagnetBot {
@@ -62,6 +53,12 @@ public class MagnetBot {
         SettingsLoader.init(new File((isTestBot?"C:\\Users\\nilss\\IdeaProjects\\MagnetBotV2\\testing.props":"/home/magnetbot.properties")));
 
         JDABuilder builder = new JDABuilder(AccountType.BOT);
+        try {
+            builder.useSharding(Static.SHARD_ID, Static.SHARD_COUNT);
+        } catch (IllegalArgumentException e){
+            CLI.error("Could not use sharding, invalid id/count provided");
+        }
+
         builder.setGame(Game.listening("booting sound"));
         builder.setToken(Secret.TOKEN);
 

@@ -17,6 +17,7 @@ import net.magnetbot.core.CLI;
 import net.magnetbot.core.sql.*;
 import net.magnetbot.utils.CoolStatus;
 import net.magnetbot.utils.Secret;
+import net.magnetbot.utils.Static;
 import org.discordbots.api.client.DiscordBotListAPI;
 
 import java.sql.Connection;
@@ -45,7 +46,6 @@ public class ReadyListener extends ListenerAdapter {
 
         CLI.info(+users+ " Users, " + jda.getUsers().size() + " Online (" + Math.round(jda.getUsers().size()/(float)users*100) + "%)");
 
-        new CoolStatus(jda).start();
         CoolStatus.OnlineState onlineState = new CoolStatus.OnlineState();
 
         if (MagnetBot.isTestBot)
@@ -85,7 +85,8 @@ public class ReadyListener extends ListenerAdapter {
             }
         }, 500*1000, 500*1000);
 
-        new CoolStatus(event.getJDA()).start();
+        if (Static.SHARD_ID == 0)
+            new CoolStatus().start();
 
     }
 }

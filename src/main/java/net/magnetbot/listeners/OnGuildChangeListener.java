@@ -39,7 +39,7 @@ public class OnGuildChangeListener extends ListenerAdapter {
         updateStats(event.getJDA());
     }
 
-    public static void updateStats(JDA jda){
-        MagnetBot.dblAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size());
+    private static void updateStats(JDA jda){
+        MagnetBot.dblAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size(), Static.SHARD_ID, Static.SHARD_COUNT);
     }
 }

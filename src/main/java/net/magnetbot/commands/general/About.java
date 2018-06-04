@@ -22,31 +22,16 @@ public class About implements Command {
         EmbedBuilder builder = Message.INFO(event);
         JDA jda = event.getJDA();
 
-        int userCount = 0;
-        for (Guild g : jda.getGuilds())
-            userCount += g.getMembers().size();
-
-        int playing = 0;
-        int listeners = 0;
-        for (Guild g : jda.getGuilds())
-            if (g.getAudioManager().isConnected()) {
-                playing++;
-                listeners += g.getAudioManager().getConnectedChannel().getMembers().size()-1;
-            }
-
         builder .setAuthor(jda.getSelfUser().getName(), "https://magnetbot.net", jda.getSelfUser().getEffectiveAvatarUrl())
                 .setDescription("I'm **Magnet**, a **feature-rich discord bot**. I can **play music**, provide **administration tools** and even more.\n" +
                         "If you need support on something, feel free to **join our Server: https://discord.gg/uAT7uUb**\n\n" +
                         "Here are some Informations about me:\n" +
-                        "I am **running on " + jda.getGuilds().size() + " Servers**, on which are **" + userCount + " Users**. **" +
-                        jda.getUsers().size() + "** are online (" + ( 100 * jda.getUsers().size() / userCount) + "%).\n" +
-                        "I am currently playing in **" + playing + " VoiceChannels** and **" + listeners + " are listening**." +
-                        "" +
+                        "If you would like to know my **Statistics**, type ``m.stats``." +
                         "\n\n\n\u00A9 [strukteon](https://strukteon.me)#7237\n" +
-                        "\tWebsite: https://magnetbot.net/\n" +
-                        "\tPoll: https://discordbots.org/bot/389016516261314570/vote\n" +
-                        "\tGitHub: https://github.com/strukteon/MagnetBot\n" +
-                        "\tInvite me: https://magnetbot.net/redirect?rel=invite");
+                        "\tWebsite: [magnetbot.net](https://magnetbot.net/)\n" +
+                        "\tVote: [discordbots.org](https://discordbots.org/bot/389016516261314570/vote)\n" +
+                        "\tGitHub: [strukteon/MagnetBot](https://github.com/strukteon/MagnetBot)\n" +
+                        "\tInvite me: [Click here](https://magnetbot.net/redirect?rel=invite)");
         event.getTextChannel().sendMessage(builder.build()).queue();
     }
 
