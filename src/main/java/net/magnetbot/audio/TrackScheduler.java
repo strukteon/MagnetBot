@@ -111,7 +111,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void skip(){
-        player.stopTrack();
+        player.startTrack(queue.poll().getTrack(), false);
         CLI.debug("Skipping...");
     }
 
@@ -221,7 +221,7 @@ public class TrackScheduler extends AudioEventAdapter {
                     CLI.debug("Next track started");
                 }
             }
-        } else {
+        } else if (player.getPlayingTrack() == null) {
             CLI.debug("AudioManager#closeConnection");
             AudioCore.disconnectFromVoiceChannel(lastEvent.getGuild().getAudioManager());
         }
