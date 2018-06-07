@@ -138,7 +138,42 @@ public class MySQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-      return finalSql.length() != 0;
+        return finalSql.length() != 0;
+    }
+
+    /**
+     * Drop/Add columns to table until it matches with given columns
+     * @param table tablename
+     * @param columns final columns the table should have
+     * @param types column types
+     * @return boolean anything changed
+     */
+    public boolean MATCH_COLUMNS(String table, String[] columns, String[] types){
+        List<String> sourceColumns = new ArrayList<>();
+        List<String> endColumns = Arrays.asList(columns);
+        StringBuilder finalSql = new StringBuilder();
+        try {
+            PreparedStatement ps = connection.prepareStatement(String.format("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='%s' AND NOT COLUMN_NAME='USER' AND NOT COLUMN_NAME='CURRENT_CONNECTIONS' AND NOT COLUMN_NAME='TOTAL_CONNECTIONS'", table));
+
+            ResultSet res = ps.executeQuery();
+
+            while (res.next())
+                sourceColumns.add(res.getString("COLUMN_NAME"));
+
+            for (String s : sourceColumns)
+                if (!endColumns.contains(s))
+                    finalSql.append(String.format("alter table `%s` drop column `%s`; ", table, s));
+
+            for (String s : endColumns)
+                if (!sourceColumns.contains(s))
+                    finalSql.append(String.format("alter table `%s` add column `%s` " + types[endColumns.indexOf(s)] + "; ", table, s));
+
+            if (finalSql.length() != 0)
+                connection.createStatement().execute(finalSql.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return finalSql.length() != 0;
     }
 
 

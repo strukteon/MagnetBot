@@ -19,6 +19,7 @@ public class UserSQL {
     private static MySQL mySQL;
     private static String table = "users";
     private static String[] columns = {"id", "bio", "money", "permissions", "lastdaily", "badges", "command_count"};
+    private static String[] columnTypes = {"text", "bigint", "text", "text", "text", "int"};
 
     private String userid;
 
@@ -28,7 +29,7 @@ public class UserSQL {
         if (!mySQL.TABLE_EXISTS(table))
             mySQL.CREATE_TABLE(table, columns);
 
-        mySQL.MATCH_COLUMNS(table, columns);
+        mySQL.MATCH_COLUMNS(table, columns, columnTypes);
     }
 
 

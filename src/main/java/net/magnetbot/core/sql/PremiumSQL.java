@@ -54,7 +54,7 @@ public class PremiumSQL {
     }
 
     public void create(){
-        mySQL.INSERT(table, "`id`, `premiumtype`, `streak`, `lastvote`", String.format("'%s', 'none', 0, '', '%s'", userid, Static.DATE_FORMAT.format(new Date(0))));
+        mySQL.INSERT(table, "`id`, `premiumtype`, `streak`, `lastvote`", String.format("'%s', 'none', 0, '%s'", userid, Static.DATE_FORMAT.format(new Date(0))));
     }
 
 
@@ -69,6 +69,10 @@ public class PremiumSQL {
 
     public boolean isPremium(){
         return !getPremiumType().equals(PremiumType.NONE);
+    }
+
+    public boolean isPatron(){
+        return getPremiumType().equals(PremiumType.PATRON);
     }
 
     public int getStreak(){
