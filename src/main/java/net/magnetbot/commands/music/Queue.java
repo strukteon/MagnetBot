@@ -31,8 +31,10 @@ public class Queue implements Command {
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         GuildMusicManager manager = AudioCore.getGuildAudioPlayer(event.getGuild());
         List<AudioInfo> queue = new ArrayList<>(manager.scheduler.getQueue());
-
-        if (queue.size() < 1 && manager.scheduler.getCurrentTrack() == null){
+        System.out.println(queue.size());
+        System.out.println(manager.scheduler.getCurrentTrack().getEvent());
+        System.out.println(manager.scheduler.getCurrentTrack().getTrack());
+        if (queue.size() < 1 && (manager.scheduler.getCurrentTrack() == null || manager.scheduler.getCurrentTrack().getEvent() == null)){
             event.getTextChannel().sendMessage(Message.INFO(event, ":musical_note: Infos about the queue", "The current queue is empty!").build()).queue();
         } else {
             EmbedBuilder builder = Message.INFO(event);

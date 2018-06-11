@@ -7,6 +7,7 @@ package net.magnetbot.commands.music;
 
 import net.magnetbot.audio.TrackScheduler;
 import net.magnetbot.core.command.Command;
+ import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.audio.AudioCore;
@@ -24,7 +25,7 @@ public class Stop implements Command {
             AudioCore.stop(event.getGuild());
             event.getTextChannel().sendMessage(Message.INFO(event, "Stopped the media playback").build()).queue();
         } else {
-            event.getTextChannel().sendMessage(Message.ERROR(event, "Could not stop media playback").build()).queue();
+            event.getTextChannel().sendMessage(Message.ERROR(event, "There is no song playing.").build()).queue();
         }
     }
 

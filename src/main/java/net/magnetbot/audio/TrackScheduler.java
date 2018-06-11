@@ -111,8 +111,12 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void skip(){
-        player.startTrack(queue.poll().getTrack(), false);
         CLI.debug("Skipping...");
+        if (queue.size() > 0)
+            player.startTrack(queue.poll().getTrack(), false);
+        else
+            player.stopTrack();
+
     }
 
     public boolean isPlaying(boolean ignorePause){
@@ -202,27 +206,23 @@ public class TrackScheduler extends AudioEventAdapter {
         previousTrack = track;
         CLI.debug("onTrackEnd()");
         CLI.debug("Queue size: " + queue.size());
-        if (endReason.mayStartNext) {
-            if (queue.size() <= 0 && mode == MODE_AUTOPLAY) {
-                try {
-                    CLI.debug(lastEvent);
-                    CLI.debug(previousTrack);
-                    com.google.api.services.youtube.model.SearchResult result = YouTubeAPI.relatedVideo(previousTrack.getIdentifier());
-                    CLI.debug(result);
-                    AudioCore.load(lastEvent, result.getId().getVideoId(), null, false);
-                    CLI.debug("mode == AUTOPLAY");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                CLI.debug("May start next track");
-                if (queue.size() > 0) {
-                    player.startTrack(queue.poll().getTrack(), false);
-                    CLI.debug("Next track started");
-                }
+        if (endReason.mayStartNext && queue.size() <= 0 && mode == MODE_AUTOPLAY) {
+            try {
+                CLI.debug(lastEvent);
+                CLI.debug(previousTrack);
+                com.google.api.services.youtube.model.SearchResult result = YouTubeAPI.relatedVideo(previousTrack.getIdentifier());
+                CLI.debug(result);
+                AudioCore.load(lastEvent, result.getId().getVideoId(), null, false);
+                CLI.debug("mode == AUTOPLAY");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else if (endReason.mayStartNext && queue.size() > 0) {
+            player.startTrack(queue.poll().getTrack(), false);
+            CLI.debug("Next track started");
         } else if (player.getPlayingTrack() == null) {
             CLI.debug("AudioManager#closeConnection");
+            CLI.debug(lastEvent);
             AudioCore.disconnectFromVoiceChannel(lastEvent.getGuild().getAudioManager());
         }
     }
