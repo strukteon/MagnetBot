@@ -6,6 +6,7 @@ package net.magnetbot.commands.settings;
 */
 
 import net.magnetbot.core.command.Command;
+ import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.core.command.syntax.*;
@@ -17,15 +18,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.core.sql.GuildSQL;
 import net.magnetbot.utils.WelcomeImageUtil;
-import org.apache.commons.io.IOUtils;
-import net.magnetbot.utils.Static;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 
 public class Welcome extends ListenerAdapter implements Command {
     @Override
@@ -68,6 +62,11 @@ public class Welcome extends ListenerAdapter implements Command {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.MANAGE_SERVER};
     }
 
     @Override

@@ -5,6 +5,7 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.magnetbot.audio.AudioCore;import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.PermissionLevel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -17,6 +18,11 @@ public class Leave implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         AudioCore.disconnectFromVoiceChannel(event.getGuild().getAudioManager());
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Join().requiredUserPerms();
     }
 
     @Override

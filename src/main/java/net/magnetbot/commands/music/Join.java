@@ -5,6 +5,7 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.magnetbot.MagnetBot;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.core.command.PermissionLevel;
@@ -19,6 +20,11 @@ public class Join implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
         AudioCore.connectToVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.VOICE_MOVE_OTHERS};
     }
 
     @Override

@@ -5,6 +5,7 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
@@ -27,6 +28,11 @@ public class Volume implements Command {
             AudioCore.getGuildAudioPlayer(event.getGuild()).scheduler.setVolume(volume);
             event.getTextChannel().sendMessage(Message.INFO(event, "Volume set to " + volume + "%").build()).queue();
         }
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.VOICE_MUTE_OTHERS};
     }
 
     @Override

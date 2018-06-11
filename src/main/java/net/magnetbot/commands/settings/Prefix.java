@@ -8,6 +8,7 @@ import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.core.command.syntax.*;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
+ import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.core.sql.GuildSQL;
@@ -29,6 +30,11 @@ public class Prefix implements Command {
             guildSQL.setPrefix(prefix);
             event.getTextChannel().sendMessage(Message.INFO(event, "The custom prefix has been set to: ``" + prefix + "``").build()).queue();
         }
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.MANAGE_SERVER};
     }
 
     @Override

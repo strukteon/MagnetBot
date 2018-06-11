@@ -5,6 +5,7 @@ package net.magnetbot.commands.admin;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -39,8 +40,16 @@ public class Clear implements Command {
                 messages.get(i).delete().queue((response) -> event.getTextChannel().sendMessage(net.magnetbot.core.command.Message.INFO(event, "Deleted ``" + messages.size() + "`` Messages").build()).queue());
             }
         }
+    }
 
+    @Override
+    public Permission[] requiredBotPerms() {
+        return new Permission[]{Permission.MESSAGE_MANAGE};
+    }
 
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.MESSAGE_MANAGE};
     }
 
     @Override

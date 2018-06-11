@@ -6,6 +6,7 @@ package net.magnetbot.commands.admin;
 */
 
 import net.magnetbot.core.command.Command;
+ import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.core.command.syntax.*;
 import net.magnetbot.core.command.Chat;
@@ -38,6 +39,16 @@ public class Unban implements Command {
         EmbedBuilder b = Message.ERROR(event, "Cannot unban a user that isn't banned!");
 
         event.getTextChannel().sendMessage(b.build()).queue();
+    }
+
+    @Override
+    public Permission[] requiredBotPerms() {
+        return new Ban().requiredBotPerms();
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+       return new Ban().requiredUserPerms();
     }
 
     @Override

@@ -7,6 +7,7 @@ package net.magnetbot.commands.admin;
 
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.PermissionLevel;
+import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.syntax.*;
 import net.magnetbot.core.command.Chat;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -35,6 +36,16 @@ public class Kick implements Command {
             b.addField("Reason:", reason, false);
 
         event.getTextChannel().sendMessage(b.build()).queue();
+    }
+
+    @Override
+    public Permission[] requiredBotPerms() {
+        return new Permission[]{Permission.KICK_MEMBERS};
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+        return new Permission[]{Permission.KICK_MEMBERS};
     }
 
     @Override

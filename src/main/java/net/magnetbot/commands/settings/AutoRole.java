@@ -5,6 +5,7 @@ package net.magnetbot.commands.settings;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.core.command.syntax.*;
 import net.magnetbot.core.command.Chat;
@@ -31,6 +32,16 @@ public class AutoRole implements Command {
         } else {
             event.getTextChannel().sendMessage(Message.ERROR(event, "My Role has to be higher than the Auto Role").build()).queue();
         }
+    }
+
+    @Override
+    public Permission[] requiredBotPerms() {
+        return new Permission[]{Permission.MANAGE_ROLES};
+    }
+
+    @Override
+    public Permission[] requiredUserPerms() {
+       return new Permission[]{Permission.MANAGE_ROLES};
     }
 
     @Override
