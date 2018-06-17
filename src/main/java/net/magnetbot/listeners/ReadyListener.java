@@ -71,6 +71,7 @@ public class ReadyListener extends ListenerAdapter {
 
 
         ControlPanel.startTiming();
+        new CoolStatus(jda).start();
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -84,9 +85,6 @@ public class ReadyListener extends ListenerAdapter {
                 }
             }
         }, 500*1000, 500*1000);
-
-        if (Static.SHARD_ID == 0)
-            new CoolStatus().start();
 
     }
 }

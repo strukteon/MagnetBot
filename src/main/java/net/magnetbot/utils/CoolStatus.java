@@ -25,30 +25,19 @@ public class CoolStatus extends Thread {
 
     String[] msgs = {
             "magnetbot.net",
-            "{%GUILDS%} servers!",
-            "{%USERS%} users!",
             "patreon.com/strukteon",
             "Much wow",
             "Fun included!"
     };
 
-    public CoolStatus(){
-        this(30000);
+    public CoolStatus(JDA jda){
+        this(jda, 30000);
     }
 
-    public CoolStatus(long period){
+    public CoolStatus(JDA jda, long period){
         this.timer = new Timer();
         this.period = period;
-
-        JDABuilder builder = new JDABuilder(AccountType.BOT);
-        builder.setToken(Secret.TOKEN);
-        try {
-            this.jda = builder.buildBlocking();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.jda = jda;
     }
 
     public void start(){
