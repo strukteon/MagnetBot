@@ -34,7 +34,7 @@ public class SyntaxElement {
     }
 
     public static class SubCommand extends SyntaxElement {
-        List<String> possibilities;
+        private List<String> possibilities;
 
         public SubCommand(String name, String... possibilities){
             super(name, SyntaxElementType.STRING_OF_LIST);

@@ -24,7 +24,9 @@ public class YouTubeAPI {
     public static YouTube getYouTube() throws Exception{
 
         return new YouTube.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), new HttpRequestInitializer() {
-            public void initialize(HttpRequest request) throws IOException {
+            @Override
+            public void initialize(HttpRequest httpRequest) throws IOException {
+                // do nothing
             }
         }).setApplicationName("magnetbot-discord").build();
 

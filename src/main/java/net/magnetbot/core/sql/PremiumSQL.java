@@ -60,9 +60,9 @@ public class PremiumSQL {
 
     public PremiumType getPremiumType(){
         String premiumType = mySQL.SELECT("*", table, "id='"+userid+"'").get("premiumtype");
-        if (premiumType.equals("patron"))
+        if ("patron".equals(premiumType))
             return PremiumType.PATRON;
-        else if (premiumType.equals("voter"))
+        else if ("voter".equals(premiumType))
             return PremiumType.VOTER;
         return PremiumType.NONE;
     }

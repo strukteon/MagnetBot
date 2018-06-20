@@ -93,12 +93,11 @@ public class MySQL {
             ResultSet res = ps.executeQuery();
             ResultSetMetaData meta = res.getMetaData();
 
-            if (!res.isBeforeFirst())
+            if (res.first())
+                for (int i = 1; i <= meta.getColumnCount(); i++)
+                    hashMap.put(meta.getColumnName(i), res.getString(i));
+            else
                 return hashMap;
-
-            res.first();
-            for (int i = 1; i <= meta.getColumnCount(); i++)
-                hashMap.put(meta.getColumnName(i), res.getString(i));
 
         } catch (SQLException e) {
             e.printStackTrace();

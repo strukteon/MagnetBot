@@ -52,9 +52,8 @@ public class AudioCore extends ListenerAdapter {
     }
 
     public static void connectToVoiceChannel(AudioManager audioManager, VoiceChannel voiceChannel) {
-        if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect())
-            if (audioManager.getGuild().getVoiceChannels().contains(voiceChannel))
-                audioManager.openAudioConnection(voiceChannel);
+        if ( !audioManager.isConnected() && !audioManager.isAttemptingToConnect() && audioManager.getGuild().getVoiceChannels().contains(voiceChannel))
+            audioManager.openAudioConnection(voiceChannel);
     }
 
     public static void disconnectFromVoiceChannel(AudioManager audioManager) {

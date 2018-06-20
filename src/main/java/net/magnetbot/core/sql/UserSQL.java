@@ -94,7 +94,7 @@ public class UserSQL {
     public List<Badge> getBadges(){
         List<Badge> badges = new ArrayList<>();
         String content = mySQL.SELECT("*", table, "id='"+userid+"'").get("badges");
-        if (!content.equals(""))
+        if (!"".equals(content))
             Arrays.asList(mySQL.SELECT("*", table, "id='"+userid+"'").get("badges").split(" "))
                     .forEach(s -> badges.add(Badge.valueOf(s)));
         return badges;
