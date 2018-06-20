@@ -13,12 +13,12 @@ import java.util.List;
 
 public class SyntaxBuilder {
 
-    List<Element> elements = new ArrayList<>();
-    SyntaxHandler syntaxHandler;
+    private List<Element> elements = new ArrayList<>();
+    private SyntaxHandler syntaxHandler;
 
-    List<SyntaxBuilder> alternateBuilders = null;
+    private List<SyntaxBuilder> alternateBuilders = null;
 
-    int minArgs = 0;
+    private int minArgs = 0;
 
     public SyntaxBuilder(){ }
 
@@ -41,7 +41,7 @@ public class SyntaxBuilder {
 
                 @Override
                 public void onFinish(Syntax syntax) {
-
+                    // Nothing to do here
                 }
             };
         if (alternateBuilders == null){

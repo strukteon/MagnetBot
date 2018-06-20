@@ -5,6 +5,7 @@ package net.magnetbot.commands.tools;
     (c) nils 2018
 */
 
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -14,7 +15,9 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.core.tools.Tools;
 
 import java.util.HashMap;
@@ -93,8 +96,8 @@ public class AddEmote extends ListenerAdapter implements Command{
     }
 
     private static class ReactionInfo {
-        Emote emote;
-        String userId;
+        private Emote emote;
+        private String userId;
         private ReactionInfo(Emote emote, String userId){
             this.emote = emote;
             this.userId = userId;

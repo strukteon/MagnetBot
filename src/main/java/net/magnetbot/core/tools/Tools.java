@@ -62,7 +62,7 @@ public class Tools {
     }
 
     public static boolean canModify(Role r){
-        return ! (r.getPosition() >= r.getGuild().getMemberById(r.getJDA().getSelfUser().getId()).getRoles().get(0).getPosition());
+        return r.getPosition() < r.getGuild().getMemberById(r.getJDA().getSelfUser().getId()).getRoles().get(0).getPosition();
     }
 
     public static boolean isId(String toCheck){

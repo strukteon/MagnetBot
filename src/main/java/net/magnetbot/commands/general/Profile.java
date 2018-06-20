@@ -60,7 +60,7 @@ public class Profile implements Command {
 
         String perms = "";
         for (String s : userPerms){
-            if (! perms.equals("") )
+            if (! "".equals(perms) )
                 perms += ", ";
             perms += s;
         }

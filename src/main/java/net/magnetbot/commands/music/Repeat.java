@@ -31,7 +31,7 @@ public class Repeat implements Command {
             }
 
             switch (syntax.getAsSubCommand("which").getSelection()){
-                case 0:
+                default:
                     scheduler.setModeNormal();
                     event.getChannel().sendMessage(Message.INFO(event, "Queue is now playing normally!").build()).queue();
                     break;

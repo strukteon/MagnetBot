@@ -13,13 +13,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CoolStatus extends Thread {
-    Timer timer;
-    int cur = 0;
-    long period;
+    private Timer timer;
+    private int cur = 0;
+    private long period;
 
-    JDA jda;
+    private JDA jda;
 
-    String[] msgs = {
+    private String[] msgs = {
             "magnetbot.net",
             "patreon.com/strukteon",
             "Much wow",

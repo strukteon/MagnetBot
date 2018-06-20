@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class Chat {
 
+    public static Map<Integer, String> names;
+
     public static int permissionLevel(MessageReceivedEvent event){
         Member member = event.getMember();
         if (member.getUser().getId().equals(Static.BOT_OWNER_ID))
@@ -34,8 +36,6 @@ public class Chat {
     public static String permLevel(int level){
         return getName(level);
     }
-
-    public static Map<Integer, String> names;
 
     public static String getName(int pLvl){
         return names.get(pLvl);

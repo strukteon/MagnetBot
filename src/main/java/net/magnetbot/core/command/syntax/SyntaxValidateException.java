@@ -10,10 +10,10 @@ import java.util.List;
 
 public class SyntaxValidateException extends Exception {
 
-    SyntaxElement element;
-    Cause cause;
+    private SyntaxElement element;
+    private Cause cause;
 
-    List<SyntaxValidateException> exceptions = new ArrayList<>();
+    private List<SyntaxValidateException> exceptions = new ArrayList<>();
 
     public SyntaxValidateException(String message){
         this(message, null);
