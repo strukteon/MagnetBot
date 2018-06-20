@@ -5,7 +5,6 @@ package net.magnetbot.commands.fun;
     (c) nils 2018
 */
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.EmbedBuilder;

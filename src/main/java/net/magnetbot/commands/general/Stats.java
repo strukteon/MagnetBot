@@ -5,15 +5,12 @@ package net.magnetbot.commands.general;
     (c) nils 2018
 */
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.magnetbot.MagnetBot;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.PermissionLevel;
@@ -22,8 +19,6 @@ import net.magnetbot.utils.Static;
 
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Stats implements Command {
 

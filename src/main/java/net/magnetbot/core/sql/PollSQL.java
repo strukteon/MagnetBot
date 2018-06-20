@@ -8,11 +8,8 @@ package net.magnetbot.core.sql;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.magnetbot.MagnetBot;
-import net.magnetbot.commands.tools.Poll;
 import net.magnetbot.core.tools.Tools;
-import net.magnetbot.utils.Static;
 
-import javax.tools.Tool;
 import java.util.*;
 import java.util.regex.Pattern;
 

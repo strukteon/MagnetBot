@@ -5,17 +5,18 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
-import net.magnetbot.audio.youtube.YouTubeAPI;
 import com.google.api.services.youtube.model.SearchResult;
-import net.magnetbot.core.command.Message;
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.audio.AudioCore;
-import net.magnetbot.core.tools.Tools;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
-import net.magnetbot.core.command.syntax.*;
+import net.magnetbot.audio.AudioCore;
+import net.magnetbot.audio.youtube.YouTubeAPI;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.Message;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
+import net.magnetbot.core.tools.Tools;
 
 import java.util.List;
 

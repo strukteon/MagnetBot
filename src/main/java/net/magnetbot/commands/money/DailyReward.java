@@ -5,13 +5,12 @@ package net.magnetbot.commands.money;
     (c) nils 2018
 */
 
-import com.google.api.client.util.DateTime;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
+import net.magnetbot.core.command.syntax.Syntax;
 import net.magnetbot.core.sql.UserSQL;
 
 import java.util.Date;

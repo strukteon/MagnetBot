@@ -5,13 +5,15 @@ package net.magnetbot.commands.fun;
     (c) nils 2018
 */
 
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
-import net.magnetbot.core.command.Command;
-import net.magnetbot.core.tools.Tools;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
+import net.magnetbot.core.tools.Tools;
 
 public class TTS implements Command {
 

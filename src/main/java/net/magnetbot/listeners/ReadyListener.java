@@ -7,23 +7,18 @@ package net.magnetbot.listeners;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.MagnetBot;
-import net.magnetbot.audio.AudioCore;
 import net.magnetbot.commands.music.ControlPanel;
 import net.magnetbot.core.CLI;
 import net.magnetbot.core.sql.*;
 import net.magnetbot.utils.CoolStatus;
 import net.magnetbot.utils.Secret;
-import net.magnetbot.utils.Static;
 import org.discordbots.api.client.DiscordBotListAPI;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
