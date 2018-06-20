@@ -60,7 +60,7 @@ public class CLI {
 
     public static void shutdown(int status){
         info("Shutting down");
-        System.exit(status);
+        Runtime.getRuntime().exit(status);
     }
 
 }

@@ -75,7 +75,7 @@ public class PlayerInfo {
     public static String getRoles(Member member){
         String s = "";
         for (Role r : member.getRoles()){
-            if (s != "")
+            if (! "".equals(s))
                 s += ", ";
             s += r.getName();
         }

@@ -4,6 +4,7 @@ package net.magnetbot;
     
     (c) nils 2018
 */
+
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -16,6 +17,7 @@ import net.magnetbot.core.sql.MySQL;
 import net.magnetbot.utils.Secret;
 import net.magnetbot.utils.Static;
 import org.discordbots.api.client.DiscordBotListAPI;
+
 import java.io.File;
 
 public class MagnetBot {
@@ -46,11 +48,10 @@ public class MagnetBot {
         System.err.close();
         System.setErr(System.out);
 
-        if (args.length>0)
-            if (args[0].equals("testing"))
-                isTestBot = true;
+        if (args.length>0 && args[0].equals("testing"))
+            isTestBot = true;
 
-        SettingsLoader.init(new File((isTestBot?"C:\\Users\\nilss\\IdeaProjects\\MagnetBotV2\\testing.props":"/home/magnetbot.properties")));
+        SettingsLoader.init(new File((isTestBot?"C:\\Users\\nilss\\Desktop\\magnetbot.properties":"/home/magnetbot.properties")));
 
         JDABuilder builder = new JDABuilder(AccountType.BOT);
         try {

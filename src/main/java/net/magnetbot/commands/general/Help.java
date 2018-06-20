@@ -50,7 +50,7 @@ public class Help implements Command {
                         String perms = Chat.permLevel(cmdInfo.permissionLevel) + "\t\t\t(You **can" + (Chat.permissionLevel(event) >= cmdInfo.permissionLevel?"":"not") + "** execute it)";
 
                         builder.addField("Information", "``" + (!cmdInfo.help.isEmpty()?cmdInfo.help:"no description yet") + "``", false);
-                        if (!alias.toString().equals(""))
+                        if (alias.length() != 0)
                             builder.addField("Alias", "``" + alias.toString() + "``", false);
                         builder
                                 .addField("Syntax", "``" + syntax_ + "``", false)

@@ -67,7 +67,7 @@ public class SettingsLoader {
 
             CLI.error("Please set the tokens in the Settings file");
 
-            System.exit(1);
+            Runtime.getRuntime().exit(1);
         } catch (Exception e){
             e.printStackTrace();
         }
