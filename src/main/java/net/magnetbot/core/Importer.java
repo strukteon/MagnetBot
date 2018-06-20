@@ -5,22 +5,26 @@ package net.magnetbot.core;
     (c) nils 2017
 */
 
+import net.dv8tion.jda.core.JDABuilder;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.commands.admin.*;
 import net.magnetbot.commands.fun.*;
 import net.magnetbot.commands.general.*;
-import net.magnetbot.commands.money.*;
-//import net.magnetbot.commands.steam.SteamUser;
-import net.magnetbot.commands.testing.Error;
-import net.magnetbot.commands.tools.*;
+import net.magnetbot.commands.money.DailyReward;
+import net.magnetbot.commands.money.Slots;
+import net.magnetbot.commands.money.Vote;
 import net.magnetbot.commands.music.*;
-import net.magnetbot.commands.settings.*;
+import net.magnetbot.commands.settings.AutoRole;
+import net.magnetbot.commands.settings.Prefix;
+import net.magnetbot.commands.settings.Welcome;
 import net.magnetbot.commands.testing.*;
+import net.magnetbot.commands.testing.Error;
+import net.magnetbot.commands.testing.Shutdown;
+import net.magnetbot.commands.tools.*;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.CommandHandler;
 import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.listeners.*;
-import net.dv8tion.jda.core.JDABuilder;
 
 import java.util.HashMap;
 
@@ -43,6 +47,7 @@ public class Importer {
                         new ChuckNorris(),
                         new Hug(),
                         new Kiss(),
+                    //    new Osu(),
                         new Pat(),
                         new Poke(),
                         new RandomCat(),
@@ -59,9 +64,7 @@ public class Importer {
                         new Invite(),
                         new Profile(),
                         new Server(),
-                        new Stats()
-                     //   new Shorten(),
-                                )
+                        new Stats())
 
                 .addSection("Money",
                         new DailyReward(),
@@ -72,6 +75,7 @@ public class Importer {
                         new AddEmote(),
                         new DecToHex(),
                         new HexToDec(),
+                      //  new Pastebin(),
                         new Poll(),
                         new WhoAmI(),
                         new WhoIs())
@@ -104,14 +108,14 @@ public class Importer {
                 .addSection("Testing",
                         new Broadcast(),
                         new Error(),
+                       // new Eval(),
                         new Ping(),
                         new Shutdown(),
                         new Test(),
-                        new TestException(),
                         new Uptime())
-/*
-                .addSection("Steam",
-                        new SteamUser())*/
+
+              /*  .addSection("User",
+                        new Item())*/
 
 
         ;
