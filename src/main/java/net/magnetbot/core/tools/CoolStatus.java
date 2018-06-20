@@ -27,7 +27,7 @@ public class CoolStatus extends Thread {
     };
 
     public CoolStatus(JDA jda){
-        this(jda, 30000);
+        this(jda, 60000/5);
     }
 
     public CoolStatus(JDA jda, long period){
@@ -42,7 +42,7 @@ public class CoolStatus extends Thread {
             public void run() {
                 update();
             }
-        }, 0, 60000/5);
+        }, 0, period);
     }
 
     private void update(){

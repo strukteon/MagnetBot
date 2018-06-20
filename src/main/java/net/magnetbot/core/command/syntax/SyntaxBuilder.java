@@ -220,7 +220,7 @@ public class SyntaxBuilder {
 
     private class Element {
 
-        SyntaxElement element;
+        private SyntaxElement element;
         boolean multiple;
         boolean isOptional;
         public Element(SyntaxElement element, boolean multiple, boolean isOptional){

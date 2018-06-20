@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.*;
 
 public class SyntaxObject {
 
-    Object content;
+    private Object content;
 
     public SyntaxObject(Object content){
         this.content = content;

@@ -40,8 +40,10 @@ public class SyntaxValidator {
                 return validateRole(toValidate, event.getGuild());
             case STRING_OF_LIST:
                 return validateSubCommand(toValidate, ((SyntaxElement.SubCommand) element).getPossibilities());
+            default:
+                throw new SyntaxValidateException(SyntaxValidateException.Cause.UNDEFINED);
         }
-        throw new SyntaxValidateException(SyntaxValidateException.Cause.UNDEFINED);
+
     }
 
 
