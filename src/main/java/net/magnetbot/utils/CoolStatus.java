@@ -5,14 +5,10 @@ package net.magnetbot.utils;
     (c) nils 2018
 */
 
-import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-import net.magnetbot.utils.Static;
 
-import javax.security.auth.login.LoginException;
 import java.util.Timer;
 import java.util.TimerTask;
 

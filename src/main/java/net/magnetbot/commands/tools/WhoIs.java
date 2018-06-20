@@ -5,12 +5,15 @@ package net.magnetbot.commands.tools;
     (c) nils 2017
 */
 
-import net.magnetbot.core.command.Command;
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElement;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.utils.PlayerInfo;
 
 public class WhoIs implements Command {

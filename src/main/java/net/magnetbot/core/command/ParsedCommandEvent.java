@@ -5,11 +5,7 @@ package net.magnetbot.core.command;
     (c) nils 2018
 */
 
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
 public class ParsedCommandEvent {
 

@@ -6,8 +6,6 @@ package net.magnetbot.commands.music;
 */
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -28,8 +26,10 @@ import net.magnetbot.core.command.PermissionLevel;
 import net.magnetbot.core.command.syntax.Syntax;
 import net.magnetbot.core.command.syntax.SyntaxBuilder;
 
-import java.lang.management.ManagementFactory;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class ControlPanel extends ListenerAdapter implements Command {

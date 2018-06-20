@@ -5,18 +5,20 @@ package net.magnetbot.commands.fun;
     (c) nils 2018
 */
 
-import net.magnetbot.core.command.Command;
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.magnetbot.core.command.Message;
-import net.magnetbot.core.tools.Tools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.Message;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
+import net.magnetbot.core.tools.Tools;
 
 import java.io.InputStreamReader;
 import java.net.URL;

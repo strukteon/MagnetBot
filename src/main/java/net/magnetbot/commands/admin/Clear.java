@@ -9,10 +9,12 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 
 import java.util.List;
 

@@ -13,8 +13,6 @@ import net.magnetbot.core.command.Message;
 import net.magnetbot.core.sql.GuildSQL;
 import net.magnetbot.utils.Static;
 
-import java.util.concurrent.TimeUnit;
-
 public class CommandListener extends ListenerAdapter {
 
     @Override

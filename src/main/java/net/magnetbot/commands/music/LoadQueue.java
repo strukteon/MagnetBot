@@ -5,18 +5,16 @@ package net.magnetbot.commands.music;
     (c) nils 2018
 */
 
-import net.magnetbot.MagnetBot;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.audio.AudioCore;
+import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.sql.GuildSQL;
 
 import java.util.List;
-
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
-import net.magnetbot.core.sql.GuildSQL;
 
 public class LoadQueue implements Command {
 

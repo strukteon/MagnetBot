@@ -5,12 +5,14 @@ package net.magnetbot.commands.general;
     (c) nils 2018
 */
 
-import net.magnetbot.core.command.Command;
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
-import net.magnetbot.core.command.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.Message;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

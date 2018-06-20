@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.magnetbot.MagnetBot;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.audio.TrackScheduler;
 import net.magnetbot.core.command.Message;

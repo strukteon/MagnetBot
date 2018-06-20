@@ -4,9 +4,9 @@ package net.magnetbot.utils;
     
     (c) nils 2018
 */
+
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 public class WelcomeImageUtil {
 

@@ -7,14 +7,16 @@ package net.magnetbot.commands.fun;
 
 import com.google.api.services.youtube.model.SearchResult;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.MagnetBot;
 import net.magnetbot.audio.youtube.YouTubeAPI;
+import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
 import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.core.tools.Tools;
 
 import java.util.List;

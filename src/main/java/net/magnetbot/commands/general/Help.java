@@ -5,11 +5,13 @@ package net.magnetbot.commands.general;
     (c) nils 2018
 */
 
-import net.magnetbot.core.command.*;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.Importer;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.Importer;
+import net.magnetbot.core.command.*;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.utils.Static;
 
 public class Help implements Command {

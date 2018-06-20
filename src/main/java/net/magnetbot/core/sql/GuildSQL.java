@@ -5,14 +5,13 @@ package net.magnetbot.core.sql;
     (c) nils 2018
 */
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.magnetbot.MagnetBot;
 import net.magnetbot.utils.Static;
 
-import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class GuildSQL {

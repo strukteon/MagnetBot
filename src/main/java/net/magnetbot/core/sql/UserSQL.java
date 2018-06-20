@@ -9,11 +9,13 @@ import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.magnetbot.MagnetBot;
-import net.magnetbot.commands.settings.AutoRole;
 import net.magnetbot.utils.Static;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class UserSQL {
     private static MySQL mySQL;

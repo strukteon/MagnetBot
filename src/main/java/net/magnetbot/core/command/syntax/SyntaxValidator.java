@@ -7,7 +7,6 @@ package net.magnetbot.core.command.syntax;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.core.tools.Tools;
 

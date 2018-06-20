@@ -6,7 +6,6 @@ package net.magnetbot.commands.music;
 */
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.magnetbot.MagnetBot;
 import net.magnetbot.audio.AudioCore;
 import net.magnetbot.audio.TrackScheduler;
 import net.magnetbot.core.command.Chat;

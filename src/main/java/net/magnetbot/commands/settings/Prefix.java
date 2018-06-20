@@ -4,13 +4,16 @@ package net.magnetbot.commands.settings;
     
     (c) nils 2018
 */
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
+
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
- import net.dv8tion.jda.core.Permission;
 import net.magnetbot.core.command.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.core.sql.GuildSQL;
 
 public class Prefix implements Command {
