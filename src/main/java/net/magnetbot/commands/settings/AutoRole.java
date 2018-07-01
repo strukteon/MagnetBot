@@ -6,20 +6,19 @@ package net.magnetbot.commands.settings;
 */
 
 import net.dv8tion.jda.core.Permission;
-import net.magnetbot.core.command.PermissionLevel;
-import net.magnetbot.core.command.syntax.*;
-import net.magnetbot.core.command.Chat;
-import net.magnetbot.core.command.Command;
-import net.magnetbot.core.command.Message;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.HierarchyException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.magnetbot.core.command.Chat;
+import net.magnetbot.core.command.Command;
+import net.magnetbot.core.command.Message;
+import net.magnetbot.core.command.PermissionLevel;
+import net.magnetbot.core.command.syntax.Syntax;
+import net.magnetbot.core.command.syntax.SyntaxBuilder;
+import net.magnetbot.core.command.syntax.SyntaxElementType;
 import net.magnetbot.core.sql.GuildSQL;
-import net.magnetbot.utils.Static;
-
-import java.awt.*;
 
 public class AutoRole implements Command {
 
@@ -58,8 +57,9 @@ public class AutoRole implements Command {
 
         @Override
         public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+            Role r = null;
             try {
-                Role r = GuildSQL.fromGuild(event.getGuild()).getAutoRole();
+                r = GuildSQL.fromGuild(event.getGuild()).getAutoRole();
                 if (r != null) {
                     event.getGuild().getController().addSingleRoleToMember(event.getMember(), r).queue();
                 }
@@ -67,18 +67,8 @@ public class AutoRole implements Command {
 
             } catch (IllegalArgumentException e) { }
 
-            catch (Exception e){
-                e.printStackTrace();
-                EmbedBuilder error = new EmbedBuilder();
-                error.setTitle("**An internal error ocurred**")
-                        .setDescription("tt")
-                        .setColor(Color.RED)
-                        .addField("Guild", event.getGuild().getName(), true)
-                        .addField("Guild ID", event.getGuild().getId(), true)
-                        .addField("Error Message", e.toString(), false)
-                        .addField("Stacktrace", ""/*tools.stacktraceToString(e.getStackTrace(), false)*/, false);
-                event.getJDA().getUserById(Static.BOT_OWNER_ID).openPrivateChannel().complete()
-                        .sendMessage(error.build()).queue();
+            catch (HierarchyException e){
+                event.getGuild().getDefaultChannel().sendMessage("Sorry, but I am not able to auto-role your members.\nPlease put my role above **" + r.getName() + "**, and it will work again.").queue();
             }
 
 

@@ -35,13 +35,7 @@ public class Clear implements Command {
 
         List<Message> messages = history.retrievePast(num).complete();
 
-        for (int i = 0; i < messages.size(); i++){
-            if (i != messages.size()-1){
-                messages.get(i).delete().queue();
-            } else {
-                messages.get(i).delete().queue((response) -> event.getTextChannel().sendMessage(net.magnetbot.core.command.Message.INFO(event, "Deleted ``" + messages.size() + "`` Messages").build()).queue());
-            }
-        }
+        event.getTextChannel().deleteMessages(messages).queue();
     }
 
     @Override

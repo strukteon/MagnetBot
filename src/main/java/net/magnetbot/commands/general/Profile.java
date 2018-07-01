@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.magnetbot.core.CLI;
 import net.magnetbot.core.command.Chat;
 import net.magnetbot.core.command.Command;
 import net.magnetbot.core.command.Message;
@@ -49,6 +50,7 @@ public class Profile implements Command {
         StringBuilder badges = new StringBuilder();
         StringBuilder badgeTitles = new StringBuilder();
         userSQL.getBadges().forEach(badge -> {
+            CLI.info(badge + ", " + badge.getEmote());
             badges.append(badge.getEmote().getAsMention());
             badgeTitles.append(badge.getTitle()).append(", ");
         });
@@ -67,13 +69,13 @@ public class Profile implements Command {
         perms = perms.equals("") ? "none" : perms;
 
         EmbedBuilder builder = Message.INFO(event);
-            builder.setAuthor(u.getName() + (u.getName().endsWith("s") ? "'" : "'s") + " profile", "https://magnetbot.net/stats/user?userid=" + u.getId(), u.getEffectiveAvatarUrl());
+        builder.setAuthor(u.getName() + (u.getName().endsWith("s") ? "'" : "'s") + " profile", "https://magnetbot.net/stats/user?userid=" + u.getId(), u.getEffectiveAvatarUrl());
 
-            builder.addField(":label: Bio", "``" + userSQL.getBio() + "``", false)
-                    .addField(":military_medal: Badges: " + badges.toString(), badgeTitles.toString(), false)
-                    .addField(":moneybag: Money", "" + userSQL.getMoney() + " m$", true)
-                    .addField(":keyboard: Commands", "" + userSQL.getCommandCount(), true)
-                    .addField(":wrench: Permissions", "``" + perms + "``", false);
+        builder .addField(":label: Bio", "``" + userSQL.getBio() + "``", false)
+            .addField(":military_medal: Badges: " + badges.toString(), badgeTitles.toString(), false)
+            .addField(":moneybag: Money", "" + userSQL.getMoney() + " m$", true)
+            .addField(":keyboard: Commands", "" + userSQL.getCommandCount(), true)
+            .addField(":wrench: Permissions", "``" + perms + "``", false);
 
 
         return builder.build();

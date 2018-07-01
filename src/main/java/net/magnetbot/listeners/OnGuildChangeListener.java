@@ -12,7 +12,15 @@ import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.magnetbot.MagnetBot;
+import net.magnetbot.core.CLI;
+import net.magnetbot.utils.Secret;
 import net.magnetbot.utils.Static;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+import java.io.IOException;
 
 public class OnGuildChangeListener extends ListenerAdapter {
 
@@ -40,6 +48,16 @@ public class OnGuildChangeListener extends ListenerAdapter {
     }
 
     private static void updateStats(JDA jda){
-        MagnetBot.dblAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size(), Static.SHARD_ID, Static.SHARD_COUNT);
+        OkHttpClient client = new OkHttpClient();
+        Request r = new Request.Builder()
+                .url("https://discordbots.org/api/bots/389016516261314570/stats")
+                .addHeader("Authorization", Secret.DISCORDBOTLIST_TOKEN)
+                .post(RequestBody.create(MediaType.parse("application/json"), "{\"server_count\":" + jda.getGuilds().size() + ", \"shard_id\":" + Static.SHARD_ID + ", \"shard_count\":" + Static.SHARD_COUNT + "}"))
+                .build();
+        try {
+            CLI.info(client.newCall(r).execute().body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
