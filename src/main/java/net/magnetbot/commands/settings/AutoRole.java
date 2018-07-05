@@ -24,12 +24,17 @@ public class AutoRole implements Command {
 
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
-        Role r = syntax.getAsRole("role");
-        if (r.getPosition() < event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getRoles().get(0).getPosition()) {
-            GuildSQL.fromGuild(event.getGuild()).setAutoRole(r.getId());
-            event.getTextChannel().sendMessage(Message.INFO(event, "Auto Role has been set to ``" + r.getName() + "`` !").build()).queue();
+        if (syntax.getExecutedBuilder() == 0){
+            Role r = syntax.getAsRole("role");
+            if (r.getPosition() < event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getRoles().get(0).getPosition()) {
+                GuildSQL.fromGuild(event.getGuild()).setAutoRole(r.getId());
+                event.getTextChannel().sendMessage(Message.INFO(event, "Auto Role has been set to ``" + r.getName() + "`` !").build()).queue();
+            } else {
+                event.getTextChannel().sendMessage(Message.ERROR(event, "My Role has to be higher than the Auto Role").build()).queue();
+            }
         } else {
-            event.getTextChannel().sendMessage(Message.ERROR(event, "My Role has to be higher than the Auto Role").build()).queue();
+            GuildSQL.fromGuild(event.getGuild()).setAutoRole("");
+            event.getTextChannel().sendMessage(Message.INFO(event, "Auto Role has been disabled!").build()).queue();
         }
     }
 
@@ -48,7 +53,10 @@ public class AutoRole implements Command {
         return
                 new Chat.CommandInfo("autorole", PermissionLevel.ADMIN)
                         .setSyntax(
-                                new SyntaxBuilder().addElement("role", SyntaxElementType.ROLE)
+                                new SyntaxBuilder(
+                                        new SyntaxBuilder().addElement("role", SyntaxElementType.ROLE),
+                                        new SyntaxBuilder().addSubcommand("mode", "disable")
+                                )
                         )
                     .setHelp("set a role every member will get when joining this server");
     }
