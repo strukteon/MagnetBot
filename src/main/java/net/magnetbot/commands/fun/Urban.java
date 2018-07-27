@@ -27,6 +27,10 @@ import java.net.URLEncoder;
 public class Urban implements Command {
     @Override
     public void action(MessageReceivedEvent event, Syntax syntax) throws Exception {
+        if (!event.getTextChannel().isNSFW()){
+            event.getTextChannel().sendMessage(Message.ERROR(event, "Sorry, but this command is only allowed in nsfw channels as it may contain nsfw-related content.").build()).queue();
+            return;
+        }
         long cur = System.currentTimeMillis();
         String apiUrl = "http://api.urbandictionary.com/v0/define?term=";
         URL url = new URL(apiUrl + URLEncoder.encode(Tools.listToString(syntax.getAsListString("query"), " "), "UTF-8"));
