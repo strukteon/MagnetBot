@@ -53,7 +53,7 @@ public class ReadyListener extends ListenerAdapter {
 
         //if (!MagnetBot.isTestBot) {
             MagnetBot.dblAPI = new DiscordBotListAPI.Builder().token(Secret.DISCORDBOTLIST_TOKEN).build();
-            MagnetBot.dblAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size());
+            /*MagnetBot.dblAPI.setStats(jda.getSelfUser().getId(), jda.getGuilds().size());*/
 
             CLI.info("Connecting to MySQL");
             MagnetBot.mySQL = new MySQL(Secret.SQL_SERVER, 3306, Secret.SQL_USER, Secret.SQL_PASSWORD, Secret.SQL_DATABASE);
