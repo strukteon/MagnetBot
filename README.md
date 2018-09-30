@@ -1,3 +1,5 @@
+# [DISCONTINUED]
+
 [![MagnetBot](https://raw.githubusercontent.com/strukteon/MagnetBot/master/resources/images/magnetbot_logo_btn-01.png)](https://magnetbot.net)
 
 [![Online Status](https://discordbots.org/api/widget/status/389016516261314570.svg)](https://discordbots.org/bot/389016516261314570)
